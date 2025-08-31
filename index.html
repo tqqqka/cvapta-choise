@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Selector</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --locked: #ff4757;
+            --unlocked: #2ed573;
+            --button-color: #6e45e2;
+            --button-gradient: #9a66ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem;
+            text-align: center;
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(110, 69, 226, 0.2);
+            position: relative;
+            z-index: 2;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            letter-spacing: 0.5px;
+        }
+
+        .games-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .game-card {
+            background: rgba(26, 26, 46, 0.85);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 350px;
+            border: 1px solid rgba(110, 69, 226, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+        }
+
+        .game-description {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .play-btn {
+            background: linear-gradient(to right, var(--button-color), var(--button-gradient));
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(110, 69, 226, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(110, 69, 226, 0.4);
+        }
+
+        .timer-container {
+            font-size: 0.9rem;
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--locked);
+            border-radius: 10px;
+            padding: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .timer {
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #ffcc00;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .debug-panel {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        /* Осенние листья */
+        .leaf {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .maple-leaf {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff8c00' d='M12 2c-.5 0-1 .2-1.4.6l-8 8c-.8.8-.8 2 0 2.8l8 8c.8.8 2 .8 2.8 0l8-8c.8-.8.8-2 0-2.8l-8-8c-.4-.4-.9-.6-1.4-.6z'/%3E%3C/svg%3E");
+        }
+
+        .oak-leaf {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff4500' d='M12 2c-.3 0-.6.1-.8.3l-9 9c-.4.4-.4 1 0 1.4l9 9c.4.4 1 .4 1.4 0l9-9c.4-.4.4-1 0-1.4l-9-9c-.2-.2-.5-.3-.8-.3z'/%3E%3C/svg%3E");
+        }
+
+        .aspen-leaf {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff6b35' d='M12 2c-.4 0-.7.1-1 .3l-10 10c-.4.4-.4 1 0 1.4l10 10c.4.4 1 .4 1.4 0l10-10c.4-.4.4-1 0-1.4l-10-10c-.3-.2-.6-.3-1-.3z'/%3E%3C/svg%3E");
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .game-card {
+                padding: 1.2rem;
+            }
+            
+            .leaf {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Game</h1>
+        <p class="subtitle">Select the game you want to play</p>
+
+        <div class="games-container">
+            <div class="game-card" id="cupSlotsCard">
+                <div class="game-icon">🥤</div>
+                <div class="game-title">Cup Slots</div>
+                <div class="game-description">Spin the cup-themed slots and win big!</div>
+
+                <div class="timer-container" id="timerContainer">
+                    <div>Available until September 1st:</div>
+                    <div class="timer" id="timer">00:00:00:00</div>
+                </div>
+
+                <button class="play-btn" id="playSlotsBtn" onclick="window.location.href='https://tqqqka.github.io/cvapta-cup/'">Play Cup Slots</button>
+            </div>
+
+            <div class="game-card" id="cvaptaCard">
+                <div class="game-icon">🐸</div>
+                <div class="game-title">Cvapta</div>
+                <div class="game-description">Click the frog, grow, collect stars and say WOW!</div>
+                <button class="play-btn" id="playFrogBtn" onclick="window.location.href='https://tqqqka.github.io/capsavta/'">Play Frog Clicker</button>
+            </div>
+        </div>
+
+        <div class="debug-panel">
+            <div>Управление временем:</div>
+            <div>F5 - уменьшить на 15 секунд</div>
+            <div>F6 - уменьшить на 1 час</div>
+            <div>F7 - сбросить время</div>
+            <div>F8 - добавить 1 день</div>
+        </div>
+    </div>
+
+    <script>
+        // Установка времени окончания: 00:00 1 сентября 2025 года
+        let targetDate = new Date('2025-09-01T00:00:00');
+        const timerElement = document.getElementById('timer');
+        const cupSlotsCard = document.getElementById('cupSlotsCard');
+        const playSlotsBtn = document.getElementById('playSlotsBtn');
+        const playFrogBtn = document.getElementById('playFrogBtn');
+        
+        let hoursReduced = 0;
+        const maxHoursForEffect = 24;
+        
+        // Сбрасываем localStorage и время
+        function resetTime() {
+            localStorage.removeItem('cupSlotsTargetTime');
+            localStorage.removeItem('hoursReduced');
+            targetDate = new Date('2025-09-01T00:00:00');
+            hoursReduced = 0;
+            cupSlotsCard.classList.remove('hidden');
+            saveData();
+            updateTimerDisplay();
+            updateButtonColors();
+            createLeaves();
+        }
+        
+        // Добавляем время
+        function addDay() {
+            targetDate.setTime(targetDate.getTime() + 86400000); // +1 день
+            saveData();
+            updateTimerDisplay();
+        }
+        
+        // Загружаем сохраненные данные
+        function loadSavedData() {
+            const savedTime = localStorage.getItem('cupSlotsTargetTime');
+            const savedHours = localStorage.getItem('hoursReduced');
+            
+            if (savedTime) {
+                targetDate = new Date(parseInt(savedTime));
+            }
+            if (savedHours) {
+                hoursReduced = parseInt(savedHours);
+            }
+            
+            // Проверяем, не истекло ли время
+            const now = new Date();
+            if (targetDate - now <= 0) {
+                cupSlotsCard.classList.add('hidden');
+            } else {
+                cupSlotsCard.classList.remove('hidden');
+            }
+            
+            updateButtonColors();
+            createLeaves();
+        }
+        
+        // Сохраняем данные
+        function saveData() {
+            localStorage.setItem('cupSlotsTargetTime', targetDate.getTime().toString());
+            localStorage.setItem('hoursReduced', hoursReduced.toString());
+        }
+        
+        // Уменьшаем таймер на 15 секунд (F5)
+        function reduceTimer() {
+            targetDate.setTime(targetDate.getTime() - 15000);
+            saveData();
+            updateTimerDisplay();
+        }
+        
+        // Уменьшаем таймер на 1 час (F6)
+        function reduceTimerByHour() {
+            targetDate.setTime(targetDate.getTime() - 3600000);
+            hoursReduced++;
+            saveData();
+            updateTimerDisplay();
+            updateButtonColors();
+            createLeaves();
+        }
+        
+        // Обновляем цвета кнопок
+        function updateButtonColors() {
+            const progress = Math.min(hoursReduced / maxHoursForEffect, 1);
+            
+            const r = Math.floor(110 + (255 - 110) * progress);
+            const g = Math.floor(69 + (140 - 69) * progress);
+            const b = Math.floor(226 + (0 - 226) * progress);
+            
+            const r2 = Math.floor(154 + (255 - 154) * progress);
+            const g2 = Math.floor(102 + (140 - 102) * progress);
+            const b2 = Math.floor(255 + (0 - 255) * progress);
+            
+            const buttonColor = `rgb(${r}, ${g}, ${b})`;
+            const buttonGradient = `rgb(${r2}, ${g2}, ${b2})`;
+            
+            document.documentElement.style.setProperty('--button-color', buttonColor);
+            document.documentElement.style.setProperty('--button-gradient', buttonGradient);
+        }
+        
+        // Создаем осенние листья
+        function createLeaves() {
+            const leafCount = Math.min(hoursReduced * 2, 50);
+            
+            document.querySelectorAll('.leaf').forEach(leaf => leaf.remove());
+            
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                
+                const leafTypes = ['maple-leaf', 'oak-leaf', 'aspen-leaf'];
+                leaf.classList.add(leafTypes[Math.floor(Math.random() * leafTypes.length)]);
+                
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const size = 20 + Math.random() * 20;
+                const rotation = Math.random() * 360;
+                
+                leaf.style.left = `${left}vw`;
+                leaf.style.top = `${top}vh`;
+                leaf.style.width = `${size}px`;
+                leaf.style.height = `${size}px`;
+                leaf.style.transform = `rotate(${rotation}deg)`;
+                leaf.style.opacity = `${0.3 + Math.random() * 0.4}`;
+                
+                leaf.style.animation = `fall ${8 + Math.random() * 10}s linear infinite`;
+                
+                document.body.appendChild(leaf);
+            }
+            
+            if (!document.getElementById('leaf-animation')) {
+                const style = document.createElement('style');
+                style.id = 'leaf-animation';
+                style.textContent = `
+                    @keyframes fall {
+                        0% {
+                            transform: translateY(-100vh) rotate(0deg);
+                            opacity: 0;
+                        }
+                        10% {
+                            opacity: 0.7;
+                        }
+                        90% {
+                            opacity: 0.6;
+                        }
+                        100% {
+                            transform: translateY(100vh) rotate(360deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Обновляем отображение таймера
+        function updateTimerDisplay() {
+            const now = new Date();
+            const diff = targetDate - now;
+            
+            if (diff <= 0) {
+                cupSlotsCard.classList.add('hidden');
+                timerElement.textContent = "00:00:00:00";
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Обработчики клавиш
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F5') {
+                e.preventDefault();
+                reduceTimer();
+            } else if (e.key === 'F6') {
+                e.preventDefault();
+                reduceTimerByHour();
+            } else if (e.key === 'F7') {
+                e.preventDefault();
+                resetTime();
+                alert('Время сброшено!');
+            } else if (e.key === 'F8') {
+                e.preventDefault();
+                addDay();
+                alert('Добавлен 1 день!');
+            }
+        });
+        
+        // Запускаем при загрузке страницы
+        window.addEventListener('load', function() {
+            loadSavedData();
+            updateTimerDisplay();
+            setInterval(updateTimerDisplay, 1000);
+        });
+        
+        // Сохраняем при закрытии
+        window.addEventListener('beforeunload', saveData);
+    </script>
+</body>
+</html>
