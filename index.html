@@ -1,454 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Selector</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #8B4513;
-            --secondary: #D2691E;
-            --dark: #2C1E1E;
-            --light: #FFF8DC;
-            --button-color: #8B4513;
-            --button-gradient: #CD853F;
-            --autumn-orange: #FF7F50;
-            --autumn-red: #B22222;
-            --autumn-yellow: #DAA520;
-            --locked: #666;
-            --disabled: #888;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Selector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8B4513;
+      --secondary: #D2691E;
+      --dark: #2C1E1E;
+      --light: #FFF8DC;
+      --button-color: #8B4513;
+      --button-gradient: #CD853F;
+      --autumn-orange: #FF7F50;
+      --autumn-red: #B22222;
+      --autumn-yellow: #DAA520;
+      --locked: #666;
+      --disabled: #888;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        html, body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(to bottom, var(--dark), #4A2C2C);
-            color: var(--light);
-            min-height: 100vh;
-            width: 100%;
-            overflow-x: hidden;
-            position: relative;
-        }
+    html, body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to bottom, var(--dark), #4A2C2C);
+      color: var(--light);
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            min-height: 100vh;
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      min-height: 100vh;
+    }
 
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 800px;
-            z-index: 2;
-        }
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 800px;
+      z-index: 2;
+    }
 
-        .container {
-            width: 100%;
-            padding: 2rem;
-            text-align: center;
-            background: rgba(44, 30, 30, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
-            border: 1px solid rgba(139, 69, 19, 0.4);
-            margin-bottom: 1.5rem;
-        }
+    .container {
+      width: 100%;
+      padding: 2rem;
+      text-align: center;
+      background: rgba(44, 30, 30, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
+      border: 1px solid rgba(139, 69, 19, 0.4);
+      margin-bottom: 1.5rem;
+    }
 
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
 
-        .subtitle {
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-            letter-spacing: 0.5px;
-            color: var(--autumn-yellow);
-        }
+    .subtitle {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      opacity: 0.8;
+      letter-spacing: 0.5px;
+      color: var(--autumn-yellow);
+    }
 
-        .games-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            align-items: center;
-            margin-top: 1.5rem;
-            width: 100%;
-        }
+    .games-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: center;
+      margin-top: 1.5rem;
+      width: 100%;
+    }
 
-        .game-card {
-            background: rgba(44, 30, 30, 0.9);
-            border-radius: 12px;
-            padding: 1.5rem;
-            width: 100%;
-            max-width: 350px;
-            border: 1px solid rgba(139, 69, 19, 0.5);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
-            transition: all 0.3s ease;
-            position: relative;
-        }
+    .game-card {
+      background: rgba(44, 30, 30, 0.9);
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 350px;
+      border: 1px solid rgba(139, 69, 19, 0.5);
+      box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+    }
 
-        .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
-        }
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
+    }
 
-        .game-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
+    .game-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
 
-        .game-title {
-            font-size: 1.3rem;
-            color: var(--autumn-orange);
-            margin-bottom: 0.7rem;
-            font-weight: 600;
-        }
+    .game-title {
+      font-size: 1.3rem;
+      color: var(--autumn-orange);
+      margin-bottom: 0.7rem;
+      font-weight: 600;
+    }
 
-        .game-description {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
+    .game-description {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
 
-        .play-btn {
-            background: linear-gradient(to right, var(--button-color), var(--button-gradient));
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 30px;
-            font-size: 1rem;
-            cursor: pointer;
-            width: 100%;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.4);
-            transition: all 0.3s ease;
-        }
+    .play-btn {
+      background: linear-gradient(to right, var(--button-color), var(--button-gradient));
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px rgba(139, 69, 19, 0.4);
+      transition: all 0.3s ease;
+    }
 
-        .play-btn:hover:not(.disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(139, 69, 19, 0.6);
-            background: linear-gradient(to right, var(--autumn-orange), var(--autumn-red));
-        }
+    .play-btn:hover:not(.disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(139, 69, 19, 0.6);
+      background: linear-gradient(to right, var(--autumn-orange), var(--autumn-red));
+    }
 
-        .disabled {
-            background: linear-gradient(to right, var(--locked), var(--disabled));
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
+    .disabled {
+      background: linear-gradient(to right, var(--locked), var(--disabled));
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
 
-        .disabled:hover {
-            transform: none;
-            box-shadow: 0 4px 10px rgba(139, 69, 19, 0.4);
-        }
+    /* ❓ Секретная игра карточкой */
+    .secret-card {
+      background: rgba(44, 30, 30, 0.95);
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 350px;
+      border: 2px dashed var(--autumn-yellow);
+      box-shadow: 0 5px 15px rgba(218, 165, 32, 0.4);
+      text-align: center;
+      margin-top: 2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .secret-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(218, 165, 32, 0.7);
+    }
+    .secret-icon {
+      font-size: 3rem;
+      color: var(--autumn-yellow);
+      margin-bottom: 1rem;
+    }
+    .secret-title {
+      font-size: 1.2rem;
+      color: var(--autumn-yellow);
+    }
 
-        /* Секретная игра внизу */
-        .secret-game {
-            width: 60px;
-            height: 60px;
-            background: rgba(44, 30, 30, 0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid var(--autumn-yellow);
-            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 2rem;
-            position: relative;
-            z-index: 2;
-        }
+    /* 🚀 Баннер */
+    .banner {
+      position: fixed;
+      top: 20px;
+      background: rgba(0,0,0,0.85);
+      color: var(--autumn-yellow);
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      font-size: 1rem;
+      z-index: 9999;
+      animation: fadeIn 1s ease;
+    }
+    .hidden { display: none; }
 
-        .secret-game:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(218, 165, 32, 0.5);
-            border-color: var(--autumn-orange);
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
 
-        .secret-icon {
-            font-size: 1.5rem;
-            color: var(--autumn-yellow);
-            opacity: 0.8;
-        }
+    /* 🌀 Оверлей загрузки */
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      backdrop-filter: blur(8px);
+      z-index: 99999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
 
-        .secret-game:hover .secret-icon {
-            color: var(--autumn-orange);
-            opacity: 1;
-        }
+    .loading-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
 
-        .secret-tooltip {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: var(--autumn-yellow);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            white-space: nowrap;
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
+    .spinner {
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top: 6px solid var(--autumn-yellow);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
 
-        .secret-game:hover .secret-tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
 
-        /* Осенние листья */
-        .leaf {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.7;
-            z-index: 1;
-            pointer-events: none;
-        }
+    .loading-text {
+      font-size: 1.2rem;
+      color: var(--light);
+      text-align: center;
+      margin-top: 10px;
+    }
 
-        .maple-leaf {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff8c00' d='M12 2c-.5 0-1 .2-1.4.6l-8 8c-.8.8-.8 2 0 2.8l8 8c.8.8 2 .8 2.8 0l8-8c.8-.8.8-2 0-2.8l-8-8c-.4-.4-.9-.6-1.4-.6z'/%3E%3C/svg%3E");
-        }
-
-        .oak-leaf {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff4500' d='M12 2c-.3 0-.6.1-.8.3l-9 9c-.4.4-.4 1 0 1.4l9 9c.4.4 1 .4 1.4 0l9-9c.4-.4.4-1 0-1.4l-9-9c-.2-.2-.5-.3-.8-.3z'/%3E%3C/svg%3E");
-        }
-
-        .aspen-leaf {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff6b35' d='M12 2c-.4 0-.7.1-1 .3l-10 10c-.4.4-.4 1 0 1.4l10 10c.4.4 1 .4 1.4 0l10-10c.4-.4.4-1 0-1.4l-10-10c-.3-.2-.6-.3-1-.3z'/%3E%3C/svg%3E");
-        }
-
-        /* Адаптивность для мобильных */
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-                justify-content: flex-start;
-            }
-
-            .container {
-                padding: 1.5rem;
-                margin-bottom: 1rem;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            .game-card {
-                padding: 1.2rem;
-                max-width: 300px;
-            }
-
-            .game-icon {
-                font-size: 2.5rem;
-            }
-
-            .game-title {
-                font-size: 1.2rem;
-            }
-
-            .play-btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.9rem;
-            }
-
-            .secret-game {
-                width: 50px;
-                height: 50px;
-                margin-top: 1.5rem;
-            }
-
-            .secret-icon {
-                font-size: 1.2rem;
-            }
-
-            .leaf {
-                width: 20px;
-                height: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 1rem;
-            }
-
-            h1 {
-                font-size: 1.6rem;
-            }
-
-            .subtitle {
-                font-size: 0.9rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .game-card {
-                padding: 1rem;
-            }
-
-            .game-icon {
-                font-size: 2rem;
-            }
-
-            .game-title {
-                font-size: 1.1rem;
-            }
-
-            .game-description {
-                font-size: 0.8rem;
-            }
-        }
-    </style>
+    .error-text {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: red;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="main-content">
-        <div class="container">
-            <h1>Choose Your Game</h1>
-            <p class="subtitle">Select the game you want to play</p>
+  <div class="banner" id="comingSoonBanner">🚀 New Game Coming Soon!</div>
 
-            <div class="games-container">
-                <div class="game-card">
-                    <div class="game-icon">🐸</div>
-                    <div class="game-title">Cvapta</div>
-                    <div class="game-description">Click the frog, grow, collect stars and say WOW!</div>
-                    <button class="play-btn disabled">Update in progress...</button>
-                </div>
-            </div>
-        </div>
+  <div class="main-content">
+    <div class="container">
+      <h1>Choose Your Game</h1>
+      <p class="subtitle">Select the game you want to play</p>
 
-        <div class="secret-game" onclick="showSecretMessage()">
-            <div class="secret-icon">❓</div>
-            <div class="secret-tooltip">New game (coming soon)</div>
+      <div class="games-container">
+        <div class="game-card">
+          <div class="game-icon">🐸</div>
+          <div class="game-title">Cvapta</div>
+          <div class="game-description">Click the frog, grow, collect stars and say WOW!</div>
+          <button id="cvaptaBtn" class="play-btn">Play</button>
         </div>
+      </div>
     </div>
 
-    <script>
-        // Создаем осенние листья
-        function createAutumnLeaves() {
-            const leafCount = 25;
-            
-            document.querySelectorAll('.leaf').forEach(leaf => leaf.remove());
-            
-            for (let i = 0; i < leafCount; i++) {
-                const leaf = document.createElement('div');
-                leaf.className = 'leaf';
-                
-                const leafTypes = ['maple-leaf', 'oak-leaf', 'aspen-leaf'];
-                leaf.classList.add(leafTypes[Math.floor(Math.random() * leafTypes.length)]);
-                
-                const left = Math.random() * 100;
-                const top = Math.random() * 100;
-                const size = 15 + Math.random() * 25;
-                const rotation = Math.random() * 360;
-                
-                leaf.style.left = `${left}vw`;
-                leaf.style.top = `${top}vh`;
-                leaf.style.width = `${size}px`;
-                leaf.style.height = `${size}px`;
-                leaf.style.transform = `rotate(${rotation}deg)`;
-                leaf.style.opacity = `${0.3 + Math.random() * 0.4}`;
-                
-                const animationDuration = 8 + Math.random() * 12;
-                const animationDelay = Math.random() * 5;
-                
-                leaf.style.animation = `fall ${animationDuration}s linear ${animationDelay}s infinite`;
-                
-                document.body.appendChild(leaf);
-            }
-            
-            if (!document.getElementById('leaf-animation')) {
-                const style = document.createElement('style');
-                style.id = 'leaf-animation';
-                style.textContent = `
-                    @keyframes fall {
-                        0% {
-                            transform: translateY(-100vh) rotate(0deg);
-                            opacity: 0;
-                        }
-                        10% {
-                            opacity: 0.7;
-                        }
-                        90% {
-                            opacity: 0.6;
-                        }
-                        100% {
-                            transform: translateY(100vh) rotate(360deg);
-                            opacity: 0;
-                        }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        }
+    <div class="secret-card" onclick="showSecretMessage()">
+      <div class="secret-icon">❓</div>
+      <div class="secret-title">New Game</div>
+    </div>
+  </div>
 
-        // Сообщение о секретной игре
-        function showSecretMessage() {
-            alert('🚧 New Game 🚧\n\nThis game is currently under development and not available yet.\n\nStay tuned for updates!');
-        }
+  <!-- 🌀 Оверлей загрузки -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading...</div>
+    <div class="error-text" id="errorText">Game is taking too long to load</div>
+  </div>
 
-        // Предотвращаем клик по заблокированной кнопке
-        document.querySelector('.disabled').addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('🛠️ Cvapta is currently being updated!\n\nPlease check back later to play the improved version.');
-        });
-        
-        // Запускаем при загрузке страницы
-        window.addEventListener('load', function() {
-            createAutumnLeaves();
-            
-            // Оптимизация для мобильных устройств
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-                document.body.classList.add('mobile-optimized');
-                // Дополнительные оптимизации для мобильных
-                const leaves = document.querySelectorAll('.leaf');
-                leaves.forEach(leaf => {
-                    if (Math.random() > 0.6) {
-                        leaf.remove(); // Уменьшаем количество листьев на мобильных
-                    }
-                });
-            }
-        });
+  <script>
+    // 🔄 Рычаг для статуса игры
+    const cvaptaOpen = true; // true = игра доступна, false = обновление
+    const cvaptaBtn = document.getElementById("cvaptaBtn");
+    const overlay = document.getElementById("loadingOverlay");
+    const errorText = document.getElementById("errorText");
 
-        // Оптимизация анимации для производительности
-        let lastScrollY = window.scrollY;
-        window.addEventListener('scroll', function() {
-            const currentScrollY = window.scrollY;
-            if (Math.abs(currentScrollY - lastScrollY) > 50) {
-                document.querySelectorAll('.leaf').forEach(leaf => {
-                    leaf.style.animationPlayState = 'paused';
-                });
-                setTimeout(() => {
-                    document.querySelectorAll('.leaf').forEach(leaf => {
-                        leaf.style.animationPlayState = 'running';
-                    });
-                }, 100);
-            }
-            lastScrollY = currentScrollY;
-        });
-    </script>
+    if (!cvaptaOpen) {
+      cvaptaBtn.classList.add("disabled");
+      cvaptaBtn.textContent = "Update in progress...";
+      cvaptaBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        alert("🛠️ Cvapta is currently being updated!\n\nPlease check back later.");
+      });
+    } else {
+      cvaptaBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        document.getElementById("comingSoonBanner").classList.add("hidden");
+
+        // Показать оверлей
+        overlay.classList.add("active");
+
+        // Таймер на 5 секунд → если не загружено, показать ошибку
+        const timeout = setTimeout(() => {
+          errorText.style.display = "block";
+        }, 5000);
+
+        // Эмуляция загрузки и редирект (2 сек для теста)
+        setTimeout(() => {
+          clearTimeout(timeout);
+          window.location.href = "https://tqqqka.github.io/capsavta/";
+        }, 2000);
+      });
+    }
+
+    // ❓ Сообщение о секретной игре
+    function showSecretMessage() {
+      document.getElementById("comingSoonBanner").classList.add("hidden");
+      alert("🚧 New Game 🚧\n\nThis game is under development. Stay tuned!");
+    }
+  </script>
 </body>
 </html>
+
