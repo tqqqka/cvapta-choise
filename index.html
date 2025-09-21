@@ -3,21 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Selector</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>GameHub - Choose Your Adventure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --primary: #8B4513;
       --secondary: #D2691E;
-      --dark: #2C1E1E;
+      --dark: #1A1212;
       --light: #FFF8DC;
-      --button-color: #8B4513;
-      --button-gradient: #CD853F;
       --autumn-orange: #FF7F50;
       --autumn-red: #B22222;
       --autumn-yellow: #DAA520;
-      --locked: #666;
-      --disabled: #888;
+      --autumn-gold: #FFD700;
+      
+      /* Glass Morphism Variables */
+      --glass-bg: rgba(44, 30, 30, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-border-highlight: rgba(255, 255, 255, 0.2);
+      --glass-blur: 20px;
+      --glass-saturation: 180%;
+      --control-radius: 16px;
+      --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -28,7 +36,7 @@
 
     html, body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(to bottom, var(--dark), #4A2C2C);
+      background: linear-gradient(135deg, var(--dark) 0%, #2A1A1A 50%, #3A2A2A 100%);
       color: var(--light);
       min-height: 100vh;
       width: 100%;
@@ -44,6 +52,58 @@
       padding: 20px;
       position: relative;
       min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Animated Background Elements */
+    .bg-circles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .circle-1 {
+      width: 400px;
+      height: 400px;
+      top: -100px;
+      left: -100px;
+      background: linear-gradient(135deg, var(--autumn-orange), var(--autumn-red));
+      animation-delay: 0s;
+    }
+
+    .circle-2 {
+      width: 350px;
+      height: 350px;
+      bottom: -80px;
+      right: -80px;
+      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-gold));
+      animation-delay: 2s;
+    }
+
+    .circle-3 {
+      width: 300px;
+      height: 300px;
+      top: 50%;
+      left: 70%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      animation-delay: 4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-20px) scale(1.05); }
     }
 
     .main-content {
@@ -51,283 +111,420 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 800px;
-      z-index: 2;
-    }
-
-    .container {
-      width: 100%;
-      padding: 2rem;
-      text-align: center;
-      background: rgba(44, 30, 30, 0.8);
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
-      border: 1px solid rgba(139, 69, 19, 0.4);
-      margin-bottom: 1.5rem;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-      background: linear-gradient(to right, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      margin-bottom: 2rem;
-      opacity: 0.8;
-      letter-spacing: 0.5px;
-      color: var(--autumn-yellow);
-    }
-
-    .games-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      align-items: center;
-      margin-top: 1.5rem;
-      width: 100%;
-    }
-
-    .game-card {
-      background: rgba(44, 30, 30, 0.9);
-      border-radius: 12px;
-      padding: 1.5rem;
-      width: 100%;
-      max-width: 350px;
-      border: 1px solid rgba(139, 69, 19, 0.5);
-      box-shadow: 0 5px 15px rgba(139, 69, 19, 0.2);
-      transition: all 0.3s ease;
+      max-width: 900px;
+      z-index: 10;
       position: relative;
     }
 
+    /* Header Section */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      width: 100%;
+    }
+
+    .logo {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 300;
+      opacity: 0.9;
+      letter-spacing: 0.8px;
+      color: rgba(255, 248, 220, 0.8);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    /* Game Card */
+    .game-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+      border-radius: var(--control-radius);
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--glass-border-highlight), transparent);
+    }
+
     .game-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      border-color: var(--glass-border-highlight);
+    }
+
+    .game-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .game-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
     }
 
     .game-title {
-      font-size: 1.3rem;
-      color: var(--autumn-orange);
-      margin-bottom: 0.7rem;
+      font-size: 1.4rem;
       font-weight: 600;
+      color: var(--autumn-orange);
     }
 
     .game-description {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
       opacity: 0.9;
+      color: rgba(255, 248, 220, 0.9);
     }
 
-    .play-btn {
-      background: linear-gradient(to right, var(--button-color), var(--button-gradient));
-      color: white;
-      border: none;
-      padding: 0.7rem 1.5rem;
-      border-radius: 30px;
-      font-size: 1rem;
+    /* Liquid Glass Button */
+    .glass-btn {
+      --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 1rem 2rem;
+      border-radius: var(--control-radius);
+      border: 1px solid var(--glass-border);
+      background: var(--btn-bg);
+      backdrop-filter: blur(15px) saturate(180%);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3), 
+                  inset 0 1px 0 rgba(255,255,255,0.1),
+                  inset 0 -1px 0 rgba(0,0,0,0.2);
+      color: var(--light);
+      font-weight: 500;
+      text-decoration: none;
       cursor: pointer;
+      transition: var(--transition);
       width: 100%;
-      font-weight: 600;
+      font-size: 1rem;
       letter-spacing: 0.5px;
-      box-shadow: 0 4px 10px rgba(139, 69, 19, 0.4);
-      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .play-btn:hover:not(.disabled) {
+    .glass-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .glass-btn:hover::before {
+      left: 100%;
+    }
+
+    .glass-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(139, 69, 19, 0.6);
-      background: linear-gradient(to right, var(--autumn-orange), var(--autumn-red));
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4), 
+                  inset 0 1px 0 rgba(255,255,255,0.15),
+                  inset 0 -1px 0 rgba(0,0,0,0.3);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
+    }
+
+    .glass-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .glass-btn i {
+      font-size: 1.2rem;
     }
 
     .disabled {
-      background: linear-gradient(to right, var(--locked), var(--disabled));
+      opacity: 0.6;
       cursor: not-allowed;
-      opacity: 0.7;
+      background: linear-gradient(135deg, rgba(102,102,102,0.1), rgba(102,102,102,0.05)) !important;
     }
 
-    /* ❓ Секретная игра карточкой */
-    .secret-card {
-      background: rgba(44, 30, 30, 0.95);
-      border-radius: 12px;
-      padding: 1.5rem;
-      width: 100%;
-      max-width: 350px;
-      border: 2px dashed var(--autumn-yellow);
-      box-shadow: 0 5px 15px rgba(218, 165, 32, 0.4);
-      text-align: center;
-      margin-top: 2rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .secret-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(218, 165, 32, 0.7);
-    }
-    .secret-icon {
-      font-size: 3rem;
-      color: var(--autumn-yellow);
-      margin-bottom: 1rem;
-    }
-    .secret-title {
-      font-size: 1.2rem;
-      color: var(--autumn-yellow);
+    .disabled:hover {
+      transform: none !important;
     }
 
-    /* 🚀 Баннер */
-    .banner {
+    /* Notification Banner */
+    .notification-banner {
       position: fixed;
       top: 20px;
-      background: rgba(0,0,0,0.85);
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, rgba(218, 165, 32, 0.15), rgba(255, 127, 80, 0.15));
+      backdrop-filter: blur(20px);
       color: var(--autumn-yellow);
       padding: 1rem 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-      font-size: 1rem;
-      z-index: 9999;
-      animation: fadeIn 1s ease;
-    }
-    .hidden { display: none; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px);}
-      to { opacity: 1; transform: translateY(0);}
+      border-radius: var(--control-radius);
+      border: 1px solid rgba(218, 165, 32, 0.2);
+      box-shadow: var(--glass-shadow);
+      font-size: 0.95rem;
+      z-index: 1000;
+      animation: slideDown 0.5s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    /* 🌀 Оверлей загрузки */
+    @keyframes slideDown {
+      from { 
+        opacity: 0;
+        transform: translate(-50%, -30px);
+      }
+      to { 
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    .hidden { 
+      display: none; 
+    }
+
+    /* Loading Overlay */
     .loading-overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      backdrop-filter: blur(8px);
-      z-index: 99999;
-      visibility: hidden;
+      backdrop-filter: blur(15px);
+      z-index: 9999;
       opacity: 0;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      visibility: hidden;
+      transition: var(--transition);
     }
 
     .loading-overlay.active {
-      visibility: visible;
       opacity: 1;
+      visibility: visible;
     }
 
     .spinner {
-      border: 6px solid rgba(255,255,255,0.3);
-      border-top: 6px solid var(--autumn-yellow);
-      border-radius: 50%;
       width: 60px;
       height: 60px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--autumn-yellow);
+      border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin-bottom: 20px;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
+      margin-bottom: 1.5rem;
     }
 
     .loading-text {
       font-size: 1.2rem;
       color: var(--light);
-      text-align: center;
-      margin-top: 10px;
+      font-weight: 300;
+      letter-spacing: 1px;
     }
 
-    .error-text {
-      margin-top: 15px;
-      font-size: 1rem;
-      color: red;
-      display: none;
+    /* Footer */
+    .footer {
+      margin-top: 3rem;
+      text-align: center;
+      opacity: 0.7;
+      font-size: 0.9rem;
+      color: rgba(255, 248, 220, 0.6);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .games-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .game-card {
+        padding: 2rem 1.5rem;
+      }
+      
+      .header {
+        margin-bottom: 2.5rem;
+      }
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="banner" id="comingSoonBanner">🚀 New Game Coming Soon!</div>
+  <div class="bg-circles">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+
+  <div class="notification-banner" id="comingSoonBanner">
+    <i class="fas fa-rocket"></i>
+    New Game Coming Soon! Stay tuned for updates.
+  </div>
 
   <div class="main-content">
-    <div class="container">
-      <h1>Choose Your Game</h1>
-      <p class="subtitle">Select the game you want to play</p>
+    <div class="header">
+      <div class="logo">🎮</div>
+      <h1>Cvapta Adventures</h1>
+      <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
+    </div>
 
-      <div class="games-container">
-        <div class="game-card">
+    <div class="games-grid">
+      <div class="game-card">
+        <div class="game-header">
           <div class="game-icon">🐸</div>
           <div class="game-title">Cvapta</div>
-          <div class="game-description">Click the frog, grow, collect stars and say WOW!</div>
-          <button id="cvaptaBtn" class="play-btn">Play</button>
         </div>
+        <div class="game-description">
+          Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises along the way!
+        </div>
+        <button id="cvaptaBtn" class="glass-btn">
+          <i class="fas fa-play"></i>
+          Play Now
+        </button>
+      </div>
+
+      <div class="game-card">
+        <div class="game-header">
+          <div class="game-icon">⭐</div>
+          <div class="game-title">More Games Coming</div>
+        </div>
+        <div class="game-description">
+          We're working hard to bring you more exciting games. Stay tuned for new adventures and challenges!
+        </div>
+        <button class="glass-btn disabled">
+          <i class="fas fa-clock"></i>
+          Coming Soon
+        </button>
       </div>
     </div>
 
-    <div class="secret-card" onclick="showSecretMessage()">
-      <div class="secret-icon">❓</div>
-      <div class="secret-title">New Game</div>
+    <div class="footer">
+      <p>© 2024 GameHub • Amazing gaming experiences</p>
     </div>
   </div>
 
-  <!-- 🌀 Оверлей загрузки -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text">Loading...</div>
-    <div class="error-text" id="errorText">Game is taking too long to load</div>
+    <div class="loading-text">Loading your adventure...</div>
   </div>
 
   <script>
-    // 🔄 Рычаг для статуса игры
-    const cvaptaOpen = false; // true = игра доступна, false = обновление
+    // Game status
+    const cvaptaOpen = false; //рычаг 🧨🧨🧨🎑🎑//
     const cvaptaBtn = document.getElementById("cvaptaBtn");
     const overlay = document.getElementById("loadingOverlay");
-    const errorText = document.getElementById("errorText");
+    const banner = document.getElementById("comingSoonBanner");
+
+    // Auto-hide banner after 5 seconds
+    setTimeout(() => {
+      banner.classList.add("hidden");
+    }, 5000);
 
     if (!cvaptaOpen) {
       cvaptaBtn.classList.add("disabled");
-      cvaptaBtn.textContent = "Update in progress...";
+      cvaptaBtn.innerHTML = '<i class="fas fa-tools"></i> Update in Progress';
+      
       cvaptaBtn.addEventListener("click", function(e) {
         e.preventDefault();
-        alert("🛠️ Cvapta is currently being updated!\n\nPlease check back later.");
+        showNotification("🛠️ Cvapta is getting an upgrade! Check back soon.", "info");
       });
     } else {
       cvaptaBtn.addEventListener("click", function(e) {
         e.preventDefault();
-        document.getElementById("comingSoonBanner").classList.add("hidden");
-
-        // Показать оверлей
+        banner.classList.add("hidden");
+        
         overlay.classList.add("active");
-
-        // Таймер на 5 секунд → если не загружено, показать ошибку
-        const timeout = setTimeout(() => {
-          errorText.style.display = "block";
-        }, 5000);
-
-        // Эмуляция загрузки и редирект (2 сек для теста)
+        
         setTimeout(() => {
-          clearTimeout(timeout);
           window.location.href = "https://tqqqka.github.io/capsavta/";
         }, 2000);
       });
     }
 
-    // ❓ Сообщение о секретной игре
-    function showSecretMessage() {
-      document.getElementById("comingSoonBanner").classList.add("hidden");
-      alert("🚧 New Game 🚧\n\nThis game is under development. Stay tuned!");
+    function showNotification(message, type = "info") {
+      banner.textContent = message;
+      banner.classList.remove("hidden");
+      
+      setTimeout(() => {
+        banner.classList.add("hidden");
+      }, 3000);
     }
+
+    // Add subtle interactive effects
+    document.querySelectorAll('.game-card').forEach(card => {
+      card.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        this.style.setProperty('--mouse-x', `${x}px`);
+        this.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
   </script>
 </body>
 </html>
-
