@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GameHub - Choose Your Adventure</title>
+  <title>.</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -32,6 +32,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html, body {
@@ -49,13 +50,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       position: relative;
       min-height: 100vh;
       overflow: hidden;
     }
 
-    /* Animated Background Elements */
+    /* Упрощенные фоновые элементы для мобильных */
     .bg-circles {
       position: fixed;
       top: 0;
@@ -69,41 +70,24 @@
     .circle {
       position: absolute;
       border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.4;
-      animation: float 8s ease-in-out infinite;
+      filter: blur(40px);
+      opacity: 0.3;
     }
 
     .circle-1 {
-      width: 400px;
-      height: 400px;
-      top: -100px;
-      left: -100px;
+      width: 250px;
+      height: 250px;
+      top: -60px;
+      left: -60px;
       background: linear-gradient(135deg, var(--autumn-orange), var(--autumn-red));
-      animation-delay: 0s;
     }
 
     .circle-2 {
-      width: 350px;
-      height: 350px;
-      bottom: -80px;
-      right: -80px;
+      width: 200px;
+      height: 200px;
+      bottom: -40px;
+      right: -40px;
       background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-gold));
-      animation-delay: 2s;
-    }
-
-    .circle-3 {
-      width: 300px;
-      height: 300px;
-      top: 50%;
-      left: 70%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      animation-delay: 4s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-20px) scale(1.05); }
     }
 
     .main-content {
@@ -111,98 +95,86 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      max-width: 900px;
+      max-width: 500px;
       z-index: 10;
       position: relative;
     }
 
-    /* Header Section */
+    /* Header Section - оптимизировано для мобильных */
     .header {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
       width: 100%;
+      padding: 0 8px;
     }
 
     .logo {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      margin-bottom: 0.8rem;
       background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     }
 
     h1 {
-      font-size: 2.8rem;
+      font-size: 1.8rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      line-height: 1.2;
     }
 
     .subtitle {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       font-weight: 300;
       opacity: 0.9;
-      letter-spacing: 0.8px;
       color: rgba(255, 248, 220, 0.8);
-      max-width: 500px;
-      margin: 0 auto;
+      line-height: 1.4;
+      padding: 0 8px;
     }
 
-    /* Games Grid */
+    /* Games Grid - оптимизировано для мобильных */
     .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
       width: 100%;
       margin-bottom: 2rem;
     }
 
-    /* Game Card */
+    /* Game Card - оптимизировано для мобильных */
     .game-card {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
       border-radius: var(--control-radius);
-      padding: 2.5rem 2rem;
+      padding: 1.5rem;
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      margin: 0 8px;
     }
 
-    .game-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--glass-border-highlight), transparent);
-    }
-
-    .game-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-      border-color: var(--glass-border-highlight);
+    .game-card:active {
+      transform: scale(0.98);
     }
 
     .game-header {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
     }
 
     .game-icon {
-      font-size: 2.5rem;
-      width: 60px;
-      height: 60px;
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -210,78 +182,59 @@
       border-radius: 12px;
       backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border);
+      flex-shrink: 0;
     }
 
     .game-title {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 600;
       color: var(--autumn-orange);
+      line-height: 1.2;
     }
 
     .game-description {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
       opacity: 0.9;
       color: rgba(255, 248, 220, 0.9);
     }
 
-    /* Liquid Glass Button */
+    /* Liquid Glass Button - оптимизировано для мобильных */
     .glass-btn {
       --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.8rem;
-      padding: 1rem 2rem;
+      gap: 0.6rem;
+      padding: 0.9rem 1.5rem;
       border-radius: var(--control-radius);
       border: 1px solid var(--glass-border);
       background: var(--btn-bg);
       backdrop-filter: blur(15px) saturate(180%);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3), 
-                  inset 0 1px 0 rgba(255,255,255,0.1),
-                  inset 0 -1px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3), 
+                  inset 0 1px 0 rgba(255,255,255,0.1);
       color: var(--light);
       font-weight: 500;
       text-decoration: none;
       cursor: pointer;
       transition: var(--transition);
       width: 100%;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
       position: relative;
       overflow: hidden;
-    }
-
-    .glass-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .glass-btn:hover::before {
-      left: 100%;
-    }
-
-    .glass-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.4), 
-                  inset 0 1px 0 rgba(255,255,255,0.15),
-                  inset 0 -1px 0 rgba(0,0,0,0.3);
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
+      touch-action: manipulation;
     }
 
     .glass-btn:active {
-      transform: translateY(0) scale(0.98);
+      transform: scale(0.98);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3), 
+                  inset 0 1px 0 rgba(255,255,255,0.1);
     }
 
     .glass-btn i {
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
 
     .disabled {
@@ -290,39 +243,40 @@
       background: linear-gradient(135deg, rgba(102,102,102,0.1), rgba(102,102,102,0.05)) !important;
     }
 
-    .disabled:hover {
+    .disabled:active {
       transform: none !important;
     }
 
-    /* Notification Banner */
+    /* Notification Banner - оптимизировано для мобильных */
     .notification-banner {
       position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 12px;
+      left: 12px;
+      right: 12px;
       background: linear-gradient(135deg, rgba(218, 165, 32, 0.15), rgba(255, 127, 80, 0.15));
       backdrop-filter: blur(20px);
       color: var(--autumn-yellow);
-      padding: 1rem 2rem;
-      border-radius: var(--control-radius);
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
       border: 1px solid rgba(218, 165, 32, 0.2);
       box-shadow: var(--glass-shadow);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       z-index: 1000;
-      animation: slideDown 0.5s ease;
+      animation: slideDown 0.3s ease;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      text-align: center;
     }
 
     @keyframes slideDown {
       from { 
         opacity: 0;
-        transform: translate(-50%, -30px);
+        transform: translateY(-20px);
       }
       to { 
         opacity: 1;
-        transform: translate(-50%, 0);
+        transform: translateY(0);
       }
     }
 
@@ -330,7 +284,7 @@
       display: none; 
     }
 
-    /* Loading Overlay */
+    /* Loading Overlay - оптимизировано для мобильных */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -342,11 +296,12 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      backdrop-filter: blur(15px);
+      backdrop-filter: blur(10px);
       z-index: 9999;
       opacity: 0;
       visibility: hidden;
       transition: var(--transition);
+      padding: 20px;
     }
 
     .loading-overlay.active {
@@ -355,60 +310,165 @@
     }
 
     .spinner {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border: 3px solid rgba(255,255,255,0.1);
       border-top: 3px solid var(--autumn-yellow);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
     }
 
     .loading-text {
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: var(--light);
       font-weight: 300;
-      letter-spacing: 1px;
+      text-align: center;
+      line-height: 1.4;
     }
 
-    /* Footer */
+    /* Footer - оптимизировано для мобильных */
     .footer {
-      margin-top: 3rem;
+      margin-top: 2rem;
       text-align: center;
       opacity: 0.7;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: rgba(255, 248, 220, 0.6);
+      padding: 0 8px;
     }
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-      .games-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+    /* Улучшенная поддержка мобильных устройств */
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+        justify-content: flex-start;
+        padding-top: 20px;
       }
-      
+
+      .header {
+        margin-bottom: 1.5rem;
+      }
+
+      .logo {
+        font-size: 2rem;
+        margin-bottom: 0.6rem;
+      }
+
       h1 {
-        font-size: 2.2rem;
+        font-size: 1.5rem;
+        margin-bottom: 0.4rem;
       }
-      
+
       .subtitle {
-        font-size: 1rem;
+        font-size: 0.8rem;
+        padding: 0 4px;
       }
-      
+
+      .games-grid {
+        gap: 1.2rem;
+      }
+
       .game-card {
-        padding: 2rem 1.5rem;
+        padding: 1.2rem;
+        margin: 0 4px;
+        border-radius: 14px;
+      }
+
+      .game-header {
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+      }
+
+      .game-icon {
+        font-size: 1.7rem;
+        width: 45px;
+        height: 45px;
+      }
+
+      .game-title {
+        font-size: 1.1rem;
+      }
+
+      .game-description {
+        font-size: 0.8rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .glass-btn {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.9rem;
+        border-radius: 14px;
+      }
+
+      .notification-banner {
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        padding: 0.7rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .footer {
+        margin-top: 1.5rem;
+        font-size: 0.75rem;
+      }
+    }
+
+    /* Портретная ориентация */
+    @media (max-height: 700px) and (max-width: 480px) {
+      body {
+        padding-top: 15px;
       }
       
       .header {
-        margin-bottom: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .games-grid {
+        gap: 1rem;
       }
     }
 
-    /* Accessibility */
+    /* Ландшафтная ориентация */
+    @media (max-width: 900px) and (orientation: landscape) {
+      body {
+        padding: 10px;
+        justify-content: flex-start;
+      }
+      
+      .main-content {
+        max-width: 100%;
+      }
+      
+      .games-grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .game-card {
+        flex: 1;
+        min-width: 280px;
+        max-width: 400px;
+      }
+    }
+
+    /* Отключение анимаций для prefers-reduced-motion */
     @media (prefers-reduced-motion: reduce) {
       * {
         animation: none !important;
         transition: none !important;
+      }
+      
+      .glass-btn:active {
+        transform: none !important;
+      }
+    }
+
+    /* Улучшенная читаемость для iOS */
+    @supports (-webkit-touch-callout: none) {
+      .glass-btn {
+        padding: 1rem 1.5rem;
       }
     }
   </style>
@@ -417,18 +477,17 @@
   <div class="bg-circles">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
-    <div class="circle circle-3"></div>
   </div>
 
-  <div class="notification-banner" id="comingSoonBanner">
+  <div class="notification-banner hidden" id="comingSoonBanner">
     <i class="fas fa-rocket"></i>
-    New Game Coming Soon! Stay tuned for updates.
+    <span id="banner-text">New Game Coming Soon!</span>
   </div>
 
   <div class="main-content">
     <div class="header">
       <div class="logo">🎮</div>
-      <h1>Cvapta Adventures</h1>
+      <h1>GameHub</h1>
       <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
 
@@ -436,10 +495,10 @@
       <div class="game-card">
         <div class="game-header">
           <div class="game-icon">🐸</div>
-          <div class="game-title">Cvapta</div>
+          <div class="game-title">Cvapta Adventure</div>
         </div>
         <div class="game-description">
-          Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises along the way!
+          Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
         </div>
         <button id="cvaptaBtn" class="glass-btn">
           <i class="fas fa-play"></i>
@@ -463,7 +522,7 @@
     </div>
 
     <div class="footer">
-      <p>© 2024 GameHub • Amazing gaming experiences</p>
+      <p></p>
     </div>
   </div>
 
@@ -474,15 +533,27 @@
 
   <script>
     // Game status
-    const cvaptaOpen = false; //рычаг 🧨🧨🧨🎑🎑//
+    const cvaptaOpen = false;
     const cvaptaBtn = document.getElementById("cvaptaBtn");
     const overlay = document.getElementById("loadingOverlay");
     const banner = document.getElementById("comingSoonBanner");
+    const bannerText = document.getElementById("banner-text");
 
-    // Auto-hide banner after 5 seconds
-    setTimeout(() => {
-      banner.classList.add("hidden");
-    }, 5000);
+    // Touch event handlers для мобильных
+    function handleTouchStart(e) {
+      this.style.transform = 'scale(0.98)';
+    }
+
+    function handleTouchEnd(e) {
+      this.style.transform = '';
+    }
+
+    // Добавляем touch events для карточек
+    document.querySelectorAll('.game-card').forEach(card => {
+      card.addEventListener('touchstart', handleTouchStart, { passive: true });
+      card.addEventListener('touchend', handleTouchEnd, { passive: true });
+      card.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+    });
 
     if (!cvaptaOpen) {
       cvaptaBtn.classList.add("disabled");
@@ -490,23 +561,38 @@
       
       cvaptaBtn.addEventListener("click", function(e) {
         e.preventDefault();
-        showNotification("🛠️ Cvapta is getting an upgrade! Check back soon.", "info");
+        showNotification("🛠️ Cvapta is getting an upgrade! Check back soon.");
       });
+      
+      // Touch events для кнопки
+      cvaptaBtn.addEventListener('touchstart', handleTouchStart, { passive: true });
+      cvaptaBtn.addEventListener('touchend', handleTouchEnd, { passive: true });
+      cvaptaBtn.addEventListener('touchcancel', handleTouchEnd, { passive: true });
     } else {
       cvaptaBtn.addEventListener("click", function(e) {
         e.preventDefault();
-        banner.classList.add("hidden");
-        
-        overlay.classList.add("active");
-        
-        setTimeout(() => {
-          window.location.href = "https://tqqqka.github.io/capsavta/";
-        }, 2000);
+        startGame();
       });
+      
+      // Touch events для кнопки
+      cvaptaBtn.addEventListener('touchstart', handleTouchStart, { passive: true });
+      cvaptaBtn.addEventListener('touchend', function(e) {
+        handleTouchEnd.call(this, e);
+        startGame();
+      }, { passive: true });
     }
 
-    function showNotification(message, type = "info") {
-      banner.textContent = message;
+    function startGame() {
+      banner.classList.add("hidden");
+      overlay.classList.add("active");
+      
+      setTimeout(() => {
+        window.location.href = "https://tqqqka.github.io/capsavta/";
+      }, 1500);
+    }
+
+    function showNotification(message) {
+      bannerText.textContent = message;
       banner.classList.remove("hidden");
       
       setTimeout(() => {
@@ -514,17 +600,23 @@
       }, 3000);
     }
 
-    // Add subtle interactive effects
-    document.querySelectorAll('.game-card').forEach(card => {
-      card.addEventListener('mousemove', function(e) {
-        const rect = this.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        this.style.setProperty('--mouse-x', `${x}px`);
-        this.style.setProperty('--mouse-y', `${y}px`);
+    // Предотвращение масштабирования при двойном тапе
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
+
+    // Оптимизация для медленных устройств
+    if ('connection' in navigator && navigator.connection.saveData) {
+      // Упрощаем анимации для режима экономии данных
+      document.querySelectorAll('.circle').forEach(circle => {
+        circle.style.opacity = '0.2';
       });
-    });
+    }
   </script>
 </body>
 </html>
