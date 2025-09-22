@@ -147,6 +147,14 @@
     }
 
     /* Game Card - оптимизировано для мобильных */
+    .game-card-container {
+      position: relative;
+      perspective: 1000px;
+      margin: 0 8px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+    }
+
     .game-card {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
@@ -154,14 +162,15 @@
       padding: 1.5rem;
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
-      transition: var(--transition);
+      transition: transform 0.5s ease-out, var(--transition);
       position: relative;
       overflow: hidden;
-      margin: 0 8px;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
     .game-card:active {
-      transform: scale(0.98);
+      transform: scale(0.98) !important;
     }
 
     .game-header {
@@ -245,6 +254,17 @@
 
     .disabled:active {
       transform: none !important;
+    }
+
+    /* Mouse tracking effect */
+    .card-tracker {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
     }
 
     /* Notification Banner - оптимизировано для мобильных */
@@ -368,9 +388,12 @@
         gap: 1.2rem;
       }
 
+      .game-card-container {
+        margin: 0 4px;
+      }
+
       .game-card {
         padding: 1.2rem;
-        margin: 0 4px;
         border-radius: 14px;
       }
 
@@ -446,7 +469,7 @@
         justify-content: center;
       }
       
-      .game-card {
+      .game-card-container {
         flex: 1;
         min-width: 280px;
         max-width: 400px;
@@ -461,6 +484,10 @@
       }
       
       .glass-btn:active {
+        transform: none !important;
+      }
+      
+      .game-card {
         transform: none !important;
       }
     }
@@ -487,37 +514,43 @@
   <div class="main-content">
     <div class="header">
       <div class="logo">🎮</div>
-      <h1>GameHub</h1>
+      <h1>Cvapta Experiences</h1>
       <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
 
     <div class="games-grid">
-      <div class="game-card">
-        <div class="game-header">
-          <div class="game-icon">🐸</div>
-          <div class="game-title">Cvapta Adventure</div>
+      <div class="game-card-container" id="cvaptaCard">
+        <div class="card-tracker"></div>
+        <div class="game-card">
+          <div class="game-header">
+            <div class="game-icon">🐸</div>
+            <div class="game-title">Cvapta</div>
+          </div>
+          <div class="game-description">
+            Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
+          </div>
+          <button id="cvaptaBtn" class="glass-btn">
+            <i class="fas fa-play"></i>
+            Play Now
+          </button>
         </div>
-        <div class="game-description">
-          Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
-        </div>
-        <button id="cvaptaBtn" class="glass-btn">
-          <i class="fas fa-play"></i>
-          Play Now
-        </button>
       </div>
 
-      <div class="game-card">
-        <div class="game-header">
-          <div class="game-icon">⭐</div>
-          <div class="game-title">More Games Coming</div>
+      <div class="game-card-container" id="comingSoonCard">
+        <div class="card-tracker"></div>
+        <div class="game-card">
+          <div class="game-header">
+            <div class="game-icon">⭐</div>
+            <div class="game-title">More Games Coming</div>
+          </div>
+          <div class="game-description">
+            We're working hard to bring you more exciting games. Stay tuned for new adventures and challenges!
+          </div>
+          <button class="glass-btn disabled">
+            <i class="fas fa-clock"></i>
+            Coming Soon
+          </button>
         </div>
-        <div class="game-description">
-          We're working hard to bring you more exciting games. Stay tuned for new adventures and challenges!
-        </div>
-        <button class="glass-btn disabled">
-          <i class="fas fa-clock"></i>
-          Coming Soon
-        </button>
       </div>
     </div>
 
@@ -535,9 +568,42 @@
     // Game status
     const cvaptaOpen = false;
     const cvaptaBtn = document.getElementById("cvaptaBtn");
+    const cvaptaCard = document.getElementById("cvaptaCard");
+    const comingSoonCard = document.getElementById("comingSoonCard");
     const overlay = document.getElementById("loadingOverlay");
     const banner = document.getElementById("comingSoonBanner");
     const bannerText = document.getElementById("banner-text");
+
+    // Mouse tracking functionality
+    function initMouseTracking() {
+      const cards = document.querySelectorAll('.game-card-container');
+      
+      cards.forEach(card => {
+        const cardElement = card.querySelector('.game-card');
+        
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = ((y - centerY) / centerY) * 5;
+          const rotateY = ((centerX - x) / centerX) * 5;
+          
+          cardElement.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          cardElement.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        });
+        
+        card.addEventListener('mouseenter', () => {
+          cardElement.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1.02, 1.02, 1.02)';
+        });
+      });
+    }
 
     // Touch event handlers для мобильных
     function handleTouchStart(e) {
@@ -555,12 +621,27 @@
       card.addEventListener('touchcancel', handleTouchEnd, { passive: true });
     });
 
+    // Обработчики кликов для карточек
+    cvaptaCard.addEventListener('click', function(e) {
+      if (!cvaptaOpen) {
+        e.preventDefault();
+        showNotification("🛠️ Cvapta is getting an upgrade! Check back soon.");
+      } else {
+        startGame();
+      }
+    });
+
+    comingSoonCard.addEventListener('click', function(e) {
+      showNotification("🎮 New games are coming soon! Stay tuned.");
+    });
+
     if (!cvaptaOpen) {
       cvaptaBtn.classList.add("disabled");
       cvaptaBtn.innerHTML = '<i class="fas fa-tools"></i> Update in Progress';
       
       cvaptaBtn.addEventListener("click", function(e) {
         e.preventDefault();
+        e.stopPropagation();
         showNotification("🛠️ Cvapta is getting an upgrade! Check back soon.");
       });
       
@@ -571,6 +652,7 @@
     } else {
       cvaptaBtn.addEventListener("click", function(e) {
         e.preventDefault();
+        e.stopPropagation();
         startGame();
       });
       
@@ -617,6 +699,9 @@
         circle.style.opacity = '0.2';
       });
     }
+
+    // Инициализация отслеживания мыши
+    initMouseTracking();
   </script>
 </body>
 </html>
