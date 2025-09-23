@@ -22,10 +22,10 @@
       --glass-bg: rgba(44, 30, 30, 0.25);
       --glass-border: rgba(255, 255, 255, 0.1);
       --glass-border-highlight: rgba(255, 255, 255, 0.2);
-      --glass-blur: 12px; /* Уменьшено для мобильной производительности */
+      --glass-blur: 12px;
       --glass-saturation: 150%;
       --control-radius: 16px;
-      --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Упрощена тень */
+      --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       
       /* Мобильные отступы */
@@ -38,12 +38,11 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent; /* Убирает синее выделение при тапе */
-      -webkit-font-smoothing: antialiased; /* Улучшает читаемость текста */
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Оптимизация рендеринга для мобильных */
     html, body {
       font-family: 'Montserrat', sans-serif;
       background: linear-gradient(135deg, var(--dark) 0%, #2A1A1A 50%, #3A2A2A 100%);
@@ -52,23 +51,21 @@
       width: 100%;
       overflow-x: hidden;
       position: relative;
-      /* Предотвращает скачки контента при загрузке */
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
+      -webkit-overflow-scrolling: touch;
+      touch-action: manipulation;
     }
 
-    /* Основной контейнер с оптимизацией для мобильных */
     body {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start; /* Изменено для лучшего скролла на мобильных */
+      justify-content: flex-start;
       padding: var(--mobile-padding);
       position: relative;
       min-height: 100vh;
     }
 
-    /* Упрощенные фоновые элементы для мобильных - уменьшено количество и размер */
     .bg-circles {
       position: fixed;
       top: 0;
@@ -77,23 +74,18 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
-      /* Ограничиваем влияние на производительность */
-      will-change: transform;
     }
 
     .circle {
       position: absolute;
       border-radius: 50%;
-      filter: blur(30px); /* Уменьшено для производительности */
-      opacity: 0.25; /* Уменьшена непрозрачность */
-      /* Улучшение производительности анимации */
+      filter: blur(30px);
+      opacity: 0.25;
       transform: translateZ(0);
-      backface-visibility: hidden;
-      perspective: 1000;
     }
 
     .circle-1 {
-      width: 180px; /* Уменьшено для мобильных */
+      width: 180px;
       height: 180px;
       top: -50px;
       left: -50px;
@@ -101,14 +93,13 @@
     }
 
     .circle-2 {
-      width: 150px; /* Уменьшено для мобильных */
+      width: 150px;
       height: 150px;
       bottom: -30px;
       right: -30px;
       background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-gold));
     }
 
-    /* Основной контент с улучшенной мобильной адаптацией */
     .main-content {
       display: flex;
       flex-direction: column;
@@ -117,30 +108,28 @@
       max-width: 500px;
       z-index: 10;
       position: relative;
-      padding-bottom: 20px; /* Добавлено для пространства внизу */
+      padding-bottom: 20px;
     }
 
-    /* Заголовок с улучшенной мобильной типографикой */
     .header {
       text-align: center;
-      margin-bottom: 1.5rem; /* Уменьшено для мобильных */
+      margin-bottom: 1.5rem;
       width: 100%;
       padding: 0 var(--mobile-margin);
     }
 
     .logo {
-      font-size: 2.2rem; /* Уменьшено для мобильных */
+      font-size: 2.2rem;
       margin-bottom: 0.6rem;
       background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      /* Улучшение читаемости на маленьких экранах */
       line-height: 1;
     }
 
     h1 {
-      font-size: 1.6rem; /* Уменьшено для мобильных */
+      font-size: 1.6rem;
       font-weight: 700;
       margin-bottom: 0.4rem;
       background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
@@ -148,39 +137,34 @@
       background-clip: text;
       color: transparent;
       line-height: 1.2;
-      /* Предотвращает перенос текста на маленьких экранах */
       word-wrap: break-word;
     }
 
     .subtitle {
-      font-size: 0.85rem; /* Уменьшено для мобильных */
+      font-size: 0.85rem;
       font-weight: 300;
       opacity: 0.9;
       color: rgba(255, 248, 220, 0.8);
       line-height: 1.4;
       padding: 0 var(--mobile-margin);
-      /* Улучшение читаемости на мобильных */
       max-width: 90%;
       margin: 0 auto;
     }
 
-    /* Сетка игр с улучшенной мобильной компоновкой */
     .games-grid {
       display: flex;
       flex-direction: column;
-      gap: 1.2rem; /* Уменьшено для мобильных */
+      gap: 1.2rem;
       width: 100%;
       margin-bottom: 1.5rem;
     }
 
-    /* Карточка игры с улучшенной мобильной оптимизацией */
     .game-card-container {
       position: relative;
-      perspective: 800px; /* Уменьшено для производительности */
+      perspective: 800px;
       margin: 0 var(--mobile-margin);
       cursor: pointer;
       transform-style: preserve-3d;
-      /* Улучшение производительности анимации */
       transform: translateZ(0);
       will-change: transform;
     }
@@ -189,74 +173,70 @@
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
       border-radius: var(--control-radius);
-      padding: 1.2rem; /* Уменьшено для мобильных */
+      padding: 1.2rem;
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
-      transition: transform 0.4s ease-out, var(--transition); /* Упрощена анимация */
+      transition: transform 0.4s ease-out, var(--transition);
       position: relative;
       overflow: hidden;
       transform-style: preserve-3d;
-      /* Улучшение производительности */
       backface-visibility: hidden;
       transform: translateZ(0);
     }
 
-    /* Улучшенная обратная связь при касании */
     .game-card:active {
       transform: scale(0.98) !important;
-      transition: transform 0.1s ease; /* Более быстрая анимация при тапе */
+      transition: transform 0.1s ease;
     }
 
     .game-header {
       display: flex;
       align-items: center;
-      gap: 0.7rem; /* Уменьшено для мобильных */
+      gap: 0.7rem;
       margin-bottom: 1rem;
     }
 
     .game-icon {
-      font-size: 1.7rem; /* Уменьшено для мобильных */
-      width: 44px; /* Уменьшено для мобильных */
+      font-size: 1.7rem;
+      width: 44px;
       height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-      border-radius: 10px; /* Уменьшено для мобильных */
-      backdrop-filter: blur(8px); /* Уменьшено для производительности */
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
       border: 1px solid var(--glass-border);
       flex-shrink: 0;
-      /* Улучшение производительности */
       transform: translateZ(0);
     }
 
     .game-title {
-      font-size: 1.1rem; /* Уменьшено для мобильных */
+      font-size: 1.1rem;
       font-weight: 600;
       color: var(--autumn-orange);
       line-height: 1.2;
     }
 
     .game-description {
-      font-size: 0.8rem; /* Уменьшено для мобильных */
+      font-size: 0.8rem;
       line-height: 1.5;
       margin-bottom: 1.2rem;
       opacity: 0.9;
       color: rgba(255, 248, 220, 0.9);
     }
 
-    /* Кнопка с улучшенной мобильной интерактивностью */
     .glass-btn {
       --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem; /* Уменьшено для мобильных */
-      padding: 0.85rem 1.2rem; /* Уменьшено для мобильных */
+      gap: 0.5rem;
+      padding: 0.85rem 1.2rem;
       border-radius: var(--control-radius);
       border: 1px solid var(--glass-border);
       background: var(--btn-bg);
-      backdrop-filter: blur(12px) saturate(150%); /* Уменьшено для производительности */
+      backdrop-filter: blur(12px) saturate(150%);
       box-shadow: 0 3px 10px rgba(0,0,0,0.25), 
                   inset 0 1px 0 rgba(255,255,255,0.1);
       color: var(--light);
@@ -265,12 +245,11 @@
       cursor: pointer;
       transition: var(--transition);
       width: 100%;
-      font-size: 0.9rem; /* Уменьшено для мобильных */
+      font-size: 0.9rem;
       letter-spacing: 0.2px;
       position: relative;
       overflow: hidden;
-      touch-action: manipulation; /* Улучшает обработку касаний */
-      /* Улучшение производительности */
+      touch-action: manipulation;
       transform: translateZ(0);
       -webkit-user-select: none;
       user-select: none;
@@ -280,11 +259,11 @@
       transform: scale(0.98);
       box-shadow: 0 1px 6px rgba(0,0,0,0.25), 
                   inset 0 1px 0 rgba(255,255,255,0.1);
-      transition: transform 0.1s ease; /* Более быстрая анимация при тапе */
+      transition: transform 0.1s ease;
     }
 
     .glass-btn i {
-      font-size: 0.9rem; /* Уменьшено для мобильных */
+      font-size: 0.9rem;
     }
 
     .disabled {
@@ -297,27 +276,25 @@
       transform: none !important;
     }
 
-    /* Уведомление с улучшенной мобильной адаптацией */
     .notification-banner {
       position: fixed;
       top: 10px;
       left: 10px;
       right: 10px;
       background: linear-gradient(135deg, rgba(218, 165, 32, 0.15), rgba(255, 127, 80, 0.15));
-      backdrop-filter: blur(15px); /* Уменьшено для производительности */
+      backdrop-filter: blur(15px);
       color: var(--autumn-yellow);
-      padding: 0.7rem 1rem; /* Уменьшено для мобильных */
+      padding: 0.7rem 1rem;
       border-radius: 10px;
       border: 1px solid rgba(218, 165, 32, 0.2);
       box-shadow: var(--glass-shadow);
-      font-size: 0.8rem; /* Уменьшено для мобильных */
+      font-size: 0.8rem;
       z-index: 1000;
       animation: slideDown 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 0.4rem; /* Уменьшено для мобильных */
+      gap: 0.4rem;
       text-align: center;
-      /* Улучшение производительности */
       transform: translateZ(0);
       will-change: transform, opacity;
     }
@@ -337,25 +314,23 @@
       display: none; 
     }
 
-    /* Загрузочный экран с улучшенной мобильной оптимизацией */
     .loading-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.85); /* Увеличена непрозрачность */
+      background: rgba(0,0,0,0.85);
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      backdrop-filter: blur(8px); /* Уменьшено для производительности */
+      backdrop-filter: blur(8px);
       z-index: 9999;
       opacity: 0;
       visibility: hidden;
       transition: var(--transition);
-      padding: 15px; /* Уменьшено для мобильных */
-      /* Улучшение производительности */
+      padding: 15px;
       transform: translateZ(0);
     }
 
@@ -365,14 +340,13 @@
     }
 
     .spinner {
-      width: 40px; /* Уменьшено для мобильных */
+      width: 40px;
       height: 40px;
-      border: 2px solid rgba(255,255,255,0.1); /* Уменьшено для мобильных */
+      border: 2px solid rgba(255,255,255,0.1);
       border-top: 2px solid var(--autumn-yellow);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 1rem;
-      /* Улучшение производительности */
       transform: translateZ(0);
     }
 
@@ -382,19 +356,17 @@
     }
 
     .loading-text {
-      font-size: 0.9rem; /* Уменьшено для мобильных */
+      font-size: 0.9rem;
       color: var(--light);
       font-weight: 300;
       text-align: center;
       line-height: 1.4;
     }
 
-    /* Футер скрыт */
     .footer {
       display: none;
     }
 
-    /* Улучшенные медиа-запросы для мобильных устройств */
     @media (max-width: 480px) {
       :root {
         --mobile-padding: 10px;
@@ -406,7 +378,6 @@
       body {
         padding: var(--mobile-padding);
         padding-top: 15px;
-        justify-content: flex-start;
       }
 
       .header {
@@ -477,97 +448,16 @@
       }
     }
 
-    /* Оптимизация для портретной ориентации на маленьких экранах */
-    @media (max-height: 700px) and (max-width: 480px) {
-      body {
-        padding-top: 12px;
-      }
-      
-      .header {
-        margin-bottom: 0.8rem;
-      }
-      
-      .games-grid {
-        gap: 0.8rem;
-      }
-      
-      .game-card {
-        padding: 0.8rem;
-      }
-    }
-
-    /* Улучшенная адаптация для ландшафтной ориентации */
-    @media (max-width: 900px) and (orientation: landscape) {
-      body {
-        padding: 8px;
-        justify-content: flex-start;
-        min-height: auto;
-      }
-      
-      .main-content {
-        max-width: 100%;
-        padding-bottom: 10px;
-      }
-      
-      .games-grid {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.8rem;
-      }
-      
-      .game-card-container {
-        flex: 1;
-        min-width: 250px;
-        max-width: 350px;
-      }
-      
-      .header {
-        margin-bottom: 1rem;
-      }
-    }
-
-    /* Улучшенная поддержка prefers-reduced-motion */
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      
-      .glass-btn:active {
-        transform: none !important;
-      }
-      
-      .game-card {
-        transform: none !important;
-      }
-      
-      .spinner {
-        animation: none;
-        border-top-color: rgba(255,255,255,0.3);
-      }
-    }
-
-    /* Улучшенная поддержка iOS */
     @supports (-webkit-touch-callout: none) {
       .glass-btn {
-        padding: 0.9rem 1.2rem; /* Немного больше для удобства касания на iOS */
+        padding: 0.9rem 1.2rem;
       }
       
       body {
-        /* Исправление для безопасных зон на iPhone X и новее */
         padding-left: calc(var(--mobile-padding) + env(safe-area-inset-left));
         padding-right: calc(var(--mobile-padding) + env(safe-area-inset-right));
         padding-top: calc(var(--mobile-padding) + env(safe-area-inset-top));
         padding-bottom: calc(var(--mobile-padding) + env(safe-area-inset-bottom));
-      }
-    }
-
-    /* Улучшенная поддержка высокопиксельных экранов */
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      .game-card {
-        border-width: 0.5px; /* Более тонкая граница для Retina */
       }
     }
   </style>
@@ -624,8 +514,7 @@
       </div>
     </div>
 
-    <!-- Футер скрыт -->
-    <div class="footer" style="display: none;">
+    <div class="footer">
       <p></p>
     </div>
   </div>
@@ -636,10 +525,9 @@
   </div>
 
   <script>
-    // Улучшенная инициализация для мобильных устройств
     document.addEventListener('DOMContentLoaded', function() {
-      // Игра ОТКРЫТА - убрано обновление
-      const cvaptaOpen = true; // Изменено на true - игра открыта
+      // Игра ОТКРЫТА
+      const cvaptaOpen = true;
       const cvaptaBtn = document.getElementById("cvaptaBtn");
       const cvaptaCard = document.getElementById("cvaptaCard");
       const comingSoonCard = document.getElementById("comingSoonCard");
@@ -651,98 +539,100 @@
       cvaptaBtn.classList.remove("disabled");
       cvaptaBtn.innerHTML = '<i class="fas fa-play"></i> Play Now';
       
-      // Оптимизация: отложенная загрузка не критичных ресурсов
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(initNonCriticalFeatures);
-      } else {
-        setTimeout(initNonCriticalFeatures, 500);
+      // Флаг для предотвращения множественных срабатываний
+      let isProcessing = false;
+      
+      // Упрощенная функция для мобильных устройств
+      function handleCardClick(cardType) {
+        if (isProcessing) return;
+        isProcessing = true;
+        
+        if (cardType === 'cvapta') {
+          startGame();
+        } else if (cardType === 'comingSoon') {
+          showNotification("🎮 New games are coming soon! Stay tuned.");
+        }
+        
+        // Сбрасываем флаг через короткое время
+        setTimeout(() => {
+          isProcessing = false;
+        }, 500);
       }
       
-      function initNonCriticalFeatures() {
-        // Инициализация отслеживания мыши только для устройств с мышью
-        if (!isTouchDevice()) {
-          initMouseTracking();
-        }
+      // Универсальный обработчик для touch и click
+      function addUniversalListener(element, handler) {
+        // Touch events
+        element.addEventListener('touchstart', function(e) {
+          this.style.transform = 'scale(0.98)';
+          e.preventDefault();
+        }, { passive: false });
+        
+        element.addEventListener('touchend', function(e) {
+          this.style.transform = '';
+          handler();
+          e.preventDefault();
+        }, { passive: false });
+        
+        element.addEventListener('touchcancel', function(e) {
+          this.style.transform = '';
+        }, { passive: true });
+        
+        // Click event для десктопов
+        element.addEventListener('click', function(e) {
+          if (!isTouchDevice()) {
+            handler();
+          }
+        });
       }
       
       // Определение типа устройства
       function isTouchDevice() {
-        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        return 'ontouchstart' in window || 
+               navigator.maxTouchPoints > 0 || 
+               navigator.msMaxTouchPoints > 0;
       }
       
-      // Упрощенное отслеживание мыши для производительности
-      function initMouseTracking() {
-        const cards = document.querySelectorAll('.game-card-container');
+      // Добавляем обработчики для карточек
+      addUniversalListener(cvaptaCard, function() {
+        handleCardClick('cvapta');
+      });
+      
+      addUniversalListener(comingSoonCard, function() {
+        handleCardClick('comingSoon');
+      });
+      
+      // Отдельная обработка для кнопки (только click/tap)
+      cvaptaBtn.addEventListener('click', function(e) {
+        if (isProcessing) return;
+        isProcessing = true;
         
-        cards.forEach(card => {
-          const cardElement = card.querySelector('.game-card');
-          
-          card.addEventListener('mousemove', (e) => {
-            if (!cardElement) return;
-            
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * 3; // Уменьшено для мобильной производительности
-            const rotateY = ((centerX - x) / centerX) * 3;
-            
-            cardElement.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-          });
-          
-          card.addEventListener('mouseleave', () => {
-            if (cardElement) {
-              cardElement.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-            }
-          });
-        });
-      }
-
-      // Улучшенные обработчики касаний для мобильных
-      function handleTouchStart(e) {
-        this.style.transform = 'scale(0.98)';
-        // Предотвращаем выделение текста при долгом нажатии
-        e.preventDefault();
-      }
-
-      function handleTouchEnd(e) {
-        this.style.transform = '';
-      }
-
-      // Добавляем улучшенные touch events для карточек
-      document.querySelectorAll('.game-card').forEach(card => {
-        card.addEventListener('touchstart', handleTouchStart, { passive: false });
-        card.addEventListener('touchend', handleTouchEnd, { passive: true });
-        card.addEventListener('touchcancel', handleTouchEnd, { passive: true });
-      });
-
-      // Обработчики кликов для карточек с улучшенной обработкой касаний
-      cvaptaCard.addEventListener('click', function(e) {
-        startGame();
-      });
-
-      comingSoonCard.addEventListener('click', function(e) {
-        showNotification("🎮 New games are coming soon! Stay tuned.");
-      });
-
-      // Обработка клика по кнопке - игра открыта
-      cvaptaBtn.addEventListener("click", function(e) {
         e.preventDefault();
         e.stopPropagation();
         startGame();
+        
+        setTimeout(() => {
+          isProcessing = false;
+        }, 500);
       });
-
-      // Добавляем touch events для кнопок
-      cvaptaBtn.addEventListener('touchstart', handleTouchStart, { passive: false });
+      
+      // Touch events для кнопки
+      cvaptaBtn.addEventListener('touchstart', function(e) {
+        this.style.transform = 'scale(0.98)';
+        e.preventDefault();
+      }, { passive: false });
+      
       cvaptaBtn.addEventListener('touchend', function(e) {
-        handleTouchEnd.call(this, e);
-        startGame();
-      }, { passive: true });
-      cvaptaBtn.addEventListener('touchcancel', handleTouchEnd, { passive: true });
-
+        this.style.transform = '';
+        if (!isProcessing) {
+          isProcessing = true;
+          startGame();
+          setTimeout(() => {
+            isProcessing = false;
+          }, 500);
+        }
+        e.preventDefault();
+      }, { passive: false });
+      
       function startGame() {
         // Показываем уведомление о загрузке игры
         showNotification("🚀 Launching Cvapta...");
@@ -755,19 +645,19 @@
           // Переход на игру через короткую задержку
           setTimeout(() => {
             window.location.href = "https://tqqqka.github.io/capsavta/";
-          }, 800); // Уменьшено время задержки для быстрого перехода
+          }, 800);
         }, 300);
       }
-
+      
       function showNotification(message) {
         bannerText.textContent = message;
         banner.classList.remove("hidden");
         
         setTimeout(() => {
           banner.classList.add("hidden");
-        }, 2000); // Уменьшено время показа уведомления
+        }, 2000);
       }
-
+      
       // Улучшенное предотвращение масштабирования при двойном тапе
       let lastTouchEnd = 0;
       document.addEventListener('touchend', function(event) {
@@ -776,17 +666,23 @@
           event.preventDefault();
         }
         lastTouchEnd = now;
-      }, { passive: false });
-
-      // Дополнительная оптимизация для медленных устройств
+      }, false);
+      
+      // Простая оптимизация для медленных устройств
       if ('connection' in navigator) {
-        // Упрощаем анимации для режима экономии данных или медленного соединения
-        if (navigator.connection.saveData || navigator.connection.effectiveType.includes('2g')) {
+        if (navigator.connection.saveData || 
+            (navigator.connection.effectiveType && 
+             navigator.connection.effectiveType.includes('2g'))) {
           document.querySelectorAll('.circle').forEach(circle => {
             circle.style.opacity = '0.15';
             circle.style.filter = 'blur(20px)';
           });
         }
+      }
+      
+      // Добавляем класс для touch-устройств
+      if (isTouchDevice()) {
+        document.body.classList.add('touch-device');
       }
     });
   </script>
