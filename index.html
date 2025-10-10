@@ -490,9 +490,9 @@
           <div class="game-description">
             Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
           </div>
-          <button id="cvaptaBtn" class="glass-btn">
-            <i class="fas fa-play"></i>
-            Play Now
+          <button id="cvaptaBtn" class="glass-btn disabled">
+            <i class="fas fa-clock"></i>
+            Coming Soon
           </button>
         </div>
       </div>
@@ -526,7 +526,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Игра ОТКРЫТА ...................................$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+      // Игра ЗАКРЫТА
       const cvaptaOpen = false;
       const cvaptaBtn = document.getElementById("cvaptaBtn");
       const cvaptaCard = document.getElementById("cvaptaCard");
@@ -535,9 +535,9 @@
       const banner = document.getElementById("comingSoonBanner");
       const bannerText = document.getElementById("banner-text");
       
-      // Убираем класс disabled и восстанавливаем оригинальную кнопку
-      cvaptaBtn.classList.remove("disabled");
-      cvaptaBtn.innerHTML = '<i class="fas fa-play"></i> Play Now';
+      // Добавляем класс disabled и меняем текст кнопки
+      cvaptaBtn.classList.add("disabled");
+      cvaptaBtn.innerHTML = '<i class="fas fa-clock"></i> Coming Soon';
       
       // Флаг для предотвращения множественных срабатываний
       let isProcessing = false;
@@ -548,7 +548,7 @@
         isProcessing = true;
         
         if (cardType === 'cvapta') {
-          startGame();
+          showNotification("⏳ Cvapta is coming soon! Stay tuned for updates.");
         } else if (cardType === 'comingSoon') {
           showNotification("🎮 New games are coming soon! Stay tuned.");
         }
@@ -608,7 +608,7 @@
         
         e.preventDefault();
         e.stopPropagation();
-        startGame();
+        showNotification("⏳ Cvapta is coming soon! Stay tuned for updates.");
         
         setTimeout(() => {
           isProcessing = false;
@@ -625,29 +625,13 @@
         this.style.transform = '';
         if (!isProcessing) {
           isProcessing = true;
-          startGame();
+          showNotification("⏳ Cvapta is coming soon! Stay tuned for updates.");
           setTimeout(() => {
             isProcessing = false;
           }, 500);
         }
         e.preventDefault();
       }, { passive: false });
-      
-      function startGame() {
-        // Показываем уведомление о загрузке игры
-        showNotification("🚀 Launching Cvapta...");
-        
-        // Задержка перед переходом для лучшего UX
-        setTimeout(() => {
-          banner.classList.add("hidden");
-          overlay.classList.add("active");
-          
-          // Переход на игру через короткую задержку
-          setTimeout(() => {
-            window.location.href = "https://tqqqka.github.io/capsavta/";
-          }, 800);
-        }, 300);
-      }
       
       function showNotification(message) {
         bannerText.textContent = message;
