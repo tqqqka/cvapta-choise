@@ -276,6 +276,73 @@
       transform: none !important;
     }
 
+    /* Стили для заблокированной карточки */
+    .locked-card {
+      position: relative;
+    }
+
+    .locked-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+      border-radius: var(--control-radius);
+      z-index: 2;
+      backdrop-filter: blur(2px);
+    }
+
+    .locked-card .game-card {
+      filter: grayscale(0.7);
+      opacity: 0.8;
+    }
+
+    .lock-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5rem;
+      color: white; /* Белый цвет вместо золотого */
+      z-index: 3;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      animation: lockPulse 2s infinite;
+    }
+
+    .lock-icon i {
+      font-size: 2.5rem;
+    }
+
+    @keyframes lockPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    .countdown-timer {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--autumn-red), var(--autumn-orange));
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      z-index: 4;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,0.2);
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .timer-expired {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+    }
+
     .notification-banner {
       position: fixed;
       top: 10px;
@@ -439,6 +506,17 @@
         border-radius: var(--control-radius);
       }
 
+      .countdown-timer {
+        font-size: 0.65rem;
+        padding: 5px 10px;
+        top: -8px;
+        min-width: 130px;
+      }
+
+      .lock-icon i {
+        font-size: 2rem;
+      }
+
       .notification-banner {
         top: 8px;
         left: 8px;
@@ -490,25 +568,27 @@
           <div class="game-description">
             Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
           </div>
-          <button id="cvaptaBtn" class="glass-btn disabled">
-            <i class="fas fa-clock"></i>
-            Coming Soon
+          <button id="cvaptaBtn" class="glass-btn">
+            <i class="fas fa-play"></i>
+            Play Now
           </button>
         </div>
       </div>
 
-      <div class="game-card-container" id="comingSoonCard">
+      <div class="game-card-container locked-card" id="comingSoonCard">
+        <div class="countdown-timer" id="countdownTimer"></div>
+        <div class="lock-icon"><i class="fas fa-lock"></i></div>
         <div class="game-card">
           <div class="game-header">
-            <div class="game-icon">⭐</div>
-            <div class="game-title">More Games Coming</div>
+            <div class="game-icon">🎃</div>
+            <div class="game-title">???</div>
           </div>
           <div class="game-description">
-            We're working hard to bring you more exciting games. Stay tuned for new adventures and challenges!
+            ???
           </div>
           <button class="glass-btn disabled">
             <i class="fas fa-clock"></i>
-            Coming Soon
+            <span id="timerText">Coming Soon</span>
           </button>
         </div>
       </div>
@@ -526,21 +606,66 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Игра ЗАКРЫТА
-      const cvaptaOpen = false;
+      // Игра ОТКРЫТА
+      const cvaptaOpen = true;
       const cvaptaBtn = document.getElementById("cvaptaBtn");
       const cvaptaCard = document.getElementById("cvaptaCard");
       const comingSoonCard = document.getElementById("comingSoonCard");
       const overlay = document.getElementById("loadingOverlay");
       const banner = document.getElementById("comingSoonBanner");
       const bannerText = document.getElementById("banner-text");
+      const countdownTimer = document.getElementById("countdownTimer");
+      const timerText = document.getElementById("timerText");
       
-      // Добавляем класс disabled и меняем текст кнопки
-      cvaptaBtn.classList.add("disabled");
-      cvaptaBtn.innerHTML = '<i class="fas fa-clock"></i> Coming Soon';
+      // Дата разблокировки - 24 октября 2025 года 00:00:00 по Москве (UTC+3)
+      const unlockDate = new Date('2025-10-24T00:00:00+03:00').getTime();
+      
+      // Убираем класс disabled и восстанавливаем оригинальную кнопку для Cvapta
+      cvaptaBtn.classList.remove("disabled");
+      cvaptaBtn.innerHTML = '<i class="fas fa-play"></i> Play Now';
       
       // Флаг для предотвращения множественных срабатываний
       let isProcessing = false;
+      
+      // Функция обновления таймера
+      function updateCountdown() {
+        // Текущее время в UTC
+        const nowUTC = new Date().getTime();
+        // Получаем смещение для Москвы (UTC+3) в миллисекундах
+        const mskOffset = 3 * 60 * 60 * 1000; // 3 часа в миллисекундах
+        const nowMSK = nowUTC + mskOffset;
+        
+        const distance = unlockDate - nowMSK;
+        
+        if (distance <= 0) {
+          // Время вышло - игра разблокирована
+          countdownTimer.textContent = "Available Now!";
+          countdownTimer.classList.add("timer-expired");
+          timerText.textContent = "Play Now";
+          comingSoonCard.classList.remove("locked-card");
+          document.querySelector('.lock-icon').style.display = 'none';
+          return;
+        }
+        
+        // Расчет дней, часов, минут и секунд
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Форматирование таймера с секундами
+        if (days > 0) {
+          countdownTimer.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        } else if (hours > 0) {
+          countdownTimer.textContent = `${hours}h ${minutes}m ${seconds}s`;
+        } else {
+          countdownTimer.textContent = `${minutes}m ${seconds}s`;
+        }
+      }
+      
+      // Запуск таймера
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
       
       // Упрощенная функция для мобильных устройств
       function handleCardClick(cardType) {
@@ -548,9 +673,19 @@
         isProcessing = true;
         
         if (cardType === 'cvapta') {
-          showNotification("⏳ Cvapta is coming soon! Stay tuned for updates.");
+          startGame();
         } else if (cardType === 'comingSoon') {
-          showNotification("🎮 New games are coming soon! Stay tuned.");
+          const nowUTC = new Date().getTime();
+          const mskOffset = 3 * 60 * 60 * 1000;
+          const nowMSK = nowUTC + mskOffset;
+          
+          if (nowMSK >= unlockDate) {
+            // Игра разблокирована
+            showNotification("🎮 New game is now available!");
+          } else {
+            // Игра еще заблокирована
+            showNotification("🔒 This game will be available on October 24, 2025 (MSK)");
+          }
         }
         
         // Сбрасываем флаг через короткое время
@@ -563,7 +698,9 @@
       function addUniversalListener(element, handler) {
         // Touch events
         element.addEventListener('touchstart', function(e) {
-          this.style.transform = 'scale(0.98)';
+          if (!this.classList.contains('locked-card')) {
+            this.style.transform = 'scale(0.98)';
+          }
           e.preventDefault();
         }, { passive: false });
         
@@ -608,7 +745,7 @@
         
         e.preventDefault();
         e.stopPropagation();
-        showNotification("⏳ Cvapta is coming soon! Stay tuned for updates.");
+        startGame();
         
         setTimeout(() => {
           isProcessing = false;
@@ -625,13 +762,29 @@
         this.style.transform = '';
         if (!isProcessing) {
           isProcessing = true;
-          showNotification("⏳ Cvapta is coming soon! Stay tuned for updates.");
+          startGame();
           setTimeout(() => {
             isProcessing = false;
           }, 500);
         }
         e.preventDefault();
       }, { passive: false });
+      
+      function startGame() {
+        // Показываем уведомление о загрузке игры
+        showNotification("🚀 Launching Cvapta...");
+        
+        // Задержка перед переходом для лучшего UX
+        setTimeout(() => {
+          banner.classList.add("hidden");
+          overlay.classList.add("active");
+          
+          // Переход на игру через короткую задержку
+          setTimeout(() => {
+            window.location.href = "https://tqqqka.github.io/capsavta/";
+          }, 800);
+        }, 300);
+      }
       
       function showNotification(message) {
         bannerText.textContent = message;
