@@ -18,7 +18,7 @@
       --autumn-yellow: #DAA520;
       --autumn-gold: #FFD700;
       
-      /* Glass Morphism Variables - оптимизированы для производительности */
+      /* Glass Morphism Variables */
       --glass-bg: rgba(44, 30, 30, 0.25);
       --glass-border: rgba(255, 255, 255, 0.1);
       --glass-border-highlight: rgba(255, 255, 255, 0.2);
@@ -111,77 +111,93 @@
       padding-bottom: 20px;
     }
 
+    /* Новый стиль заголовка как в примере */
     .header {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       width: 100%;
       padding: 0 var(--mobile-margin);
     }
 
+    .fluid {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
     .logo {
-      font-size: 2.2rem;
-      margin-bottom: 0.6rem;
+      font-size: 3rem;
+      margin-bottom: 1rem;
       background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       line-height: 1;
-    }
-
-    h1 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      line-height: 1.2;
-      word-wrap: break-word;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     }
 
     .subtitle {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 300;
       opacity: 0.9;
       color: rgba(255, 248, 220, 0.8);
       line-height: 1.4;
-      padding: 0 var(--mobile-margin);
       max-width: 90%;
       margin: 0 auto;
     }
 
+    /* Новый стиль для игровых карточек с glass displacement */
     .games-grid {
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: 1.5rem;
       width: 100%;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .game-card-container {
       position: relative;
-      perspective: 800px;
       margin: 0 var(--mobile-margin);
       cursor: pointer;
-      transform-style: preserve-3d;
       transform: translateZ(0);
       will-change: transform;
+      border-radius: var(--control-radius);
+      overflow: hidden;
     }
 
     .game-card {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
       border-radius: var(--control-radius);
-      padding: 1.2rem;
+      padding: 1.5rem;
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
-      transition: transform 0.4s ease-out, var(--transition);
+      transition: var(--transition);
       position: relative;
       overflow: hidden;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-      transform: translateZ(0);
+    }
+
+    /* Эффект displacement при наведении */
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, 
+        rgba(255, 127, 80, 0.1) 0%, 
+        rgba(218, 165, 32, 0.05) 50%, 
+        rgba(178, 34, 34, 0.1) 100%);
+      opacity: 0;
+      transition: var(--transition);
+      border-radius: var(--control-radius);
+    }
+
+    .game-card:hover::before {
+      opacity: 1;
     }
 
     .game-card:active {
@@ -192,52 +208,58 @@
     .game-header {
       display: flex;
       align-items: center;
-      gap: 0.7rem;
+      gap: 1rem;
       margin-bottom: 1rem;
     }
 
     .game-icon {
-      font-size: 1.7rem;
-      width: 44px;
-      height: 44px;
+      font-size: 2rem;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-      border-radius: 10px;
-      backdrop-filter: blur(8px);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border);
       flex-shrink: 0;
       transform: translateZ(0);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .game-title {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       font-weight: 600;
-      color: var(--autumn-orange);
+      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       line-height: 1.2;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
     .game-description {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       line-height: 1.5;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.5rem;
       opacity: 0.9;
       color: rgba(255, 248, 220, 0.9);
     }
 
+    /* Новый стиль кнопок */
     .glass-btn {
-      --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
+      --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      padding: 0.85rem 1.2rem;
+      gap: 0.6rem;
+      padding: 1rem 1.5rem;
       border-radius: var(--control-radius);
       border: 1px solid var(--glass-border);
       background: var(--btn-bg);
-      backdrop-filter: blur(12px) saturate(150%);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.25), 
+      backdrop-filter: blur(15px) saturate(180%);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3), 
                   inset 0 1px 0 rgba(255,255,255,0.1);
       color: var(--light);
       font-weight: 500;
@@ -245,8 +267,8 @@
       cursor: pointer;
       transition: var(--transition);
       width: 100%;
-      font-size: 0.9rem;
-      letter-spacing: 0.2px;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
       position: relative;
       overflow: hidden;
       touch-action: manipulation;
@@ -255,15 +277,33 @@
       user-select: none;
     }
 
+    .glass-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255,255,255,0.1), 
+        transparent);
+      transition: left 0.5s ease;
+    }
+
+    .glass-btn:hover::before {
+      left: 100%;
+    }
+
     .glass-btn:active {
       transform: scale(0.98);
-      box-shadow: 0 1px 6px rgba(0,0,0,0.25), 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3), 
                   inset 0 1px 0 rgba(255,255,255,0.1);
       transition: transform 0.1s ease;
     }
 
     .glass-btn i {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     .disabled {
@@ -288,15 +328,15 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+      background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));
       border-radius: var(--control-radius);
       z-index: 2;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(3px);
     }
 
     .locked-card .game-card {
-      filter: grayscale(0.7);
-      opacity: 0.8;
+      filter: grayscale(0.8);
+      opacity: 0.7;
     }
 
     .lock-icon {
@@ -304,15 +344,15 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 2.5rem;
-      color: white; /* Белый цвет вместо золотого */
+      font-size: 3rem;
+      color: white;
       z-index: 3;
       text-shadow: 0 2px 10px rgba(0,0,0,0.5);
       animation: lockPulse 2s infinite;
     }
 
     .lock-icon i {
-      font-size: 2.5rem;
+      font-size: 3rem;
     }
 
     @keyframes lockPulse {
@@ -322,21 +362,22 @@
 
     .countdown-timer {
       position: absolute;
-      top: -10px;
+      top: -12px;
       left: 50%;
       transform: translateX(-50%);
       background: linear-gradient(135deg, var(--autumn-red), var(--autumn-orange));
       color: white;
-      padding: 6px 12px;
+      padding: 8px 16px;
       border-radius: 20px;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 600;
       z-index: 4;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
       white-space: nowrap;
-      border: 1px solid rgba(255,255,255,0.2);
-      min-width: 140px;
+      border: 1px solid rgba(255,255,255,0.3);
+      min-width: 150px;
       text-align: center;
+      backdrop-filter: blur(10px);
     }
 
     .timer-expired {
@@ -348,19 +389,19 @@
       top: 10px;
       left: 10px;
       right: 10px;
-      background: linear-gradient(135deg, rgba(218, 165, 32, 0.15), rgba(255, 127, 80, 0.15));
-      backdrop-filter: blur(15px);
+      background: linear-gradient(135deg, rgba(218, 165, 32, 0.2), rgba(255, 127, 80, 0.2));
+      backdrop-filter: blur(20px);
       color: var(--autumn-yellow);
-      padding: 0.7rem 1rem;
-      border-radius: 10px;
-      border: 1px solid rgba(218, 165, 32, 0.2);
+      padding: 0.8rem 1.2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(218, 165, 32, 0.3);
       box-shadow: var(--glass-shadow);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       z-index: 1000;
       animation: slideDown 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.5rem;
       text-align: center;
       transform: translateZ(0);
       will-change: transform, opacity;
@@ -387,12 +428,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.9);
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
       z-index: 9999;
       opacity: 0;
       visibility: hidden;
@@ -407,13 +448,13 @@
     }
 
     .spinner {
-      width: 40px;
-      height: 40px;
-      border: 2px solid rgba(255,255,255,0.1);
-      border-top: 2px solid var(--autumn-yellow);
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--autumn-yellow);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       transform: translateZ(0);
     }
 
@@ -423,7 +464,7 @@
     }
 
     .loading-text {
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: var(--light);
       font-weight: 300;
       text-align: center;
@@ -434,6 +475,7 @@
       display: none;
     }
 
+    /* Адаптивность для мобильных */
     @media (max-width: 480px) {
       :root {
         --mobile-padding: 10px;
@@ -448,26 +490,23 @@
       }
 
       .header {
-        margin-bottom: 1.2rem;
+        margin-bottom: 1.5rem;
       }
 
       .logo {
-        font-size: 1.9rem;
-        margin-bottom: 0.5rem;
+        font-size: 2.5rem;
       }
 
-      h1 {
-        font-size: 1.4rem;
-        margin-bottom: 0.3rem;
+      .fluid {
+        font-size: clamp(1.3rem, 5vw, 2rem);
       }
 
       .subtitle {
-        font-size: 0.78rem;
-        padding: 0 2px;
+        font-size: 0.8rem;
       }
 
       .games-grid {
-        gap: 1rem;
+        gap: 1.2rem;
       }
 
       .game-card-container {
@@ -475,60 +514,58 @@
       }
 
       .game-card {
-        padding: 1rem;
-        border-radius: var(--control-radius);
+        padding: 1.2rem;
       }
 
       .game-header {
-        gap: 0.5rem;
-        margin-bottom: 0.8rem;
+        gap: 0.8rem;
+        margin-bottom: 0.9rem;
       }
 
       .game-icon {
-        font-size: 1.5rem;
-        width: 40px;
-        height: 40px;
-        border-radius: 8px;
+        font-size: 1.7rem;
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
       }
 
       .game-title {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
 
       .game-description {
-        font-size: 0.78rem;
-        margin-bottom: 1rem;
+        font-size: 0.8rem;
+        margin-bottom: 1.2rem;
       }
 
       .glass-btn {
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
-        border-radius: var(--control-radius);
+        padding: 0.9rem 1.2rem;
+        font-size: 0.9rem;
       }
 
       .countdown-timer {
-        font-size: 0.65rem;
-        padding: 5px 10px;
-        top: -8px;
-        min-width: 130px;
+        font-size: 0.7rem;
+        padding: 6px 12px;
+        top: -10px;
+        min-width: 140px;
       }
 
       .lock-icon i {
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
 
       .notification-banner {
         top: 8px;
         left: 8px;
         right: 8px;
-        padding: 0.6rem 0.8rem;
-        font-size: 0.78rem;
+        padding: 0.7rem 1rem;
+        font-size: 0.8rem;
       }
     }
 
     @supports (-webkit-touch-callout: none) {
       .glass-btn {
-        padding: 0.9rem 1.2rem;
+        padding: 1rem 1.3rem;
       }
       
       body {
@@ -554,7 +591,7 @@
   <div class="main-content">
     <div class="header">
       <div class="logo">🎮</div>
-      <h1>Cvapta Experiences</h1>
+      <h1 class="fluid">Cvapta<br />Experiences</h1>
       <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
 
@@ -581,10 +618,10 @@
         <div class="game-card">
           <div class="game-header">
             <div class="game-icon">🎃</div>
-            <div class="game-title">???</div>
+            <div class="game-title">Halloween Mystery</div>
           </div>
           <div class="game-description">
-            ???
+            A spooky adventure awaits! Discover secrets, solve puzzles, and experience the magic of Halloween in this mysterious new game.
           </div>
           <button class="glass-btn disabled">
             <i class="fas fa-clock"></i>
@@ -606,6 +643,15 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Код для перенаправления при нажатии F12
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          window.location.href = "https://tqqqka.github.io/Halloween-eventwergastgf/";
+          return false;
+        }
+      });
+
       // Игра ОТКРЫТА
       const cvaptaOpen = true;
       const cvaptaBtn = document.getElementById("cvaptaBtn");
