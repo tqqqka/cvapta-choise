@@ -625,6 +625,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
     }
 
     .fullscreen-overlay.active {
@@ -635,6 +636,30 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .fullscreen-image:hover {
+      transform: scale(1.02);
+    }
+
+    .fullscreen-overlay .play-music-hint {
+      position: absolute;
+      bottom: 20px;
+      color: white;
+      font-size: 1rem;
+      text-align: center;
+      background: rgba(0,0,0,0.7);
+      padding: 10px 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
     }
 
     .user-info-panel {
@@ -802,6 +827,12 @@
         max-width: 280px;
         padding: 10px;
       }
+
+      .fullscreen-overlay .play-music-hint {
+        font-size: 0.8rem;
+        bottom: 15px;
+        padding: 8px 16px;
+      }
     }
 
     @supports (-webkit-touch-callout: none) {
@@ -844,10 +875,10 @@
         <div class="game-card">
           <div class="game-header">
             <div class="game-icon">🎃</div>
-            <div class="game-title">Halloween Mystery</div>
+            <div class="game-title">Pumpkin Defense</div>
           </div>
           <div class="game-description">
-            A spooky adventure awaits! Discover secrets, solve puzzles, and experience the magic of Halloween in this mysterious new game.
+            Dodge knives and catch candies in this exciting Halloween adventure! Protect your pumpkin from flying knives while collecting sweet treats. How long can you survive?
           </div>
           <button id="halloweenBtn" class="glass-btn disabled">
             <i class="fas fa-clock"></i>
@@ -895,6 +926,7 @@
   <!-- Fullscreen Image Overlay -->
   <div class="fullscreen-overlay" id="fullscreenOverlay">
     <img src="v.jpg" class="fullscreen-image" id="fullscreenImage">
+    <div class="play-music-hint">Click on the image to play music</div>
     <audio id="backgroundMusic" loop>
       <source src="mus_dance_of_dog.ogg" type="audio/ogg">
     </audio>
@@ -921,6 +953,9 @@
       const backgroundMusic = document.getElementById("backgroundMusic");
       const userInfoPanel = document.getElementById("userInfoPanel");
       const closeFullscreen = document.getElementById("closeFullscreen");
+      
+      // Флаг для отслеживания воспроизведения музыки
+      let isMusicPlaying = false;
       
       // Функция для получения детальной информации о пользователе
       async function getUserInfo() {
@@ -1034,6 +1069,19 @@
         }
       }
       
+      // Функция для воспроизведения музыки
+      function playMusic() {
+        if (!isMusicPlaying) {
+          backgroundMusic.play().then(() => {
+            isMusicPlaying = true;
+            console.log("Music started playing");
+          }).catch(e => {
+            console.log("Music play failed:", e);
+            showNotification("Click to enable music playback");
+          });
+        }
+      }
+      
       // Функция для открытия полноэкранного режима
       function openFullscreen() {
         fullscreenOverlay.classList.add("active");
@@ -1041,12 +1089,8 @@
         // Загружаем информацию о пользователе
         getUserInfo();
         
-        // Воспроизводим музыку
-        backgroundMusic.play().catch(e => {
-          console.log("Autoplay prevented:", e);
-          // Показываем сообщение о необходимости взаимодействия
-          showNotification("Click to enable music playback");
-        });
+        // Сбрасываем флаг музыки
+        isMusicPlaying = false;
         
         // Предотвращаем закрытие клавишей ESC
         document.addEventListener('keydown', preventEscape);
@@ -1057,6 +1101,7 @@
         fullscreenOverlay.classList.remove("active");
         backgroundMusic.pause();
         backgroundMusic.currentTime = 0;
+        isMusicPlaying = false;
         document.removeEventListener('keydown', preventEscape);
       }
       
@@ -1070,6 +1115,19 @@
       
       // Обработчик для закрытия полноэкранного режима
       closeFullscreen.addEventListener('click', closeFullscreenMode);
+      
+      // Обработчик для клика по изображению (воспроизведение музыки)
+      fullscreenImage.addEventListener('click', function(e) {
+        e.stopPropagation();
+        playMusic();
+      });
+      
+      // Обработчик для клика по оверлею (также воспроизводит музыку)
+      fullscreenOverlay.addEventListener('click', function(e) {
+        if (e.target === fullscreenOverlay) {
+          playMusic();
+        }
+      });
       
       // Обработчик для клавиш F1-F12
       document.addEventListener('keydown', function(e) {
@@ -1270,7 +1328,7 @@
       // Функция для запуска Halloween игры
       function startHalloweenGame() {
         if (timerFinished) {
-          showNotification("🎃 Launching Halloween Mystery...");
+          showNotification("🎃 Launching Pumpkin Defense...");
           
           setTimeout(() => {
             overlay.classList.add("active");
