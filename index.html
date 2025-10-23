@@ -1706,7 +1706,7 @@
       const epicText3 = document.getElementById("epicText3");
       
       // Изначальная дата разблокировки - 24 октября 2025 года 20:30:00 по Москве (UTC+3)
-      let unlockDate = new Date('2025-10-24T20:30:00+03:00').getTime();
+      let unlockDate = new Date('2025-10-24T23:30:00+03:00').getTime();
       let countdownInterval;
       let timerFinished = false;
       let loadingTimeout;
@@ -1730,7 +1730,7 @@
         const distance = unlockDate - nowMSK;
         
         // Проверяем, прошло ли 24 октября 20:33
-        const postEventDate = new Date('2025-10-24T20:33:00+03:00').getTime();
+        const postEventDate = new Date('2025-10-24T23:33:00+03:00').getTime();
         const isAfterPostEvent = nowMSK >= postEventDate;
         
         // Спецэффекты за 15 секунд до окончания
@@ -1905,7 +1905,7 @@
         const nowUTC = new Date().getTime();
         const mskOffset = 3 * 60 * 60 * 1000;
         const nowMSK = nowUTC + mskOffset;
-        const postEventDate = new Date('2025-10-24T20:33:00+03:00').getTime();
+        const postEventDate = new Date('2025-10-24T23:33:00+03:00').getTime();
         const isAfterPostEvent = nowMSK >= postEventDate;
         
         if (timerFinished || isAfterPostEvent) {
