@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cvapta Experiences</title>
+  <title>Cvapta Experiences - Halloween Special</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -66,6 +66,17 @@
       min-height: 100vh;
     }
 
+    /* Частицы на фоне */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
     .bg-circles {
       position: fixed;
       top: 0;
@@ -111,6 +122,30 @@
       padding-bottom: 20px;
     }
 
+    /* Кнопка просмотра стадий */
+    .view-stages-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(139, 69, 19, 0.7);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: var(--transition);
+    }
+
+    .view-stages-btn:hover {
+      background: rgba(210, 105, 30, 0.8);
+      transform: translateY(-2px);
+    }
+
     /* Новый стиль заголовка как в примере */
     .header {
       text-align: center;
@@ -125,6 +160,7 @@
       line-height: 1.1;
       text-align: center;
       margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(255, 127, 80, 0.7);
     }
 
     .logo {
@@ -136,6 +172,12 @@
       color: transparent;
       line-height: 1;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      animation: logoGlow 3s infinite alternate;
+    }
+
+    @keyframes logoGlow {
+      0% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+      100% { filter: drop-shadow(0 4px 15px rgba(255, 127, 80, 0.7)); }
     }
 
     .subtitle {
@@ -146,6 +188,84 @@
       line-height: 1.4;
       max-width: 90%;
       margin: 0 auto;
+    }
+
+    /* Новый стиль для отдельного таймера */
+    .countdown-container {
+      position: relative;
+      margin: 0 var(--mobile-margin) 1.5rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .countdown-timer {
+      position: relative;
+      background: linear-gradient(135deg, var(--autumn-red), var(--autumn-orange));
+      color: white;
+      padding: 16px 24px;
+      border-radius: 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      z-index: 4;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      white-space: nowrap;
+      border: 2px solid rgba(255,255,255,0.4);
+      min-width: 280px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      letter-spacing: 1px;
+      transition: var(--transition);
+      transform: translateZ(0);
+      animation: timerPulse 2s infinite alternate;
+    }
+
+    @keyframes timerPulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.03); }
+    }
+
+    .countdown-timer:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+
+    .countdown-timer.timer-expired {
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { 
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+      }
+      50% { 
+        box-shadow: 0 8px 30px rgba(76, 175, 80, 0.8);
+      }
+    }
+
+    /* Спецэффекты за 15 секунд */
+    .countdown-timer.final-countdown {
+      animation: finalCountdown 1s infinite alternate;
+      background: linear-gradient(135deg, #ff0000, #ff4500);
+      text-shadow: 0 0 10px #fff;
+    }
+
+    @keyframes finalCountdown {
+      0% { 
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+      }
+      100% { 
+        transform: scale(1.1);
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+      }
+    }
+
+    /* Убираем старый стиль таймера с карточки */
+    .game-card-container .countdown-timer {
+      display: none;
     }
 
     /* Новый стиль для игровых карточек с glass displacement */
@@ -365,28 +485,126 @@
       50% { transform: translate(-50%, -50%) scale(1.1); }
     }
 
-    .countdown-timer {
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--autumn-red), var(--autumn-orange));
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      z-index: 4;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-      white-space: nowrap;
-      border: 1px solid rgba(255,255,255,0.3);
-      min-width: 150px;
-      text-align: center;
+    /* Оверлей со списком стадий */
+    .stages-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 9998;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       backdrop-filter: blur(10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
     }
 
-    .timer-expired {
-      background: linear-gradient(135deg, #4CAF50, #45a049);
+    .stages-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .stages-container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+      border-radius: var(--control-radius);
+      padding: 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .stages-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .stages-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .stages-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .stage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stage-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+    }
+
+    .stage-item.completed {
+      background: rgba(128, 128, 128, 0.2);
+      opacity: 0.7;
+    }
+
+    .stage-item.active {
+      background: rgba(255, 127, 80, 0.2);
+      border-color: rgba(255, 127, 80, 0.4);
+    }
+
+    .stage-date {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--autumn-yellow);
+      margin-bottom: 0.5rem;
+    }
+
+    .stage-item.completed .stage-date {
+      color: #888;
+    }
+
+    .stage-description {
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .stage-item.completed .stage-description {
+      color: #aaa;
+    }
+
+    .close-stages {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .close-stages:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .notification-banner {
@@ -714,6 +932,62 @@
       background: rgba(255, 0, 0, 0.7);
     }
 
+    /* Эпичные эффекты для катсцен */
+    .epic-text {
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 0 10px #ff4500, 0 0 20px #ff0000;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      z-index: 10005;
+      transition: all 1s ease;
+    }
+
+    .epic-text.active {
+      opacity: 1;
+      animation: epicTextPulse 2s infinite alternate;
+    }
+
+    @keyframes epicTextPulse {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    .bat {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0;
+      z-index: 10006;
+      animation: batFly 10s linear infinite;
+    }
+
+    @keyframes batFly {
+      0% { transform: translateX(-100px) translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateX(calc(100vw + 100px)) translateY(100px); opacity: 0; }
+    }
+
+    .spider {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0;
+      z-index: 10007;
+      animation: spiderDrop 5s ease-in-out infinite;
+    }
+
+    @keyframes spiderDrop {
+      0% { transform: translateY(-100px); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(calc(100vh + 100px)); opacity: 0; }
+    }
+
     /* Адаптивность для мобильных */
     @media (max-width: 480px) {
       :root {
@@ -742,6 +1016,17 @@
 
       .subtitle {
         font-size: 0.8rem;
+      }
+
+      .countdown-container {
+        margin: 0 2px 1.2rem;
+      }
+      
+      .countdown-timer {
+        font-size: 1rem;
+        padding: 14px 20px;
+        min-width: 250px;
+        border-width: 1px;
       }
 
       .games-grid {
@@ -780,13 +1065,6 @@
       .glass-btn {
         padding: 0.9rem 1.2rem;
         font-size: 0.9rem;
-      }
-
-      .countdown-timer {
-        font-size: 0.7rem;
-        padding: 6px 12px;
-        top: -10px;
-        min-width: 140px;
       }
 
       .lock-icon i {
@@ -833,6 +1111,23 @@
         bottom: 15px;
         padding: 8px 16px;
       }
+
+      .epic-text {
+        font-size: 1.8rem;
+      }
+
+      .stages-container {
+        padding: 1.5rem;
+      }
+
+      .stages-title {
+        font-size: 1.3rem;
+      }
+
+      .view-stages-btn {
+        font-size: 0.65rem;
+        padding: 6px 10px;
+      }
     }
 
     @supports (-webkit-touch-callout: none) {
@@ -850,9 +1145,44 @@
   </style>
 </head>
 <body>
+  <!-- Частицы на фоне -->
+  <div id="particles-js"></div>
+  
   <div class="bg-circles">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
+  </div>
+
+  <!-- Кнопка просмотра стадий -->
+  <button class="view-stages-btn" id="viewStagesBtn">
+    <i class="fas fa-calendar-alt"></i> СМОТРЕТЬ СТАДИИ
+  </button>
+
+  <!-- Оверлей со списком стадий -->
+  <div class="stages-overlay" id="stagesOverlay">
+    <div class="stages-container">
+      <button class="close-stages" id="closeStages">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="stages-header">
+        <h2 class="stages-title">Стадии Halloween Event</h2>
+        <p class="stages-subtitle">План мероприятий на октябрь 2025</p>
+      </div>
+      <div class="stage-list">
+        <div class="stage-item" id="stage1">
+          <div class="stage-date">24 октября</div>
+          <div class="stage-description">Знакомство с новой игрой и с ???</div>
+        </div>
+        <div class="stage-item" id="stage2">
+          <div class="stage-date">27-28 октября</div>
+          <div class="stage-description">Стрим с шансом выиграть подарок (колечко в Telegram)</div>
+        </div>
+        <div class="stage-item" id="stage3">
+          <div class="stage-date">31 октября</div>
+          <div class="stage-description">Финальная ??? с ??? и IRL стрим с сюрпризом</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="notification-banner hidden" id="comingSoonBanner">
@@ -867,10 +1197,14 @@
       <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
 
+    <!-- Новый отдельный контейнер для таймера -->
+    <div class="countdown-container">
+      <div class="countdown-timer" id="countdownTimer"></div>
+    </div>
+
     <div class="games-grid">
       <!-- Игра с тыквой теперь выше - добавлен класс halloween-card -->
       <div class="game-card-container locked-card halloween-card" id="comingSoonCard">
-        <div class="countdown-timer" id="countdownTimer"></div>
         <div class="lock-icon"><i class="fas fa-lock"></i></div>
         <div class="game-card">
           <div class="game-header">
@@ -923,6 +1257,11 @@
   <div class="pumpkin" id="pumpkin">🎃</div>
   <div class="knife" id="singleKnife">🔪</div>
 
+  <!-- Эпичные элементы для катсцен -->
+  <div class="epic-text" id="epicText1">HALLOWEEN IS COMING!</div>
+  <div class="epic-text" id="epicText2">PREPARE FOR TERROR!</div>
+  <div class="epic-text" id="epicText3">THE NIGHT AWAKENS!</div>
+
   <!-- Fullscreen Image Overlay -->
   <div class="fullscreen-overlay" id="fullscreenOverlay">
     <img src="v.jpg" class="fullscreen-image" id="fullscreenImage">
@@ -945,8 +1284,175 @@
     <button class="close-fullscreen" id="closeFullscreen">✕</button>
   </div>
 
+  <!-- Подключаем библиотеку частиц -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  
   <script>
+    // Инициализация частиц
     document.addEventListener('DOMContentLoaded', function() {
+      particlesJS('particles-js', {
+        particles: {
+          number: {
+            value: 80,
+            density: {
+              enable: true,
+              value_area: 800
+            }
+          },
+          color: {
+            value: ['#ff4500', '#ff0000', '#daa520', '#8b4513']
+          },
+          shape: {
+            type: ['circle', 'triangle', 'edge'],
+            stroke: {
+              width: 0,
+              color: '#000000'
+            }
+          },
+          opacity: {
+            value: 0.5,
+            random: true,
+            anim: {
+              enable: true,
+              speed: 1,
+              opacity_min: 0.1,
+              sync: false
+            }
+          },
+          size: {
+            value: 3,
+            random: true,
+            anim: {
+              enable: true,
+              speed: 2,
+              size_min: 0.1,
+              sync: false
+            }
+          },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: '#ff4500',
+            opacity: 0.2,
+            width: 1
+          },
+          move: {
+            enable: true,
+            speed: 2,
+            direction: 'none',
+            random: true,
+            straight: false,
+            out_mode: 'out',
+            bounce: false,
+            attract: {
+              enable: false,
+              rotateX: 600,
+              rotateY: 1200
+            }
+          }
+        },
+        interactivity: {
+          detect_on: 'canvas',
+          events: {
+            onhover: {
+              enable: true,
+              mode: 'repulse'
+            },
+            onclick: {
+              enable: true,
+              mode: 'push'
+            },
+            resize: true
+          },
+          modes: {
+            grab: {
+              distance: 400,
+              line_linked: {
+                opacity: 1
+              }
+            },
+            bubble: {
+              distance: 400,
+              size: 40,
+              duration: 2,
+              opacity: 8,
+              speed: 3
+            },
+            repulse: {
+              distance: 100,
+              duration: 0.4
+            },
+            push: {
+              particles_nb: 4
+            },
+            remove: {
+              particles_nb: 2
+            }
+          }
+        },
+        retina_detect: true
+      });
+      
+      // Элементы для управления стадиями
+      const stagesOverlay = document.getElementById("stagesOverlay");
+      const viewStagesBtn = document.getElementById("viewStagesBtn");
+      const closeStages = document.getElementById("closeStages");
+      const stage1 = document.getElementById("stage1");
+      const stage2 = document.getElementById("stage2");
+      const stage3 = document.getElementById("stage3");
+      
+      // Показываем список стадий при первом заходе
+      const hasSeenStages = localStorage.getItem('hasSeenHalloweenStages');
+      if (!hasSeenStages) {
+        setTimeout(() => {
+          stagesOverlay.classList.add("active");
+          localStorage.setItem('hasSeenHalloweenStages', 'true');
+        }, 1000);
+      }
+      
+      // Обработчики для кнопок стадий
+      viewStagesBtn.addEventListener('click', function() {
+        stagesOverlay.classList.add("active");
+      });
+      
+      closeStages.addEventListener('click', function() {
+        stagesOverlay.classList.remove("active");
+      });
+      
+      // Обновляем статус стадий
+      function updateStagesStatus() {
+        const nowUTC = new Date().getTime();
+        const mskOffset = 3 * 60 * 60 * 1000;
+        const nowMSK = nowUTC + mskOffset;
+        
+        // Стадия 1: 24 октября
+        const stage1Date = new Date('2025-10-24T00:00:00+03:00').getTime();
+        if (nowMSK >= stage1Date) {
+          stage1.classList.add('completed');
+        } else {
+          stage1.classList.add('active');
+        }
+        
+        // Стадия 2: 27-28 октября
+        const stage2Start = new Date('2025-10-27T00:00:00+03:00').getTime();
+        const stage2End = new Date('2025-10-29T00:00:00+03:00').getTime();
+        if (nowMSK >= stage2End) {
+          stage2.classList.add('completed');
+        } else if (nowMSK >= stage2Start) {
+          stage2.classList.add('active');
+        }
+        
+        // Стадия 3: 31 октября
+        const stage3Date = new Date('2025-10-31T00:00:00+03:00').getTime();
+        if (nowMSK >= stage3Date) {
+          stage3.classList.add('completed');
+        }
+      }
+      
+      // Вызываем обновление статуса стадий
+      updateStagesStatus();
+      
+      // Остальной код JavaScript остается таким же, но с измененной датой
       // Элементы полноэкранного режима
       const fullscreenOverlay = document.getElementById("fullscreenOverlay");
       const fullscreenImage = document.getElementById("fullscreenImage");
@@ -1194,11 +1700,17 @@
       const pumpkin = document.getElementById("pumpkin");
       const singleKnife = document.getElementById("singleKnife");
       
-      // Изначальная дата разблокировки - 24 октября 2025 года 00:00:00 по Москве (UTC+3)
-      let unlockDate = new Date('2025-10-24T00:00:00+03:00').getTime();
+      // Эпичные тексты
+      const epicText1 = document.getElementById("epicText1");
+      const epicText2 = document.getElementById("epicText2");
+      const epicText3 = document.getElementById("epicText3");
+      
+      // Изначальная дата разблокировки - 24 октября 2025 года 20:30:00 по Москве (UTC+3)
+      let unlockDate = new Date('2025-10-24T20:30:00+03:00').getTime();
       let countdownInterval;
       let timerFinished = false;
       let loadingTimeout;
+      let finalCountdownStarted = false;
       
       // Убираем класс disabled и восстанавливаем оригинальную кнопку для Cvapta
       cvaptaBtn.classList.remove("disabled");
@@ -1217,11 +1729,22 @@
         
         const distance = unlockDate - nowMSK;
         
+        // Проверяем, прошло ли 24 октября 20:33
+        const postEventDate = new Date('2025-10-24T20:33:00+03:00').getTime();
+        const isAfterPostEvent = nowMSK >= postEventDate;
+        
+        // Спецэффекты за 15 секунд до окончания
+        if (distance <= 15000 && distance > 0 && !finalCountdownStarted && !isAfterPostEvent) {
+          finalCountdownStarted = true;
+          countdownTimer.classList.add("final-countdown");
+          startFinalCountdownEffects();
+        }
+        
         if (distance <= 0) {
           if (!timerFinished) {
             timerFinished = true;
             // Время вышло - игра разблокирована
-            countdownTimer.textContent = "Available Now!";
+            countdownTimer.innerHTML = '<i class="fas fa-check-circle"></i> Available Now!';
             countdownTimer.classList.add("timer-expired");
             timerText.textContent = "Play Now";
             comingSoonCard.classList.remove("locked-card");
@@ -1229,8 +1752,10 @@
             halloweenBtn.classList.remove("disabled");
             halloweenBtn.innerHTML = '<i class="fas fa-play"></i> Play Now';
             
-            // Запускаем анимацию призрака
-            startGhostAnimation();
+            // Запускаем анимацию призрака только если не прошло 24 октября 20:33
+            if (!isAfterPostEvent) {
+              startGhostAnimation();
+            }
           }
           return;
         }
@@ -1243,14 +1768,63 @@
         
         // Форматирование таймера
         if (days > 0) {
-          countdownTimer.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+          countdownTimer.innerHTML = `<i class="fas fa-calendar-day"></i> ${days}d ${hours}h ${minutes}m ${seconds}s`;
         } else if (hours > 0) {
-          countdownTimer.textContent = `${hours}h ${minutes}m ${seconds}s`;
+          countdownTimer.innerHTML = `<i class="fas fa-clock"></i> ${hours}h ${minutes}m ${seconds}s`;
         } else if (minutes > 0) {
-          countdownTimer.textContent = `${minutes}m ${seconds}s`;
+          countdownTimer.innerHTML = `<i class="fas fa-hourglass-half"></i> ${minutes}m ${seconds}s`;
         } else {
-          countdownTimer.textContent = `${seconds}s`;
+          countdownTimer.innerHTML = `<i class="fas fa-hourglass-end"></i> ${seconds}s`;
         }
+      }
+      
+      // Спецэффекты за 15 секунд до окончания
+      function startFinalCountdownEffects() {
+        // Добавляем летучих мышей
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            const bat = document.createElement('div');
+            bat.className = 'bat';
+            bat.innerHTML = '🦇';
+            bat.style.top = Math.random() * 100 + 'vh';
+            bat.style.left = '-50px';
+            document.body.appendChild(bat);
+            
+            setTimeout(() => {
+              bat.remove();
+            }, 10000);
+          }, i * 500);
+        }
+        
+        // Добавляем пауков
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const spider = document.createElement('div');
+            spider.className = 'spider';
+            spider.innerHTML = '🕷️';
+            spider.style.left = Math.random() * 100 + 'vw';
+            spider.style.top = '-50px';
+            document.body.appendChild(spider);
+            
+            setTimeout(() => {
+              spider.remove();
+            }, 5000);
+          }, i * 1000);
+        }
+        
+        // Мигающий текст
+        epicText1.classList.add('active');
+        setTimeout(() => {
+          epicText1.classList.remove('active');
+          epicText2.classList.add('active');
+        }, 2000);
+        setTimeout(() => {
+          epicText2.classList.remove('active');
+          epicText3.classList.add('active');
+        }, 4000);
+        setTimeout(() => {
+          epicText3.classList.remove('active');
+        }, 6000);
       }
       
       // Запуск таймера
@@ -1327,7 +1901,14 @@
       
       // Функция для запуска Halloween игры
       function startHalloweenGame() {
-        if (timerFinished) {
+        // Проверяем, прошло ли 24 октября 20:33
+        const nowUTC = new Date().getTime();
+        const mskOffset = 3 * 60 * 60 * 1000;
+        const nowMSK = nowUTC + mskOffset;
+        const postEventDate = new Date('2025-10-24T20:33:00+03:00').getTime();
+        const isAfterPostEvent = nowMSK >= postEventDate;
+        
+        if (timerFinished || isAfterPostEvent) {
           showNotification("🎃 Launching Pumpkin Defense...");
           
           setTimeout(() => {
@@ -1341,7 +1922,12 @@
             // Переход на игру через короткую задержку
             setTimeout(() => {
               clearTimeout(loadingTimeout);
-              window.location.href = "https://tqqqka.github.io/Halloween-eventwergastgf/";
+              // После 24 октября 20:33 переходим на другую страницу
+              if (isAfterPostEvent) {
+                window.location.href = "https://tqqqka.github.io/Halloween-game-/";
+              } else {
+                window.location.href = "https://tqqqka.github.io/Halloween-eventwergastgf/";
+              }
             }, 800);
           }, 300);
         }
@@ -1364,7 +1950,7 @@
             startHalloweenGame();
           } else {
             // Игра еще заблокирована
-            showNotification("🔒 This game will be available on October 24, 2025 (MSK)");
+            showNotification("🔒 This game will be available on October 24, 2025 at 20:30 (MSK)");
           }
         }
         
@@ -1447,7 +2033,7 @@
         if (nowMSK >= unlockDate || timerFinished) {
           startHalloweenGame();
         } else {
-          showNotification("🔒 This game will be available on October 24, 2025 (MSK)");
+          showNotification("🔒 This game will be available on October 24, 2025 at 20:30 (MSK)");
         }
         
         setTimeout(() => {
