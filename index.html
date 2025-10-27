@@ -458,11 +458,23 @@
     .stage-item.completed {
       background: rgba(128, 128, 128, 0.2);
       opacity: 0.7;
+      border-color: rgba(128, 128, 128, 0.3);
     }
 
     .stage-item.active {
       background: rgba(255, 127, 80, 0.2);
       border-color: rgba(255, 127, 80, 0.4);
+      box-shadow: 0 0 15px rgba(255, 127, 80, 0.3);
+      animation: stageGlow 2s infinite alternate;
+    }
+
+    @keyframes stageGlow {
+      0% { 
+        box-shadow: 0 0 10px rgba(255, 127, 80, 0.3);
+      }
+      100% { 
+        box-shadow: 0 0 20px rgba(255, 127, 80, 0.6);
+      }
     }
 
     .stage-date {
@@ -853,18 +865,18 @@
         <p class="stages-subtitle" id="stagesSubtitle">Event schedule for October 2025</p>
       </div>
       <div class="stage-list">
-        <div class="stage-item" id="stage1">
+        <div class="stage-item completed" id="stage1">
           <div class="stage-date">October 24</div>
           <div class="stage-description" id="stage1Desc">Introduction to the new game and with ???</div>
         </div>
-        <div class="stage-item" id="stage2">
+        <div class="stage-item completed" id="stage2">
           <div class="stage-date">
             October 27
             <span class="stream-time">Начало стрима: 20:30 МСК</span>
           </div>
           <div class="stage-description" id="stage2Desc">Stream with a chance to win a gift (ring in Telegram)</div>
         </div>
-        <div class="stage-item" id="stage3">
+        <div class="stage-item active" id="stage3">
           <div class="stage-date">October 31</div>
           <div class="stage-description" id="stage3Desc">Final ??? with ??? and IRL stream with a surprise</div>
         </div>
@@ -980,9 +992,9 @@
         viewStages: "СМОТРЕТЬ СТАДИИ",
         stagesTitle: "Стадии Halloween Event",
         stagesSubtitle: "План мероприятий на октябрь 2025",
-        stage1Desc: "Знакомство с новой игрой и с ???",
+        stage1Desc: "Знакомство с новой игрой и с Боссом",
         stage2Desc: "Стрим с шансом выиграть подарок (колечко в Telegram)",
-        stage3Desc: "Финальная ??? с ??? и IRL стрим с сюрпризом",
+        stage3Desc: "Финальная ??? с Боссом и IRL стрим с сюрпризом",
         subtitle: "Выберите своё приключение и погрузитесь в удивительные игровые впечатления",
         newGameBadge: "НОВАЯ",
         halloweenDesc: "Уворачивайтесь от ножей и собирайте конфеты в этом захватывающем хэллоуинском приключении! Защитите свою тыкву от летающих ножей, собирая сладкие угощения. Как долго вы сможете продержаться?",
@@ -1000,9 +1012,9 @@
         viewStages: "VIEW STAGES",
         stagesTitle: "Halloween Event Stages",
         stagesSubtitle: "Event schedule for October 2025",
-        stage1Desc: "Introduction to the new game and with ???",
+        stage1Desc: "Introduction to the new game and with Boss",
         stage2Desc: "Stream with a chance to win a gift (ring in Telegram)",
-        stage3Desc: "Final ??? with ??? and IRL stream with a surprise",
+        stage3Desc: "Final ??? with Boss and IRL stream with a surprise",
         subtitle: "Choose your adventure and dive into amazing gaming experiences",
         newGameBadge: "NEW",
         halloweenDesc: "Dodge knives and catch candies in this exciting Halloween adventure! Protect your pumpkin from flying knives while collecting sweet treats. How long can you survive?",
@@ -1013,16 +1025,17 @@
         notificationLaunchCvapta: "🚀 Launching Cvapta...",
         notificationLaunchHalloween: "🎃 Launching Pumpkin Defense...",
         twitchText: "Watch on Twitch",
-        streamTime: "Stream starts at: 20:30 MSK"
+        streamTime: "Stream starts at 20:30 MSK"
       }
     };
 
-    // Функция для установки языка
-    async function setLanguage() {
+    // Инициализация приложения
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Определяем язык
       const language = await detectLanguage();
       const texts = translations[language];
       
-      // Устанавливаем тексты
+      // Применяем переводы
       document.getElementById('pageTitle').textContent = texts.title;
       document.getElementById('viewStagesText').textContent = texts.viewStages;
       document.getElementById('stagesTitle').textContent = texts.stagesTitle;
@@ -1042,132 +1055,140 @@
       
       // Обновляем время стрима
       const streamTimeElements = document.querySelectorAll('.stream-time');
-      streamTimeElements.forEach(element => {
-        element.textContent = texts.streamTime;
+      streamTimeElements.forEach(el => {
+        el.textContent = texts.streamTime;
       });
       
-      // Сохраняем тексты для уведомлений
-      window.notificationTexts = {
-        cvapta: texts.notificationLaunchCvapta,
-        halloween: texts.notificationLaunchHalloween
-      };
-    }
+      // Инициализация частиц
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          particles: {
+            number: { value: 30, density: { enable: true, value_area: 800 } },
+            color: { value: ["#FF7F50", "#DAA520", "#B22222"] },
+            shape: { type: "circle" },
+            opacity: { value: 0.5, random: true },
+            size: { value: 3, random: true },
+            line_linked: { enable: false },
+            move: {
+              enable: true,
+              speed: 1,
+              direction: "none",
+              random: true,
+              out_mode: "out",
+              bounce: false
+            }
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: {
+              onhover: { enable: true, mode: "repulse" },
+              onclick: { enable: true, mode: "push" },
+              resize: true
+            }
+          },
+          retina_detect: true
+        });
+      }
 
-    // Функция для показа уведомления
-    function showNotification(text) {
-      const banner = document.getElementById('comingSoonBanner');
+      // Элементы DOM
+      const viewStagesBtn = document.getElementById('viewStagesBtn');
+      const stagesOverlay = document.getElementById('stagesOverlay');
+      const closeStages = document.getElementById('closeStages');
+      const halloweenBtn = document.getElementById('halloweenBtn');
+      const cvaptaBtn = document.getElementById('cvaptaBtn');
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const errorText = document.getElementById('errorText');
+      const notificationBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
-      
-      bannerText.textContent = text;
-      banner.classList.remove('hidden');
-      
-      setTimeout(() => {
-        banner.classList.add('hidden');
-      }, 3000);
-    }
 
-    // Функция для показа загрузки
-    function showLoading() {
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      loadingOverlay.classList.add('active');
-    }
-
-    // Функция для скрытия загрузки
-    function hideLoading() {
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      loadingOverlay.classList.remove('active');
-    }
-
-    // Функция для открытия стадий
-    function openStages() {
-      const stagesOverlay = document.getElementById('stagesOverlay');
-      stagesOverlay.classList.add('active');
-    }
-
-    // Функция для закрытия стадий
-    function closeStages() {
-      const stagesOverlay = document.getElementById('stagesOverlay');
-      stagesOverlay.classList.remove('active');
-    }
-
-    // Инициализация при загрузке страницы
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Устанавливаем язык
-      await setLanguage();
-      
-      // Инициализируем частицы
-      particlesJS('particles-js', {
-        particles: {
-          number: { value: 30, density: { enable: true, value_area: 800 } },
-          color: { value: ["#8B4513", "#D2691E", "#FF7F50", "#DAA520"] },
-          shape: { type: "circle" },
-          opacity: { value: 0.5, random: true },
-          size: { value: 3, random: true },
-          line_linked: {
-            enable: true,
-            distance: 150,
-            color: "#D2691E",
-            opacity: 0.2,
-            width: 1
-          },
-          move: {
-            enable: true,
-            speed: 1,
-            direction: "none",
-            random: true,
-            straight: false,
-            out_mode: "out",
-            bounce: false
-          }
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: { enable: true, mode: "grab" },
-            onclick: { enable: true, mode: "push" },
-            resize: true
-          },
-          modes: {
-            grab: { distance: 200, line_linked: { opacity: 0.3 } },
-            push: { particles_nb: 4 }
-          }
-        },
-        retina_detect: true
+      // Показываем оверлей со стадиями
+      viewStagesBtn.addEventListener('click', function() {
+        stagesOverlay.classList.add('active');
       });
-      
-      // Показываем окно стадий при каждом заходе на страницу
-      setTimeout(openStages, 1000);
-      
-      // Назначаем обработчики событий
-      document.getElementById('viewStagesBtn').addEventListener('click', openStages);
-      document.getElementById('closeStages').addEventListener('click', closeStages);
-      
-      // Обработчики для карточек игр
-      document.getElementById('cvaptaBtn').addEventListener('click', function() {
-        showNotification(window.notificationTexts.cvapta);
-        showLoading();
+
+      // Скрываем оверлей со стадиями
+      closeStages.addEventListener('click', function() {
+        stagesOverlay.classList.remove('active');
+      });
+
+      // Закрываем оверлей при клике вне его
+      stagesOverlay.addEventListener('click', function(e) {
+        if (e.target === stagesOverlay) {
+          stagesOverlay.classList.remove('active');
+        }
+      });
+
+      // Обработчики для кнопок игр
+      halloweenBtn.addEventListener('click', function() {
+        showNotification(texts.notificationLaunchHalloween);
+        simulateLoading('halloween');
+      });
+
+      cvaptaBtn.addEventListener('click', function() {
+        showNotification(texts.notificationLaunchCvapta);
+        simulateLoading('cvapta');
+      });
+
+      // Функция показа уведомления
+      function showNotification(message) {
+        bannerText.textContent = message;
+        notificationBanner.classList.remove('hidden');
         
         setTimeout(() => {
-          window.location.href = "https://tqqqka.github.io/capsavta/";
-        }, 800);
-      });
-      
-      document.getElementById('halloweenBtn').addEventListener('click', function() {
-        showNotification(window.notificationTexts.halloween);
-        showLoading();
+          notificationBanner.classList.add('hidden');
+        }, 3000);
+      }
+
+      // Функция симуляции загрузки
+      function simulateLoading(game) {
+        loadingOverlay.classList.add('active');
+        
+        // Случайная задержка для имитации загрузки
+        const loadingTime = Math.random() * 2000 + 1000;
         
         setTimeout(() => {
-          window.location.href = "https://tqqqka.github.io/Halloween-game-/";
-        }, 800);
-      });
-      
-      // Обработчики для клика по всей карточке
-      document.getElementById('cvaptaCard').addEventListener('click', function() {
-        document.getElementById('cvaptaBtn').click();
-      });
-      
-      document.getElementById('halloweenCard').addEventListener('click', function() {
-        document.getElementById('halloweenBtn').click();
+          // С вероятностью 80% успешная загрузка, 20% ошибка
+          if (Math.random() > 0.2) {
+            // Успешная загрузка
+            loadingOverlay.classList.remove('active');
+            
+            // Перенаправляем на соответствующую игру
+            if (game === 'halloween') {
+              window.location.href = 'halloween.html';
+            } else if (game === 'cvapta') {
+              window.location.href = 'cvapta.html';
+            }
+          } else {
+            // Ошибка загрузки
+            errorText.classList.add('active');
+            
+            setTimeout(() => {
+              loadingOverlay.classList.remove('active');
+              errorText.classList.remove('active');
+            }, 2000);
+          }
+        }, loadingTime);
+      }
+
+      // Добавляем эффекты при наведении на карточки
+      const gameCards = document.querySelectorAll('.game-card-container');
+      gameCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        // Для мобильных устройств
+        card.addEventListener('touchstart', function() {
+          this.style.transform = 'translateY(-3px) scale(1.01)';
+        });
+        
+        card.addEventListener('touchend', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
       });
     });
   </script>
