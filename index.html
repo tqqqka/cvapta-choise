@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title id="pageTitle">Cvapta Experiences - Halloween Special</title>
+  <title>Cvapta Experiences - Halloween Special</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -851,7 +851,7 @@
 
   <!-- Кнопка просмотра стадий -->
   <button class="view-stages-btn" id="viewStagesBtn">
-    <i class="fas fa-calendar-alt"></i> <span id="viewStagesText">VIEW STAGES</span>
+    <i class="fas fa-calendar-alt"></i> <span>VIEW STAGES</span>
   </button>
 
   <!-- Оверлей со списком стадий -->
@@ -861,30 +861,30 @@
         <i class="fas fa-times"></i>
       </button>
       <div class="stages-header">
-        <h2 class="stages-title" id="stagesTitle">Halloween Event Stages</h2>
-        <p class="stages-subtitle" id="stagesSubtitle">Event schedule for October 2025</p>
+        <h2 class="stages-title">Halloween Event Stages</h2>
+        <p class="stages-subtitle">Event schedule for October 2025</p>
       </div>
       <div class="stage-list">
-        <div class="stage-item completed" id="stage1">
+        <div class="stage-item completed">
           <div class="stage-date">October 24</div>
-          <div class="stage-description" id="stage1Desc">Introduction to the new game and with ???</div>
+          <div class="stage-description">Introduction to the new game and with ???</div>
         </div>
-        <div class="stage-item completed" id="stage2">
+        <div class="stage-item completed">
           <div class="stage-date">
             October 27
-            <span class="stream-time">Начало стрима: 20:30 МСК</span>
+            <span class="stream-time">Stream starts at 20:30 MSK</span>
           </div>
-          <div class="stage-description" id="stage2Desc">Stream with a chance to win a gift (ring in Telegram)</div>
+          <div class="stage-description">Stream with a chance to win a gift (ring in Telegram)</div>
         </div>
-        <div class="stage-item active" id="stage3">
+        <div class="stage-item active">
           <div class="stage-date">October 31</div>
-          <div class="stage-description" id="stage3Desc">Final ??? with ??? and IRL stream with a surprise</div>
+          <div class="stage-description">Final ??? with ??? and IRL stream with a surprise</div>
         </div>
         
         <!-- Кнопка Twitch -->
         <a href="https://www.twitch.tv/cvapta" target="_blank" class="twitch-btn">
           <i class="fab fa-twitch"></i>
-          <span id="twitchText">Watch on Twitch</span>
+          <span>Watch on Twitch</span>
         </a>
       </div>
     </div>
@@ -899,40 +899,40 @@
     <div class="header">
       <div class="logo">🎮</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
-      <p class="subtitle" id="pageSubtitle">Choose your adventure and dive into amazing gaming experiences</p>
+      <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
 
     <div class="games-grid">
       <!-- Новая игра с особой рамкой -->
-      <div class="game-card-container new-game" id="halloweenCard">
-        <div class="new-game-badge" id="newGameBadge">NEW</div>
+      <div class="game-card-container new-game">
+        <div class="new-game-badge">NEW</div>
         <div class="game-card">
           <div class="game-header">
             <div class="game-icon">🎃</div>
             <div class="game-title">Pumpkin Defense</div>
           </div>
-          <div class="game-description" id="halloweenDesc">
+          <div class="game-description">
             Dodge knives and catch candies in this exciting Halloween adventure! Protect your pumpkin from flying knives while collecting sweet treats. How long can you survive?
           </div>
-          <button id="halloweenBtn" class="glass-btn">
+          <button class="glass-btn" id="halloweenBtn">
             <i class="fas fa-play"></i>
-            <span id="playNowText">Play Now</span>
+            <span>Play Now</span>
           </button>
         </div>
       </div>
 
-      <div class="game-card-container" id="cvaptaCard">
+      <div class="game-card-container">
         <div class="game-card">
           <div class="game-header">
             <div class="game-icon">🐸</div>
             <div class="game-title">Cvapta</div>
           </div>
-          <div class="game-description" id="cvaptaDesc">
+          <div class="game-description">
             Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
           </div>
-          <button id="cvaptaBtn" class="glass-btn">
+          <button class="glass-btn" id="cvaptaBtn">
             <i class="fas fa-play"></i>
-            <span id="playNowText2">Play Now</span>
+            <span>Play Now</span>
           </button>
         </div>
       </div>
@@ -945,119 +945,17 @@
 
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text" id="loadingText">Loading your adventure...</div>
-    <div class="error-text" id="errorText">Error!</div>
+    <div class="loading-text">Loading your adventure...</div>
+    <div class="error-text">Error!</div>
   </div>
 
   <!-- Подключаем библиотеку частиц -->
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   
   <script>
-    // Функция для определения языка на основе страны
-    async function detectLanguage() {
-      const russianSpeakingCountries = ['RU', 'BY', 'KZ', 'RU', 'BY', 'KZ']; // Россия, Беларусь, Казахстан
-      
-      try {
-        // Получаем IP адрес
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const ipData = await ipResponse.json();
-        const ip = ipData.ip;
-        
-        // Получаем информацию о стране по IP
-        const geoResponse = await fetch(`https://ipapi.co/${ip}/country/`);
-        const countryCode = await geoResponse.text();
-        
-        // Проверяем, находится ли пользователь в русскоязычной стране
-        if (russianSpeakingCountries.includes(countryCode.trim())) {
-          return 'ru';
-        } else {
-          return 'en';
-        }
-      } catch (error) {
-        console.error('Error detecting country:', error);
-        // Если не удалось определить страну, используем язык браузера
-        const browserLanguage = navigator.language.toLowerCase();
-        if (browserLanguage.startsWith('ru')) {
-          return 'ru';
-        } else {
-          return 'en';
-        }
-      }
-    }
-
-    // Тексты для разных языков
-    const translations = {
-      ru: {
-        title: "Cvapta Experiences - Halloween Special",
-        viewStages: "СМОТРЕТЬ СТАДИИ",
-        stagesTitle: "Стадии Halloween Event",
-        stagesSubtitle: "План мероприятий на октябрь 2025",
-        stage1Desc: "Знакомство с новой игрой и с Боссом",
-        stage2Desc: "Стрим с шансом выиграть подарок (колечко в Telegram)",
-        stage3Desc: "Финальная ??? с Боссом и IRL стрим с сюрпризом",
-        subtitle: "Выберите своё приключение и погрузитесь в удивительные игровые впечатления",
-        newGameBadge: "НОВАЯ",
-        halloweenDesc: "Уворачивайтесь от ножей и собирайте конфеты в этом захватывающем хэллоуинском приключении! Защитите свою тыкву от летающих ножей, собирая сладкие угощения. Как долго вы сможете продержаться?",
-        cvaptaDesc: "Отправьтесь в магическое путешествие с вашим дружелюбным лягушонком-компаньоном. Кликайте, растите, собирайте звёзды и открывайте удивительные сюрпризы!",
-        playNow: "Играть",
-        loadingText: "Загружаем ваше приключение...",
-        errorText: "Ошибка!",
-        notificationLaunchCvapta: "🚀 Запускаем Cvapta...",
-        notificationLaunchHalloween: "🎃 Запускаем Pumpkin Defense...",
-        twitchText: "Смотреть на Twitch",
-        streamTime: "Начало стрима: 20:30 МСК"
-      },
-      en: {
-        title: "Cvapta Experiences - Halloween Special",
-        viewStages: "VIEW STAGES",
-        stagesTitle: "Halloween Event Stages",
-        stagesSubtitle: "Event schedule for October 2025",
-        stage1Desc: "Introduction to the new game and with Boss",
-        stage2Desc: "Stream with a chance to win a gift (ring in Telegram)",
-        stage3Desc: "Final ??? with Boss and IRL stream with a surprise",
-        subtitle: "Choose your adventure and dive into amazing gaming experiences",
-        newGameBadge: "NEW",
-        halloweenDesc: "Dodge knives and catch candies in this exciting Halloween adventure! Protect your pumpkin from flying knives while collecting sweet treats. How long can you survive?",
-        cvaptaDesc: "Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!",
-        playNow: "Play Now",
-        loadingText: "Loading your adventure...",
-        errorText: "Error!",
-        notificationLaunchCvapta: "🚀 Launching Cvapta...",
-        notificationLaunchHalloween: "🎃 Launching Pumpkin Defense...",
-        twitchText: "Watch on Twitch",
-        streamTime: "Stream starts at 20:30 MSK"
-      }
-    };
-
-    // Инициализация приложения
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Определяем язык
-      const language = await detectLanguage();
-      const texts = translations[language];
-      
-      // Применяем переводы
-      document.getElementById('pageTitle').textContent = texts.title;
-      document.getElementById('viewStagesText').textContent = texts.viewStages;
-      document.getElementById('stagesTitle').textContent = texts.stagesTitle;
-      document.getElementById('stagesSubtitle').textContent = texts.stagesSubtitle;
-      document.getElementById('stage1Desc').textContent = texts.stage1Desc;
-      document.getElementById('stage2Desc').textContent = texts.stage2Desc;
-      document.getElementById('stage3Desc').textContent = texts.stage3Desc;
-      document.getElementById('pageSubtitle').textContent = texts.subtitle;
-      document.getElementById('newGameBadge').textContent = texts.newGameBadge;
-      document.getElementById('halloweenDesc').textContent = texts.halloweenDesc;
-      document.getElementById('cvaptaDesc').textContent = texts.cvaptaDesc;
-      document.getElementById('playNowText').textContent = texts.playNow;
-      document.getElementById('playNowText2').textContent = texts.playNow;
-      document.getElementById('loadingText').textContent = texts.loadingText;
-      document.getElementById('errorText').textContent = texts.errorText;
-      document.getElementById('twitchText').textContent = texts.twitchText;
-      
-      // Обновляем время стрима
-      const streamTimeElements = document.querySelectorAll('.stream-time');
-      streamTimeElements.forEach(el => {
-        el.textContent = texts.streamTime;
-      });
+    // Упрощенный JavaScript код
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded - initializing app');
       
       // Инициализация частиц
       if (typeof particlesJS !== 'undefined') {
@@ -1090,24 +988,35 @@
         });
       }
 
-      // Элементы DOM
+      // Получаем элементы DOM
       const viewStagesBtn = document.getElementById('viewStagesBtn');
       const stagesOverlay = document.getElementById('stagesOverlay');
       const closeStages = document.getElementById('closeStages');
       const halloweenBtn = document.getElementById('halloweenBtn');
       const cvaptaBtn = document.getElementById('cvaptaBtn');
       const loadingOverlay = document.getElementById('loadingOverlay');
-      const errorText = document.getElementById('errorText');
+      const errorText = document.querySelector('.error-text');
       const notificationBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
 
+      console.log('Elements found:', {
+        viewStagesBtn,
+        stagesOverlay,
+        closeStages,
+        halloweenBtn,
+        cvaptaBtn,
+        loadingOverlay
+      });
+
       // Показываем оверлей со стадиями
       viewStagesBtn.addEventListener('click', function() {
+        console.log('View stages clicked');
         stagesOverlay.classList.add('active');
       });
 
       // Скрываем оверлей со стадиями
       closeStages.addEventListener('click', function() {
+        console.log('Close stages clicked');
         stagesOverlay.classList.remove('active');
       });
 
@@ -1120,17 +1029,20 @@
 
       // Обработчики для кнопок игр
       halloweenBtn.addEventListener('click', function() {
-        showNotification(texts.notificationLaunchHalloween);
-        simulateLoading('halloween');
+        console.log('Halloween button clicked');
+        showNotification('🎃 Launching Pumpkin Defense...');
+        simulateLoading('https://tqqqka.github.io/Halloween-game-/');
       });
 
       cvaptaBtn.addEventListener('click', function() {
-        showNotification(texts.notificationLaunchCvapta);
-        simulateLoading('cvapta');
+        console.log('Cvapta button clicked');
+        showNotification('🚀 Launching Cvapta...');
+        simulateLoading('https://tqqqka.github.io/capsavta/');
       });
 
       // Функция показа уведомления
       function showNotification(message) {
+        console.log('Showing notification:', message);
         bannerText.textContent = message;
         notificationBanner.classList.remove('hidden');
         
@@ -1140,26 +1052,23 @@
       }
 
       // Функция симуляции загрузки
-      function simulateLoading(game) {
+      function simulateLoading(url) {
+        console.log('Simulating loading for:', url);
         loadingOverlay.classList.add('active');
         
         // Случайная задержка для имитации загрузки
         const loadingTime = Math.random() * 2000 + 1000;
         
         setTimeout(() => {
-          // С вероятностью 80% успешная загрузка, 20% ошибка
-          if (Math.random() > 0.2) {
+          // С вероятностью 90% успешная загрузка, 10% ошибка
+          if (Math.random() > 0.1) {
             // Успешная загрузка
+            console.log('Loading successful, redirecting to:', url);
             loadingOverlay.classList.remove('active');
-            
-            // Перенаправляем на соответствующую игру
-            if (game === 'halloween') {
-              window.location.href = 'halloween.html';
-            } else if (game === 'cvapta') {
-              window.location.href = 'cvapta.html';
-            }
+            window.location.href = url;
           } else {
             // Ошибка загрузки
+            console.log('Loading error simulated');
             errorText.classList.add('active');
             
             setTimeout(() => {
@@ -1190,6 +1099,13 @@
           this.style.transform = 'translateY(0) scale(1)';
         });
       });
+
+      console.log('App initialized successfully');
+    });
+
+    // Обработчик ошибок
+    window.addEventListener('error', function(e) {
+      console.error('Global error:', e.error);
     });
   </script>
 </body>
