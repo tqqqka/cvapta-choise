@@ -385,6 +385,75 @@
       transform: none !important;
     }
 
+    /* Стиль для кнопки BOSS FIGHT */
+    .boss-btn {
+      --btn-bg: linear-gradient(135deg, rgba(178, 34, 34, 0.3), rgba(139, 0, 0, 0.2));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--control-radius);
+      border: 1px solid rgba(255, 0, 0, 0.4);
+      background: var(--btn-bg);
+      backdrop-filter: blur(15px) saturate(180%);
+      box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4), 
+                  inset 0 1px 0 rgba(255,255,255,0.1);
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+      transform: translateZ(0);
+      -webkit-user-select: none;
+      user-select: none;
+      margin-top: 0.8rem;
+      animation: bossGlow 2s infinite alternate;
+    }
+
+    @keyframes bossGlow {
+      0% { 
+        box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4);
+      }
+      100% { 
+        box-shadow: 0 4px 20px rgba(255, 0, 0, 0.7), 0 0 15px rgba(255, 0, 0, 0.5);
+      }
+    }
+
+    .boss-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 0, 0, 0.2), 
+        transparent);
+      transition: left 0.5s ease;
+    }
+
+    .boss-btn:hover::before {
+      left: 100%;
+    }
+
+    .boss-btn:hover {
+      background: linear-gradient(135deg, rgba(178, 34, 34, 0.4), rgba(139, 0, 0, 0.3));
+      border-color: rgba(255, 0, 0, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .boss-btn:active {
+      transform: scale(0.98);
+    }
+
     /* Оверлей со списком стадий */
     .stages-overlay {
       position: fixed;
@@ -781,6 +850,11 @@
         font-size: 0.9rem;
       }
 
+      .boss-btn {
+        padding: 0.9rem 1.2rem;
+        font-size: 0.9rem;
+      }
+
       .new-game-badge {
         font-size: 0.6rem;
         padding: 3px 8px;
@@ -828,6 +902,10 @@
 
     @supports (-webkit-touch-callout: none) {
       .glass-btn {
+        padding: 1rem 1.3rem;
+      }
+      
+      .boss-btn {
         padding: 1rem 1.3rem;
       }
       
@@ -918,6 +996,10 @@
             <i class="fas fa-play"></i>
             <span>Play Now</span>
           </button>
+          <button class="boss-btn" id="bossFightBtn">
+            <i class="fas fa-skull-crossbones"></i>
+            <span>BOSS FIGHT</span>
+          </button>
         </div>
       </div>
 
@@ -988,124 +1070,98 @@
         });
       }
 
-      // Получаем элементы DOM
-      const viewStagesBtn = document.getElementById('viewStagesBtn');
-      const stagesOverlay = document.getElementById('stagesOverlay');
-      const closeStages = document.getElementById('closeStages');
+      // Элементы DOM
       const halloweenBtn = document.getElementById('halloweenBtn');
       const cvaptaBtn = document.getElementById('cvaptaBtn');
+      const bossFightBtn = document.getElementById('bossFightBtn');
+      const viewStagesBtn = document.getElementById('viewStagesBtn');
+      const closeStages = document.getElementById('closeStages');
+      const stagesOverlay = document.getElementById('stagesOverlay');
       const loadingOverlay = document.getElementById('loadingOverlay');
       const errorText = document.querySelector('.error-text');
-      const notificationBanner = document.getElementById('comingSoonBanner');
+      const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
 
-      console.log('Elements found:', {
-        viewStagesBtn,
-        stagesOverlay,
-        closeStages,
-        halloweenBtn,
-        cvaptaBtn,
-        loadingOverlay
-      });
-
-      // Показываем оверлей со стадиями
-      viewStagesBtn.addEventListener('click', function() {
-        console.log('View stages clicked');
-        stagesOverlay.classList.add('active');
-      });
-
-      // Скрываем оверлей со стадиями
-      closeStages.addEventListener('click', function() {
-        console.log('Close stages clicked');
-        stagesOverlay.classList.remove('active');
-      });
-
-      // Закрываем оверлей при клике вне его
-      stagesOverlay.addEventListener('click', function(e) {
-        if (e.target === stagesOverlay) {
-          stagesOverlay.classList.remove('active');
-        }
-      });
-
-      // Обработчики для кнопок игр
+      // Обработчики кнопок
       halloweenBtn.addEventListener('click', function() {
-        console.log('Halloween button clicked');
-        showNotification('🎃 Launching Pumpkin Defense...');
-        simulateLoading('https://tqqqka.github.io/Halloween-game-/');
+        showLoading();
+        setTimeout(() => {
+          window.location.href = 'https://tqqqka.github.io/Halloween-game-/';
+        }, 1500);
       });
 
       cvaptaBtn.addEventListener('click', function() {
-        console.log('Cvapta button clicked');
-        showNotification('🚀 Launching Cvapta...');
-        simulateLoading('https://tqqqka.github.io/capsavta/');
+        showLoading();
+        setTimeout(() => {
+          window.location.href = 'https://tqqqka.github.io/capsavta/';
+        }, 1500);
       });
 
-      // Функция показа уведомления
-      function showNotification(message) {
-        console.log('Showing notification:', message);
-        bannerText.textContent = message;
-        notificationBanner.classList.remove('hidden');
-        
+      // Обработчик кнопки BOSS FIGHT
+      bossFightBtn.addEventListener('click', function() {
+        showLoading();
         setTimeout(() => {
-          notificationBanner.classList.add('hidden');
+          window.location.href = 'https://tqqqka.github.io/Halloween-eventwergastgf/';
+        }, 1500);
+      });
+
+      viewStagesBtn.addEventListener('click', function() {
+        stagesOverlay.classList.add('active');
+      });
+
+      closeStages.addEventListener('click', function() {
+        stagesOverlay.classList.remove('active');
+      });
+
+      // Функции утилиты
+      function showLoading() {
+        loadingOverlay.classList.add('active');
+        errorText.classList.remove('active');
+      }
+
+      function showError() {
+        errorText.classList.add('active');
+        setTimeout(() => {
+          loadingOverlay.classList.remove('active');
         }, 3000);
       }
 
-      // Функция симуляции загрузки
-      function simulateLoading(url) {
-        console.log('Simulating loading for:', url);
-        loadingOverlay.classList.add('active');
-        
-        // Случайная задержка для имитации загрузки
-        const loadingTime = Math.random() * 2000 + 1000;
+      function showNotification(message) {
+        bannerText.textContent = message;
+        comingSoonBanner.classList.remove('hidden');
         
         setTimeout(() => {
-          // С вероятностью 90% успешная загрузка, 10% ошибка
-          if (Math.random() > 0.1) {
-            // Успешная загрузка
-            console.log('Loading successful, redirecting to:', url);
-            loadingOverlay.classList.remove('active');
-            window.location.href = url;
-          } else {
-            // Ошибка загрузки
-            console.log('Loading error simulated');
-            errorText.classList.add('active');
-            
-            setTimeout(() => {
-              loadingOverlay.classList.remove('active');
-              errorText.classList.remove('active');
-            }, 2000);
-          }
-        }, loadingTime);
+          comingSoonBanner.classList.add('hidden');
+        }, 3000);
       }
 
-      // Добавляем эффекты при наведении на карточки
-      const gameCards = document.querySelectorAll('.game-card-container');
-      gameCards.forEach(card => {
+      // Добавляем обработчики для анимации кнопок
+      document.querySelectorAll('.glass-btn, .boss-btn').forEach(btn => {
+        btn.addEventListener('touchstart', function() {
+          this.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        btn.addEventListener('touchend', function() {
+          this.style.transform = '';
+        }, { passive: true });
+      });
+
+      // Добавляем обработчики для анимации карточек игр
+      document.querySelectorAll('.game-card-container').forEach(card => {
         card.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateY(-5px) scale(1.02)';
+          this.style.transform = 'translateY(-5px)';
         });
         
         card.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateY(0) scale(1)';
-        });
-        
-        // Для мобильных устройств
-        card.addEventListener('touchstart', function() {
-          this.style.transform = 'translateY(-3px) scale(1.01)';
-        });
-        
-        card.addEventListener('touchend', function() {
-          this.style.transform = 'translateY(0) scale(1)';
+          this.style.transform = 'translateY(0)';
         });
       });
 
-      console.log('App initialized successfully');
-    });
-
-    // Обработчик ошибок
-    window.addEventListener('error', function(e) {
-      console.error('Global error:', e.error);
+      // Обработка ошибок загрузки
+      window.addEventListener('error', function(e) {
+        console.error('Global error:', e.error);
+        showError();
+      });
     });
   </script>
 </body>
