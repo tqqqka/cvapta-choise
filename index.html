@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cvapta Experiences - Halloween Special</title>
+  <title>Cvapta Experiences</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -66,17 +66,6 @@
       min-height: 100vh;
     }
 
-    /* Частицы на фоне */
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
     .bg-circles {
       position: fixed;
       top: 0;
@@ -122,31 +111,7 @@
       padding-bottom: 20px;
     }
 
-    /* Кнопка просмотра стадий */
-    .view-stages-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(139, 69, 19, 0.7);
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      cursor: pointer;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      transition: var(--transition);
-    }
-
-    .view-stages-btn:hover {
-      background: rgba(210, 105, 30, 0.8);
-      transform: translateY(-2px);
-    }
-
-    /* Новый стиль заголовка как в примере */
+    /* Стиль заголовка */
     .header {
       text-align: center;
       margin-bottom: 1.5rem;
@@ -190,40 +155,13 @@
       margin: 0 auto;
     }
 
-    /* Новый стиль для игровых карточек с glass displacement */
+    /* Стиль для игровых карточек с glass displacement */
     .games-grid {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
       width: 100%;
       margin-bottom: 2rem;
-    }
-
-    /* Специальная рамка для новой игры */
-    .game-card-container.new-game {
-      position: relative;
-      margin: 0 var(--mobile-margin);
-      cursor: pointer;
-      transform: translateZ(0);
-      will-change: transform;
-      border-radius: var(--control-radius);
-      overflow: hidden;
-      border: 2px solid var(--autumn-orange);
-      box-shadow: 0 0 15px rgba(255, 127, 80, 0.3);
-    }
-
-    .new-game-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--autumn-orange);
-      color: white;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.65rem;
-      font-weight: 600;
-      z-index: 5;
-      box-shadow: 0 2px 8px rgba(255, 127, 80, 0.4);
     }
 
     .game-card-container {
@@ -316,7 +254,7 @@
       color: rgba(255, 248, 220, 0.9);
     }
 
-    /* Новый стиль кнопок */
+    /* Стиль кнопок */
     .glass-btn {
       --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
       display: inline-flex;
@@ -383,293 +321,6 @@
 
     .disabled:active {
       transform: none !important;
-    }
-
-    /* Стиль для кнопки BOSS FIGHT */
-    .boss-btn {
-      --btn-bg: linear-gradient(135deg, rgba(178, 34, 34, 0.3), rgba(139, 0, 0, 0.2));
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      padding: 1rem 1.5rem;
-      border-radius: var(--control-radius);
-      border: 1px solid rgba(255, 0, 0, 0.4);
-      background: var(--btn-bg);
-      backdrop-filter: blur(15px) saturate(180%);
-      box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4), 
-                  inset 0 1px 0 rgba(255,255,255,0.1);
-      color: white;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: var(--transition);
-      width: 100%;
-      font-size: 0.95rem;
-      letter-spacing: 0.3px;
-      position: relative;
-      overflow: hidden;
-      touch-action: manipulation;
-      transform: translateZ(0);
-      -webkit-user-select: none;
-      user-select: none;
-      margin-top: 0.8rem;
-      animation: bossGlow 2s infinite alternate;
-    }
-
-    @keyframes bossGlow {
-      0% { 
-        box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4);
-      }
-      100% { 
-        box-shadow: 0 4px 20px rgba(255, 0, 0, 0.7), 0 0 15px rgba(255, 0, 0, 0.5);
-      }
-    }
-
-    .boss-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255, 0, 0, 0.2), 
-        transparent);
-      transition: left 0.5s ease;
-    }
-
-    .boss-btn:hover::before {
-      left: 100%;
-    }
-
-    .boss-btn:hover {
-      background: linear-gradient(135deg, rgba(178, 34, 34, 0.4), rgba(139, 0, 0, 0.3));
-      border-color: rgba(255, 0, 0, 0.6);
-      transform: translateY(-2px);
-    }
-
-    .boss-btn:active {
-      transform: scale(0.98);
-    }
-
-    /* Оверлей со списком стадий */
-    .stages-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 9998;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-    }
-
-    .stages-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .stages-container {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-      border-radius: var(--control-radius);
-      padding: 2rem;
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow);
-      width: 90%;
-      max-width: 500px;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-
-    .stages-header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .stages-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      margin-bottom: 0.5rem;
-    }
-
-    .stages-subtitle {
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-
-    .stage-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .stage-item {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: var(--transition);
-    }
-
-    .stage-item.completed {
-      background: rgba(128, 128, 128, 0.2);
-      opacity: 0.7;
-      border-color: rgba(128, 128, 128, 0.3);
-    }
-
-    .stage-item.active {
-      background: rgba(255, 127, 80, 0.2);
-      border-color: rgba(255, 127, 80, 0.4);
-      box-shadow: 0 0 15px rgba(255, 127, 80, 0.3);
-      animation: stageGlow 2s infinite alternate;
-    }
-
-    @keyframes stageGlow {
-      0% { 
-        box-shadow: 0 0 10px rgba(255, 127, 80, 0.3);
-      }
-      100% { 
-        box-shadow: 0 0 20px rgba(255, 127, 80, 0.6);
-      }
-    }
-
-    .stage-date {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--autumn-yellow);
-      margin-bottom: 0.5rem;
-    }
-
-    .stage-item.completed .stage-date {
-      color: #888;
-    }
-
-    .stage-description {
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-
-    .stage-item.completed .stage-description {
-      color: #aaa;
-    }
-
-    .close-stages {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      transition: var(--transition);
-    }
-
-    .close-stages:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* Стили для кнопки Twitch */
-    .twitch-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      padding: 1rem 1.5rem;
-      border-radius: var(--control-radius);
-      border: 1px solid rgba(145, 70, 255, 0.4);
-      background: linear-gradient(135deg, rgba(145, 70, 255, 0.2), rgba(100, 65, 165, 0.1));
-      backdrop-filter: blur(15px) saturate(180%);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3), 
-                  inset 0 1px 0 rgba(255,255,255,0.1);
-      color: white;
-      font-weight: 500;
-      text-decoration: none;
-      cursor: pointer;
-      transition: var(--transition);
-      width: 100%;
-      font-size: 0.95rem;
-      letter-spacing: 0.3px;
-      position: relative;
-      overflow: hidden;
-      touch-action: manipulation;
-      transform: translateZ(0);
-      -webkit-user-select: none;
-      user-select: none;
-      margin-top: 1rem;
-    }
-
-    .twitch-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, 
-        transparent, 
-        rgba(145, 70, 255, 0.2), 
-        transparent);
-      transition: left 0.5s ease;
-    }
-
-    .twitch-btn:hover::before {
-      left: 100%;
-    }
-
-    .twitch-btn:hover {
-      background: linear-gradient(135deg, rgba(145, 70, 255, 0.3), rgba(100, 65, 165, 0.2));
-      border-color: rgba(145, 70, 255, 0.6);
-      transform: translateY(-2px);
-    }
-
-    .twitch-btn:active {
-      transform: scale(0.98);
-    }
-
-    .stream-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #ff0000, #8b0000);
-      color: white;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-left: 8px;
-      animation: pulse 2s infinite;
-    }
-
-    .stream-time {
-      display: block;
-      font-size: 0.7rem;
-      color: #FF7F50;
-      font-weight: 500;
-      margin-top: 2px;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
     }
 
     .notification-banner {
@@ -850,16 +501,6 @@
         font-size: 0.9rem;
       }
 
-      .boss-btn {
-        padding: 0.9rem 1.2rem;
-        font-size: 0.9rem;
-      }
-
-      .new-game-badge {
-        font-size: 0.6rem;
-        padding: 3px 8px;
-      }
-
       .notification-banner {
         top: 8px;
         left: 8px;
@@ -871,41 +512,10 @@
       .error-text {
         font-size: 1.2rem;
       }
-
-      .stages-container {
-        padding: 1.5rem;
-      }
-
-      .stages-title {
-        font-size: 1.3rem;
-      }
-
-      .view-stages-btn {
-        font-size: 0.65rem;
-        padding: 6px 10px;
-      }
-
-      .twitch-btn {
-        padding: 0.9rem 1.2rem;
-        font-size: 0.9rem;
-      }
-
-      .stream-badge {
-        font-size: 0.6rem;
-        padding: 3px 8px;
-      }
-
-      .stream-time {
-        font-size: 0.65rem;
-      }
     }
 
     @supports (-webkit-touch-callout: none) {
       .glass-btn {
-        padding: 1rem 1.3rem;
-      }
-      
-      .boss-btn {
         padding: 1rem 1.3rem;
       }
       
@@ -919,53 +529,9 @@
   </style>
 </head>
 <body>
-  <!-- Частицы на фоне -->
-  <div id="particles-js"></div>
-  
   <div class="bg-circles">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
-  </div>
-
-  <!-- Кнопка просмотра стадий -->
-  <button class="view-stages-btn" id="viewStagesBtn">
-    <i class="fas fa-calendar-alt"></i> <span>VIEW STAGES</span>
-  </button>
-
-  <!-- Оверлей со списком стадий -->
-  <div class="stages-overlay" id="stagesOverlay">
-    <div class="stages-container">
-      <button class="close-stages" id="closeStages">
-        <i class="fas fa-times"></i>
-      </button>
-      <div class="stages-header">
-        <h2 class="stages-title">Halloween Event Stages</h2>
-        <p class="stages-subtitle">Event schedule for October 2025</p>
-      </div>
-      <div class="stage-list">
-        <div class="stage-item completed">
-          <div class="stage-date">October 24</div>
-          <div class="stage-description">Introduction to the new game and with ???</div>
-        </div>
-        <div class="stage-item completed">
-          <div class="stage-date">
-            October 27
-            <span class="stream-time">Stream starts at 20:30 MSK</span>
-          </div>
-          <div class="stage-description">Stream with a chance to win a gift (ring in Telegram)</div>
-        </div>
-        <div class="stage-item active">
-          <div class="stage-date">October 31</div>
-          <div class="stage-description">Final ??? with ??? and IRL stream with a surprise</div>
-        </div>
-        
-        <!-- Кнопка Twitch -->
-        <a href="https://www.twitch.tv/cvapta" target="_blank" class="twitch-btn">
-          <i class="fab fa-twitch"></i>
-          <span>Watch on Twitch</span>
-        </a>
-      </div>
-    </div>
   </div>
 
   <div class="notification-banner hidden" id="comingSoonBanner">
@@ -981,28 +547,6 @@
     </div>
 
     <div class="games-grid">
-      <!-- Новая игра с особой рамкой -->
-      <div class="game-card-container new-game">
-        <div class="new-game-badge">NEW</div>
-        <div class="game-card">
-          <div class="game-header">
-            <div class="game-icon">🎃</div>
-            <div class="game-title">Pumpkin Defense</div>
-          </div>
-          <div class="game-description">
-            Dodge knives and catch candies in this exciting Halloween adventure! Protect your pumpkin from flying knives while collecting sweet treats. How long can you survive?
-          </div>
-          <button class="glass-btn" id="halloweenBtn">
-            <i class="fas fa-play"></i>
-            <span>Play Now</span>
-          </button>
-          <button class="boss-btn" id="bossFightBtn">
-            <i class="fas fa-skull-crossbones"></i>
-            <span>BOSS FIGHT</span>
-          </button>
-        </div>
-      </div>
-
       <div class="game-card-container">
         <div class="game-card">
           <div class="game-header">
@@ -1031,86 +575,23 @@
     <div class="error-text">Error!</div>
   </div>
 
-  <!-- Подключаем библиотеку частиц -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  
   <script>
-    // Упрощенный JavaScript код
     document.addEventListener('DOMContentLoaded', function() {
       console.log('DOM loaded - initializing app');
-      
-      // Инициализация частиц
-      if (typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-          particles: {
-            number: { value: 30, density: { enable: true, value_area: 800 } },
-            color: { value: ["#FF7F50", "#DAA520", "#B22222"] },
-            shape: { type: "circle" },
-            opacity: { value: 0.5, random: true },
-            size: { value: 3, random: true },
-            line_linked: { enable: false },
-            move: {
-              enable: true,
-              speed: 1,
-              direction: "none",
-              random: true,
-              out_mode: "out",
-              bounce: false
-            }
-          },
-          interactivity: {
-            detect_on: "canvas",
-            events: {
-              onhover: { enable: true, mode: "repulse" },
-              onclick: { enable: true, mode: "push" },
-              resize: true
-            }
-          },
-          retina_detect: true
-        });
-      }
 
       // Элементы DOM
-      const halloweenBtn = document.getElementById('halloweenBtn');
       const cvaptaBtn = document.getElementById('cvaptaBtn');
-      const bossFightBtn = document.getElementById('bossFightBtn');
-      const viewStagesBtn = document.getElementById('viewStagesBtn');
-      const closeStages = document.getElementById('closeStages');
-      const stagesOverlay = document.getElementById('stagesOverlay');
       const loadingOverlay = document.getElementById('loadingOverlay');
       const errorText = document.querySelector('.error-text');
       const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
 
       // Обработчики кнопок
-      halloweenBtn.addEventListener('click', function() {
-        showLoading();
-        setTimeout(() => {
-          window.location.href = 'https://tqqqka.github.io/Halloween-game-/';
-        }, 1500);
-      });
-
       cvaptaBtn.addEventListener('click', function() {
         showLoading();
         setTimeout(() => {
           window.location.href = 'https://tqqqka.github.io/capsavta/';
         }, 1500);
-      });
-
-      // Обработчик кнопки BOSS FIGHT
-      bossFightBtn.addEventListener('click', function() {
-        showLoading();
-        setTimeout(() => {
-          window.location.href = 'https://tqqqka.github.io/Halloween-eventwergastgf/';
-        }, 1500);
-      });
-
-      viewStagesBtn.addEventListener('click', function() {
-        stagesOverlay.classList.add('active');
-      });
-
-      closeStages.addEventListener('click', function() {
-        stagesOverlay.classList.remove('active');
       });
 
       // Функции утилиты
@@ -1136,7 +617,7 @@
       }
 
       // Добавляем обработчики для анимации кнопок
-      document.querySelectorAll('.glass-btn, .boss-btn').forEach(btn => {
+      document.querySelectorAll('.glass-btn').forEach(btn => {
         btn.addEventListener('touchstart', function() {
           this.style.transform = 'scale(0.98)';
         }, { passive: true });
