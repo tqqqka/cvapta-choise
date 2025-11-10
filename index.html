@@ -627,6 +627,9 @@
       const bannerText = document.getElementById('banner-text');
       const countdownElement = document.getElementById('countdown');
 
+      // Глобальная переменная для даты запуска
+      let launchDate;
+
       // Функция для получения текущего времени в Москве
       function getMoscowTime() {
         const now = new Date();
@@ -654,7 +657,22 @@
         return launchDate;
       }
 
-      const launchDate = getLaunchDate();
+      // Функция для быстрой отмотки времени (отладочная)
+      function skipCountdown() {
+        console.log('Debug: Skipping countdown');
+        // Устанавливаем время запуска на 1 минуту вперед от текущего
+        const now = getMoscowTime();
+        launchDate = new Date(now.getTime() + 60000); // +1 минута
+        
+        // Показываем уведомление
+        showNotification('Debug mode: Countdown skipped to 1 minute');
+        
+        // Обновляем таймер
+        updateCountdown();
+      }
+
+      // Инициализация даты запуска
+      launchDate = getLaunchDate();
 
       // Функция обновления таймера обратного отсчета
       function updateCountdown() {
@@ -673,7 +691,8 @@
           cvapta1111Btn.onclick = function() {
             showLoading();
             setTimeout(() => {
-              window.location.href = 'https://t.me/cvapta1111_bot';
+              // Новая ссылка на маркетплейс
+              window.location.href = 'https://tqqqka.github.io/CVAPTA-11-11/';
             }, 1500);
           };
           return;
@@ -703,6 +722,14 @@
         setTimeout(() => {
           window.location.href = 'https://tqqqka.github.io/capsavta/';
         }, 1500);
+      });
+
+      // Обработчик клавиши F10 для отладки
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'F10' || e.code === 'F10') {
+          e.preventDefault();
+          skipCountdown();
+        }
       });
 
       // Функции утилиты
