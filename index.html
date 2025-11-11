@@ -565,7 +565,7 @@
     </div>
 
     <div class="games-grid">
-      <!-- CVAPTA 11.11 Маркетплейс - теперь первый -->
+      <!-- CVAPTA 11.11 Маркетплейс - теперь первый и разблокированный -->
       <div class="game-card-container">
         <div class="game-card">
           <div class="game-header">
@@ -573,14 +573,11 @@
             <div class="game-title">CVAPTA 11.11</div>
           </div>
           <div class="game-description">
-            Telegram digital gifts marketplace! Send and receive amazing digital gifts. Available from November 11 at 00:00 MSK.
+            Telegram digital gifts marketplace! Send and receive amazing digital gifts. Available now!
           </div>
-          <div class="countdown" id="countdownTimer">
-            Coming soon: <span id="countdown">--:--:--</span>
-          </div>
-          <button class="glass-btn disabled" id="cvapta1111Btn">
+          <button class="glass-btn" id="cvapta1111Btn">
             <i class="fas fa-gift"></i>
-            <span>Coming Soon</span>
+            <span>Open Marketplace</span>
           </button>
         </div>
       </div>
@@ -625,96 +622,16 @@
       const errorText = document.querySelector('.error-text');
       const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
-      const countdownElement = document.getElementById('countdown');
 
-      // Глобальная переменная для даты запуска
-      let launchDate;
-
-      // Функция для получения текущего времени в Москве
-      function getMoscowTime() {
-        const now = new Date();
-        // Москва UTC+3
-        const moscowOffset = 3 * 60; // минуты
-        const localOffset = now.getTimezoneOffset(); // минуты
-        const moscowTime = new Date(now.getTime() + (moscowOffset + localOffset) * 60000);
-        return moscowTime;
+      // Маркетплейс сразу разблокирован
+      function initializeMarketplace() {
+        cvapta1111Btn.onclick = function() {
+          showLoading();
+          setTimeout(() => {
+            window.location.href = 'https://tqqqka.github.io/CVAPTA-11-11/';
+          }, 1500);
+        };
       }
-
-      // Дата запуска CVAPTA 11.11 (11 ноября 00:00 MSK)
-      function getLaunchDate() {
-        const moscowNow = getMoscowTime();
-        const launchDate = new Date(moscowNow);
-        
-        // Если сейчас уже 11 ноября или позже, устанавливаем на следующий год
-        if (moscowNow.getDate() >= 11 && moscowNow.getMonth() === 10) {
-          launchDate.setFullYear(moscowNow.getFullYear() + 1);
-        }
-        
-        launchDate.setMonth(10); // Ноябрь (месяцы 0-11)
-        launchDate.setDate(11); // 11 число
-        launchDate.setHours(0, 0, 0, 0); // 00:00:00
-        
-        return launchDate;
-      }
-
-      // Функция для быстрой отмотки времени (отладочная)
-      function skipCountdown() {
-        console.log('Debug: Skipping countdown');
-        // Устанавливаем время запуска на 1 минуту вперед от текущего
-        const now = getMoscowTime();
-        launchDate = new Date(now.getTime() + 60000); // +1 минута
-        
-        // Показываем уведомление
-        showNotification('Debug mode: Countdown skipped to 1 minute');
-        
-        // Обновляем таймер
-        updateCountdown();
-      }
-
-      // Инициализация даты запуска
-      launchDate = getLaunchDate();
-
-      // Функция обновления таймера обратного отсчета
-      function updateCountdown() {
-        const now = getMoscowTime();
-        const diff = launchDate - now;
-
-        console.log('Moscow time:', now);
-        console.log('Launch time:', launchDate);
-        console.log('Time difference:', diff);
-
-        if (diff <= 0) {
-          // Время пришло!
-          countdownElement.textContent = 'Available Now!';
-          cvapta1111Btn.classList.remove('disabled');
-          cvapta1111Btn.innerHTML = '<i class="fas fa-gift"></i><span>Open Marketplace</span>';
-          cvapta1111Btn.onclick = function() {
-            showLoading();
-            setTimeout(() => {
-              // Новая ссылка на маркетплейс
-              window.location.href = 'https://tqqqka.github.io/CVAPTA-11-11/';
-            }, 1500);
-          };
-          return;
-        }
-
-        // Расчет оставшегося времени
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        // Форматирование времени
-        if (days > 0) {
-          countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        } else {
-          countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-      }
-
-      // Запуск таймера
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
 
       // Обработчики кнопок
       cvaptaBtn.addEventListener('click', function() {
@@ -724,13 +641,8 @@
         }, 1500);
       });
 
-      // Обработчик клавиши F10 для отладки
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'F10' || e.code === 'F10') {
-          e.preventDefault();
-          skipCountdown();
-        }
-      });
+      // Инициализация маркетплейса
+      initializeMarketplace();
 
       // Функции утилиты
       function showLoading() {
