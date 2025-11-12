@@ -254,18 +254,6 @@
       color: rgba(255, 248, 220, 0.9);
     }
 
-    .countdown {
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      padding: 0.5rem 1rem;
-      background: rgba(178, 34, 34, 0.2);
-      border-radius: 10px;
-      border: 1px solid rgba(178, 34, 34, 0.3);
-      text-align: center;
-      color: var(--autumn-yellow);
-    }
-
     /* Стиль кнопок */
     .glass-btn {
       --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
@@ -508,12 +496,6 @@
         margin-bottom: 1.2rem;
       }
 
-      .countdown {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.8rem;
-        margin-bottom: 0.9rem;
-      }
-
       .glass-btn {
         padding: 0.9rem 1.2rem;
         font-size: 0.9rem;
@@ -565,24 +547,6 @@
     </div>
 
     <div class="games-grid">
-      <!-- CVAPTA 11.11 Маркетплейс - теперь первый и разблокированный -->
-      <div class="game-card-container">
-        <div class="game-card">
-          <div class="game-header">
-            <div class="game-icon">🎁</div>
-            <div class="game-title">CVAPTA 11.11</div>
-          </div>
-          <div class="game-description">
-            Telegram digital gifts marketplace! Send and receive amazing digital gifts. Available now!
-          </div>
-          <button class="glass-btn" id="cvapta1111Btn">
-            <i class="fas fa-gift"></i>
-            <span>Open Marketplace</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Оригинальная игра Cvapta - теперь вторая -->
       <div class="game-card-container">
         <div class="game-card">
           <div class="game-header">
@@ -617,21 +581,10 @@
 
       // Элементы DOM
       const cvaptaBtn = document.getElementById('cvaptaBtn');
-      const cvapta1111Btn = document.getElementById('cvapta1111Btn');
       const loadingOverlay = document.getElementById('loadingOverlay');
       const errorText = document.querySelector('.error-text');
       const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
-
-      // Маркетплейс сразу разблокирован
-      function initializeMarketplace() {
-        cvapta1111Btn.onclick = function() {
-          showLoading();
-          setTimeout(() => {
-            window.location.href = 'https://tqqqka.github.io/CVAPTA-11-11/';
-          }, 1500);
-        };
-      }
 
       // Обработчики кнопок
       cvaptaBtn.addEventListener('click', function() {
@@ -640,9 +593,6 @@
           window.location.href = 'https://tqqqka.github.io/capsavta/';
         }, 1500);
       });
-
-      // Инициализация маркетплейса
-      initializeMarketplace();
 
       // Функции утилиты
       function showLoading() {
@@ -669,9 +619,7 @@
       // Добавляем обработчики для анимации кнопок
       document.querySelectorAll('.glass-btn').forEach(btn => {
         btn.addEventListener('touchstart', function() {
-          if (!this.classList.contains('disabled')) {
-            this.style.transform = 'scale(0.98)';
-          }
+          this.style.transform = 'scale(0.98)';
         }, { passive: true });
         
         btn.addEventListener('touchend', function() {
