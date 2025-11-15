@@ -7,19 +7,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* CSS переменные для легкого управления тематикой */
+    /* CSS переменные для синей новогодней темы */
     :root {
-      --primary: #8B4513;
-      --secondary: #D2691E;
-      --dark: #1A1212;
-      --light: #FFF8DC;
-      --autumn-orange: #FF7F50;
-      --autumn-red: #B22222;
-      --autumn-yellow: #DAA520;
-      --autumn-gold: #FFD700;
+      --primary: #1E3A8A;
+      --secondary: #3B82F6;
+      --dark: #0F172A;
+      --light: #F0F9FF;
+      --winter-blue: #60A5FA;
+      --winter-teal: #2DD4BF;
+      --winter-cyan: #22D3EE;
+      --winter-light: #BAE6FD;
       
       /* Glass Morphism Variables */
-      --glass-bg: rgba(44, 30, 30, 0.25);
+      --glass-bg: rgba(30, 41, 59, 0.25);
       --glass-border: rgba(255, 255, 255, 0.1);
       --glass-border-highlight: rgba(255, 255, 255, 0.2);
       --glass-blur: 12px;
@@ -45,7 +45,7 @@
 
     html, body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, var(--dark) 0%, #2A1A1A 50%, #3A2A2A 100%);
+      background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
       color: var(--light);
       min-height: 100vh;
       width: 100%;
@@ -80,7 +80,7 @@
       position: absolute;
       border-radius: 50%;
       filter: blur(30px);
-      opacity: 0.25;
+      opacity: 0.15;
       transform: translateZ(0);
     }
 
@@ -89,7 +89,7 @@
       height: 180px;
       top: -50px;
       left: -50px;
-      background: linear-gradient(135deg, var(--autumn-orange), var(--autumn-red));
+      background: linear-gradient(135deg, var(--winter-blue), var(--winter-cyan));
     }
 
     .circle-2 {
@@ -97,7 +97,7 @@
       height: 150px;
       bottom: -30px;
       right: -30px;
-      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-gold));
+      background: linear-gradient(135deg, var(--winter-teal), var(--winter-light));
     }
 
     .main-content {
@@ -125,13 +125,13 @@
       line-height: 1.1;
       text-align: center;
       margin-bottom: 1rem;
-      text-shadow: 0 0 10px rgba(255, 127, 80, 0.7);
+      text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
     }
 
     .logo {
       font-size: 3rem;
       margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange), var(--autumn-red));
+      background: linear-gradient(135deg, var(--winter-light), var(--winter-blue), var(--winter-cyan));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -142,14 +142,14 @@
 
     @keyframes logoGlow {
       0% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
-      100% { filter: drop-shadow(0 4px 15px rgba(255, 127, 80, 0.7)); }
+      100% { filter: drop-shadow(0 4px 15px rgba(96, 165, 250, 0.5)); }
     }
 
     .subtitle {
       font-size: 0.9rem;
       font-weight: 300;
       opacity: 0.9;
-      color: rgba(255, 248, 220, 0.8);
+      color: rgba(240, 249, 255, 0.8);
       line-height: 1.4;
       max-width: 90%;
       margin: 0 auto;
@@ -195,9 +195,9 @@
       right: 0;
       bottom: 0;
       background: linear-gradient(135deg, 
-        rgba(255, 127, 80, 0.1) 0%, 
-        rgba(218, 165, 32, 0.05) 50%, 
-        rgba(178, 34, 34, 0.1) 100%);
+        rgba(96, 165, 250, 0.1) 0%, 
+        rgba(45, 212, 191, 0.05) 50%, 
+        rgba(34, 211, 238, 0.1) 100%);
       opacity: 0;
       transition: var(--transition);
       border-radius: var(--control-radius);
@@ -238,7 +238,7 @@
     .game-title {
       font-size: 1.3rem;
       font-weight: 600;
-      background: linear-gradient(135deg, var(--autumn-yellow), var(--autumn-orange));
+      background: linear-gradient(135deg, var(--winter-light), var(--winter-blue));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -251,7 +251,7 @@
       line-height: 1.5;
       margin-bottom: 1.5rem;
       opacity: 0.9;
-      color: rgba(255, 248, 220, 0.9);
+      color: rgba(240, 249, 255, 0.9);
     }
 
     /* Стиль кнопок */
@@ -328,12 +328,12 @@
       top: 10px;
       left: 10px;
       right: 10px;
-      background: linear-gradient(135deg, rgba(218, 165, 32, 0.2), rgba(255, 127, 80, 0.2));
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 58, 138, 0.2));
       backdrop-filter: blur(20px);
-      color: var(--autumn-yellow);
+      color: var(--winter-light);
       padding: 0.8rem 1.2rem;
       border-radius: 12px;
-      border: 1px solid rgba(218, 165, 32, 0.3);
+      border: 1px solid rgba(59, 130, 246, 0.3);
       box-shadow: var(--glass-shadow);
       font-size: 0.85rem;
       z-index: 1000;
@@ -390,7 +390,7 @@
       width: 50px;
       height: 50px;
       border: 3px solid rgba(255,255,255,0.1);
-      border-top: 3px solid var(--autumn-yellow);
+      border-top: 3px solid var(--winter-blue);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 1.5rem;
@@ -534,14 +534,14 @@
     <div class="circle circle-2"></div>
   </div>
 
-  <div class="notification-banner hidden" id="comingSoonBanner">
-    <i class="fas fa-rocket"></i>
-    <span id="banner-text">New Game Coming Soon!</span>
+  <div class="notification-banner hidden" id="updateBanner">
+    <i class="fas fa-sync-alt"></i>
+    <span id="banner-text">Cvapta is currently being updated. Please check back soon!</span>
   </div>
 
   <div class="main-content">
     <div class="header">
-      <div class="logo">🎮</div>
+      <div class="logo">❄️</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
       <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
@@ -556,9 +556,9 @@
           <div class="game-description">
             Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
           </div>
-          <button class="glass-btn" id="cvaptaBtn">
-            <i class="fas fa-play"></i>
-            <span>Play Now</span>
+          <button class="glass-btn disabled" id="cvaptaBtn">
+            <i class="fas fa-sync-alt"></i>
+            <span>Updating...</span>
           </button>
         </div>
       </div>
@@ -571,7 +571,7 @@
 
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text">Loading your adventure...</div>
+    <div class="loading-text">Preparing your experience...</div>
     <div class="error-text">Error!</div>
   </div>
 
@@ -583,15 +583,12 @@
       const cvaptaBtn = document.getElementById('cvaptaBtn');
       const loadingOverlay = document.getElementById('loadingOverlay');
       const errorText = document.querySelector('.error-text');
-      const comingSoonBanner = document.getElementById('comingSoonBanner');
+      const updateBanner = document.getElementById('updateBanner');
       const bannerText = document.getElementById('banner-text');
 
       // Обработчики кнопок
       cvaptaBtn.addEventListener('click', function() {
-        showLoading();
-        setTimeout(() => {
-          window.location.href = 'https://tqqqka.github.io/capsavta/';
-        }, 1500);
+        showNotification("Cvapta is currently being updated. We're working hard to bring you an improved experience!");
       });
 
       // Функции утилиты
@@ -609,17 +606,19 @@
 
       function showNotification(message) {
         bannerText.textContent = message;
-        comingSoonBanner.classList.remove('hidden');
+        updateBanner.classList.remove('hidden');
         
         setTimeout(() => {
-          comingSoonBanner.classList.add('hidden');
+          updateBanner.classList.add('hidden');
         }, 3000);
       }
 
       // Добавляем обработчики для анимации кнопок
       document.querySelectorAll('.glass-btn').forEach(btn => {
         btn.addEventListener('touchstart', function() {
-          this.style.transform = 'scale(0.98)';
+          if (!this.classList.contains('disabled')) {
+            this.style.transform = 'scale(0.98)';
+          }
         }, { passive: true });
         
         btn.addEventListener('touchend', function() {
