@@ -328,12 +328,12 @@
       top: 10px;
       left: 10px;
       right: 10px;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 58, 138, 0.2));
+      background: linear-gradient(135deg, rgba(45, 212, 191, 0.2), rgba(96, 165, 250, 0.2));
       backdrop-filter: blur(20px);
       color: var(--winter-light);
       padding: 0.8rem 1.2rem;
       border-radius: 12px;
-      border: 1px solid rgba(59, 130, 246, 0.3);
+      border: 1px solid rgba(96, 165, 250, 0.3);
       box-shadow: var(--glass-shadow);
       font-size: 0.85rem;
       z-index: 1000;
@@ -534,9 +534,9 @@
     <div class="circle circle-2"></div>
   </div>
 
-  <div class="notification-banner hidden" id="updateBanner">
-    <i class="fas fa-sync-alt"></i>
-    <span id="banner-text">Cvapta is currently being updated. Please check back soon!</span>
+  <div class="notification-banner hidden" id="comingSoonBanner">
+    <i class="fas fa-rocket"></i>
+    <span id="banner-text">New Game Coming Soon!</span>
   </div>
 
   <div class="main-content">
@@ -556,9 +556,9 @@
           <div class="game-description">
             Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
           </div>
-          <button class="glass-btn disabled" id="cvaptaBtn">
-            <i class="fas fa-sync-alt"></i>
-            <span>Updating...</span>
+          <button class="glass-btn" id="cvaptaBtn">
+            <i class="fas fa-play"></i>
+            <span>Play Now</span>
           </button>
         </div>
       </div>
@@ -571,7 +571,7 @@
 
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text">Preparing your experience...</div>
+    <div class="loading-text">Loading your adventure...</div>
     <div class="error-text">Error!</div>
   </div>
 
@@ -583,12 +583,15 @@
       const cvaptaBtn = document.getElementById('cvaptaBtn');
       const loadingOverlay = document.getElementById('loadingOverlay');
       const errorText = document.querySelector('.error-text');
-      const updateBanner = document.getElementById('updateBanner');
+      const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
 
       // Обработчики кнопок
       cvaptaBtn.addEventListener('click', function() {
-        showNotification("Cvapta is currently being updated. We're working hard to bring you an improved experience!");
+        showLoading();
+        setTimeout(() => {
+          window.location.href = 'https://tqqqka.github.io/capsavta/';
+        }, 1500);
       });
 
       // Функции утилиты
@@ -606,19 +609,17 @@
 
       function showNotification(message) {
         bannerText.textContent = message;
-        updateBanner.classList.remove('hidden');
+        comingSoonBanner.classList.remove('hidden');
         
         setTimeout(() => {
-          updateBanner.classList.add('hidden');
+          comingSoonBanner.classList.add('hidden');
         }, 3000);
       }
 
       // Добавляем обработчики для анимации кнопок
       document.querySelectorAll('.glass-btn').forEach(btn => {
         btn.addEventListener('touchstart', function() {
-          if (!this.classList.contains('disabled')) {
-            this.style.transform = 'scale(0.98)';
-          }
+          this.style.transform = 'scale(0.98)';
         }, { passive: true });
         
         btn.addEventListener('touchend', function() {
