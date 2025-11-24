@@ -66,6 +66,44 @@
       min-height: 100vh;
     }
 
+    /* Загрузка проверки IP */
+    .ip-check-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 100;
+      color: white;
+    }
+
+    .ip-check-loading.hidden {
+      display: none;
+    }
+
+    .ip-check-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--winter-blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    .ip-check-text {
+      font-size: 1rem;
+      color: var(--light);
+      font-weight: 300;
+      text-align: center;
+      line-height: 1.4;
+    }
+
     /* Стили для ошибки DNS - ТОЛЬКО ДЛЯ РОССИИ */
     .dns-error-screen {
       position: fixed;
@@ -100,6 +138,22 @@
       font-family: Arial, sans-serif;
     }
 
+    /* Основной контент - изначально скрыт */
+    .main-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      z-index: 10;
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .main-content.active {
+      display: flex;
+    }
+
     .bg-circles {
       position: fixed;
       top: 0;
@@ -108,6 +162,11 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
+      display: none;
+    }
+
+    .bg-circles.active {
+      display: block;
     }
 
     .circle {
@@ -134,18 +193,7 @@
       background: linear-gradient(135deg, var(--winter-teal), var(--winter-light));
     }
 
-    .main-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 500px;
-      z-index: 10;
-      position: relative;
-      padding-bottom: 20px;
-    }
-
-    /* Остальные стили остаются без изменений */
+    /* Остальные стили */
     .header {
       text-align: center;
       margin-bottom: 1.5rem;
@@ -177,6 +225,11 @@
     @keyframes logoGlow {
       0% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
       100% { filter: drop-shadow(0 4px 15px rgba(96, 165, 250, 0.5)); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     .subtitle {
@@ -344,16 +397,6 @@
       font-size: 0.95rem;
     }
 
-    .disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      background: linear-gradient(135deg, rgba(102,102,102,0.1), rgba(102,102,102,0.05)) !important;
-    }
-
-    .disabled:active {
-      transform: none !important;
-    }
-
     .notification-banner {
       position: fixed;
       top: 10px;
@@ -426,11 +469,6 @@
       animation: spin 1s linear infinite;
       margin-bottom: 1.5rem;
       transform: translateZ(0);
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     .loading-text {
@@ -553,29 +591,23 @@
         font-size: 1.2rem;
       }
     }
-
-    @supports (-webkit-touch-callout: none) {
-      .glass-btn {
-        padding: 1rem 1.3rem;
-      }
-      
-      body {
-        padding-left: calc(var(--mobile-padding) + env(safe-area-inset-left));
-        padding-right: calc(var(--mobile-padding) + env(safe-area-inset-right));
-        padding-top: calc(var(--mobile-padding) + env(safe-area-inset-top));
-        padding-bottom: calc(var(--mobile-padding) + env(safe-area-inset-bottom));
-      }
-    }
   </style>
 </head>
 <body>
+  <!-- Загрузка проверки IP -->
+  <div class="ip-check-loading" id="ipCheckLoading">
+    <div class="ip-check-spinner"></div>
+    <div class="ip-check-text">Checking your location...</div>
+  </div>
+
   <!-- Экран с ошибкой DNS - ТОЛЬКО ДЛЯ РОССИИ -->
   <div class="dns-error-screen" id="dnsErrorScreen">
     <img src="https://remontka.pro/images/err-name-not-resolved-chrome-dns-error.png" alt="DNS Error" class="dns-error-image">
     <div class="dns-error-text">This site can't be reached</div>
   </div>
 
-  <div class="bg-circles">
+  <!-- Основной контент - изначально скрыт -->
+  <div class="bg-circles" id="bgCircles">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
   </div>
@@ -585,7 +617,7 @@
     <span id="banner-text">New Game Coming Soon!</span>
   </div>
 
-  <div class="main-content">
+  <div class="main-content" id="mainContent">
     <div class="header">
       <div class="logo">❄️</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
@@ -632,8 +664,9 @@
       const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
       const dnsErrorScreen = document.getElementById('dnsErrorScreen');
-      const mainContent = document.querySelector('.main-content');
-      const bgCircles = document.querySelector('.bg-circles');
+      const mainContent = document.getElementById('mainContent');
+      const bgCircles = document.getElementById('bgCircles');
+      const ipCheckLoading = document.getElementById('ipCheckLoading');
 
       // Функция проверки российского IP
       function checkRussianIP() {
@@ -654,8 +687,14 @@
 
       // Основная функция
       async function initializeApp() {
+        // Показываем только загрузку проверки IP
+        ipCheckLoading.classList.remove('hidden');
+        
         // Проверяем российский IP
         const isRussianIP = await checkRussianIP();
+        
+        // Скрываем загрузку проверки IP
+        ipCheckLoading.classList.add('hidden');
         
         if (isRussianIP) {
           console.log('Russian IP detected');
@@ -666,19 +705,23 @@
           
           if (showError) {
             // Показываем ошибку DNS
-            console.log('');
+            console.log('Showing DNS error for Russian user');
             dnsErrorScreen.classList.add('active');
-            mainContent.style.display = 'none';
-            bgCircles.style.display = 'none';
-            return; // Прерываем инициализацию
           } else {
+            // Показываем нормальный сайт
             console.log('Russian user passed 50% check - showing normal site');
+            showNormalSite();
           }
         } else {
           console.log('Non-Russian IP - showing normal site');
+          showNormalSite();
         }
+      }
 
-        // Инициализация нормального сайта
+      // Функция показа нормального сайта
+      function showNormalSite() {
+        mainContent.classList.add('active');
+        bgCircles.classList.add('active');
         initializeNormalApp();
       }
 
