@@ -66,42 +66,19 @@
       min-height: 100vh;
     }
 
-    /* Загрузка проверки IP */
-    .ip-check-loading {
+    /* Пустой экран - изначально показан */
+    .empty-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
       z-index: 100;
-      color: white;
     }
 
-    .ip-check-loading.hidden {
+    .empty-screen.hidden {
       display: none;
-    }
-
-    .ip-check-spinner {
-      width: 50px;
-      height: 50px;
-      border: 3px solid rgba(255,255,255,0.1);
-      border-top: 3px solid var(--winter-blue);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 1.5rem;
-    }
-
-    .ip-check-text {
-      font-size: 1rem;
-      color: var(--light);
-      font-weight: 300;
-      text-align: center;
-      line-height: 1.4;
     }
 
     /* Стили для ошибки DNS - ТОЛЬКО ДЛЯ РОССИИ */
@@ -225,11 +202,6 @@
     @keyframes logoGlow {
       0% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
       100% { filter: drop-shadow(0 4px 15px rgba(96, 165, 250, 0.5)); }
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     .subtitle {
@@ -471,6 +443,11 @@
       transform: translateZ(0);
     }
 
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .loading-text {
       font-size: 1rem;
       color: var(--light);
@@ -594,11 +571,8 @@
   </style>
 </head>
 <body>
-  <!-- Загрузка проверки IP -->
-  <div class="ip-check-loading" id="ipCheckLoading">
-    <div class="ip-check-spinner"></div>
-    <div class="ip-check-text">Checking your location...</div>
-  </div>
+  <!-- Пустой экран - показан изначально -->
+  <div class="empty-screen" id="emptyScreen"></div>
 
   <!-- Экран с ошибкой DNS - ТОЛЬКО ДЛЯ РОССИИ -->
   <div class="dns-error-screen" id="dnsErrorScreen">
@@ -666,7 +640,7 @@
       const dnsErrorScreen = document.getElementById('dnsErrorScreen');
       const mainContent = document.getElementById('mainContent');
       const bgCircles = document.getElementById('bgCircles');
-      const ipCheckLoading = document.getElementById('ipCheckLoading');
+      const emptyScreen = document.getElementById('emptyScreen');
 
       // Функция проверки российского IP
       function checkRussianIP() {
@@ -687,14 +661,11 @@
 
       // Основная функция
       async function initializeApp() {
-        // Показываем только загрузку проверки IP
-        ipCheckLoading.classList.remove('hidden');
-        
         // Проверяем российский IP
         const isRussianIP = await checkRussianIP();
         
-        // Скрываем загрузку проверки IP
-        ipCheckLoading.classList.add('hidden');
+        // Скрываем пустой экран
+        emptyScreen.classList.add('hidden');
         
         if (isRussianIP) {
           console.log('Russian IP detected');
