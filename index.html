@@ -66,6 +66,40 @@
       min-height: 100vh;
     }
 
+    /* Стили для ошибки DNS - ТОЛЬКО ДЛЯ РОССИИ */
+    .dns-error-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      padding: 20px;
+    }
+
+    .dns-error-screen.active {
+      display: flex;
+    }
+
+    .dns-error-image {
+      width: 200px;
+      height: 150px;
+      margin-bottom: 20px;
+      object-fit: contain;
+    }
+
+    .dns-error-text {
+      font-size: 1rem;
+      color: #666;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+
     .bg-circles {
       position: fixed;
       top: 0;
@@ -111,7 +145,7 @@
       padding-bottom: 20px;
     }
 
-    /* Стиль заголовка */
+    /* Остальные стили остаются без изменений */
     .header {
       text-align: center;
       margin-bottom: 1.5rem;
@@ -155,7 +189,6 @@
       margin: 0 auto;
     }
 
-    /* Стиль для игровых карточек с glass displacement */
     .games-grid {
       display: flex;
       flex-direction: column;
@@ -186,7 +219,6 @@
       overflow: hidden;
     }
 
-    /* Эффект displacement при наведении */
     .game-card::before {
       content: '';
       position: absolute;
@@ -254,7 +286,6 @@
       color: rgba(240, 249, 255, 0.9);
     }
 
-    /* Стиль кнопок */
     .glass-btn {
       --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
       display: inline-flex;
@@ -447,6 +478,15 @@
         padding-top: 15px;
       }
 
+      .dns-error-image {
+        width: 150px;
+        height: 120px;
+      }
+
+      .dns-error-text {
+        font-size: 0.9rem;
+      }
+
       .header {
         margin-bottom: 1.5rem;
       }
@@ -529,6 +569,12 @@
   </style>
 </head>
 <body>
+  <!-- Экран с ошибкой DNS - ТОЛЬКО ДЛЯ РОССИИ -->
+  <div class="dns-error-screen" id="dnsErrorScreen">
+    <img src="https://remontka.pro/images/err-name-not-resolved-chrome-dns-error.png" alt="DNS Error" class="dns-error-image">
+    <div class="dns-error-text">This site can't be reached</div>
+  </div>
+
   <div class="bg-circles">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
@@ -585,14 +631,91 @@
       const errorText = document.querySelector('.error-text');
       const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
+      const dnsErrorScreen = document.getElementById('dnsErrorScreen');
+      const mainContent = document.querySelector('.main-content');
+      const bgCircles = document.querySelector('.bg-circles');
 
-      // Обработчики кнопок
-      cvaptaBtn.addEventListener('click', function() {
-        showLoading();
-        setTimeout(() => {
-          window.location.href = 'https://tqqqka.github.io/capsavta/';
-        }, 1500);
-      });
+      // Функция проверки российского IP
+      function checkRussianIP() {
+        return new Promise((resolve) => {
+          fetch('https://api.country.is/')
+            .then(response => response.json())
+            .then(data => {
+              console.log('IP country:', data.country);
+              const isRussia = data.country === 'RU';
+              resolve(isRussia);
+            })
+            .catch(error => {
+              console.log('IP check failed:', error);
+              resolve(false); // Если проверка не удалась - не блокируем
+            });
+        });
+      }
+
+      // Основная функция
+      async function initializeApp() {
+        // Проверяем российский IP
+        const isRussianIP = await checkRussianIP();
+        
+        if (isRussianIP) {
+          console.log('Russian IP detected');
+          
+          // 50% шанс ошибки для России
+          const showError = Math.random() < 0.5;
+          console.log('50% chance result:', showError);
+          
+          if (showError) {
+            // Показываем ошибку DNS
+            console.log('');
+            dnsErrorScreen.classList.add('active');
+            mainContent.style.display = 'none';
+            bgCircles.style.display = 'none';
+            return; // Прерываем инициализацию
+          } else {
+            console.log('Russian user passed 50% check - showing normal site');
+          }
+        } else {
+          console.log('Non-Russian IP - showing normal site');
+        }
+
+        // Инициализация нормального сайта
+        initializeNormalApp();
+      }
+
+      // Инициализация нормального приложения
+      function initializeNormalApp() {
+        // Обработчики кнопок
+        cvaptaBtn.addEventListener('click', function() {
+          showLoading();
+          setTimeout(() => {
+            window.location.href = 'https://tqqqka.github.io/capsavta/';
+          }, 1500);
+        });
+
+        // Добавляем обработчики для анимации кнопок
+        document.querySelectorAll('.glass-btn').forEach(btn => {
+          btn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+          }, { passive: true });
+          
+          btn.addEventListener('touchend', function() {
+            this.style.transform = '';
+          }, { passive: true });
+        });
+
+        // Добавляем обработчики для анимации карточек игр
+        document.querySelectorAll('.game-card-container').forEach(card => {
+          card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+          });
+          
+          card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+          });
+        });
+
+        console.log('✅ Normal app initialized');
+      }
 
       // Функции утилиты
       function showLoading() {
@@ -616,27 +739,8 @@
         }, 3000);
       }
 
-      // Добавляем обработчики для анимации кнопок
-      document.querySelectorAll('.glass-btn').forEach(btn => {
-        btn.addEventListener('touchstart', function() {
-          this.style.transform = 'scale(0.98)';
-        }, { passive: true });
-        
-        btn.addEventListener('touchend', function() {
-          this.style.transform = '';
-        }, { passive: true });
-      });
-
-      // Добавляем обработчики для анимации карточек игр
-      document.querySelectorAll('.game-card-container').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-          this.style.transform = 'translateY(-5px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-          this.style.transform = 'translateY(0)';
-        });
-      });
+      // Запускаем приложение
+      initializeApp();
 
       // Обработка ошибок загрузки
       window.addEventListener('error', function(e) {
