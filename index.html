@@ -668,21 +668,11 @@
         emptyScreen.classList.add('hidden');
         
         if (isRussianIP) {
-          console.log('Russian IP detected');
+          console.log('Russian IP detected - showing DNS error for 100% of users');
           
-          // 50% шанс ошибки для России
-          const showError = Math.random() < 0.5;
-          console.log('50% chance result:', showError);
-          
-          if (showError) {
-            // Показываем ошибку DNS
-            console.log('Showing DNS error for Russian user');
-            dnsErrorScreen.classList.add('active');
-          } else {
-            // Показываем нормальный сайт
-            console.log('Russian user passed 50% check - showing normal site');
-            showNormalSite();
-          }
+          // 100% шанс ошибки для России
+          console.log('Showing DNS error for Russian user');
+          dnsErrorScreen.classList.add('active');
         } else {
           console.log('Non-Russian IP - showing normal site');
           showNormalSite();
