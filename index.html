@@ -81,40 +81,6 @@
       display: none;
     }
 
-    /* Стили для ошибки DNS - ТОЛЬКО ДЛЯ РОССИИ */
-    .dns-error-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      padding: 20px;
-    }
-
-    .dns-error-screen.active {
-      display: flex;
-    }
-
-    .dns-error-image {
-      width: 200px;
-      height: 150px;
-      margin-bottom: 20px;
-      object-fit: contain;
-    }
-
-    .dns-error-text {
-      font-size: 1rem;
-      color: #666;
-      text-align: center;
-      font-family: Arial, sans-serif;
-    }
-
     /* Основной контент - изначально скрыт */
     .main-content {
       display: none;
@@ -269,11 +235,63 @@
       transition: transform 0.1s ease;
     }
 
+    /* Стили для заблокированной игры */
+    .game-card.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+      position: relative;
+    }
+
+    .game-card.locked::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(2px);
+      border-radius: var(--control-radius);
+      z-index: 1;
+    }
+
+    .game-card.locked:hover::before {
+      opacity: 0;
+    }
+
+    .game-card.locked .glass-btn {
+      background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.1));
+      color: rgba(240, 249, 255, 0.5);
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .game-card.locked .glass-btn:hover::before {
+      left: -100%;
+    }
+
+    .game-card.locked .glass-btn:active {
+      transform: scale(1);
+    }
+
+    .lock-icon {
+      position: absolute;
+      top: 50%;
+      right: 1.5rem;
+      transform: translateY(-50%);
+      color: var(--winter-light);
+      font-size: 1.5rem;
+      z-index: 2;
+      opacity: 0.8;
+    }
+
     .game-header {
       display: flex;
       align-items: center;
       gap: 1rem;
       margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
     }
 
     .game-icon {
@@ -292,6 +310,11 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
+    .game-icon.question {
+      background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.1));
+      color: rgba(240, 249, 255, 0.5);
+    }
+
     .game-title {
       font-size: 1.3rem;
       font-weight: 600;
@@ -303,12 +326,26 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
+    .game-title.question {
+      background: linear-gradient(135deg, rgba(240, 249, 255, 0.5), rgba(160, 174, 192, 0.5));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
     .game-description {
       font-size: 0.85rem;
       line-height: 1.5;
       margin-bottom: 1.5rem;
       opacity: 0.9;
       color: rgba(240, 249, 255, 0.9);
+      position: relative;
+      z-index: 2;
+    }
+
+    .game-description.question {
+      color: rgba(240, 249, 255, 0.6);
+      font-style: italic;
     }
 
     .glass-btn {
@@ -338,6 +375,7 @@
       transform: translateZ(0);
       -webkit-user-select: none;
       user-select: none;
+      z-index: 2;
     }
 
     .glass-btn::before {
@@ -493,15 +531,6 @@
         padding-top: 15px;
       }
 
-      .dns-error-image {
-        width: 150px;
-        height: 120px;
-      }
-
-      .dns-error-text {
-        font-size: 0.9rem;
-      }
-
       .header {
         margin-bottom: 1.5rem;
       }
@@ -567,18 +596,17 @@
       .error-text {
         font-size: 1.2rem;
       }
+
+      .lock-icon {
+        right: 1rem;
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Пустой экран - показан изначально -->
   <div class="empty-screen" id="emptyScreen"></div>
-
-  <!-- Экран с ошибкой DNS - ТОЛЬКО ДЛЯ РОССИИ -->
-  <div class="dns-error-screen" id="dnsErrorScreen">
-    <img src="https://remontka.pro/images/err-name-not-resolved-chrome-dns-error.png" alt="DNS Error" class="dns-error-image">
-    <div class="dns-error-text">This site can't be reached</div>
-  </div>
 
   <!-- Основной контент - изначально скрыт -->
   <div class="bg-circles" id="bgCircles">
@@ -599,6 +627,7 @@
     </div>
 
     <div class="games-grid">
+      <!-- Игра Cvapta -->
       <div class="game-card-container">
         <div class="game-card">
           <div class="game-header">
@@ -612,6 +641,26 @@
             <i class="fas fa-play"></i>
             <span>Play Now</span>
           </button>
+        </div>
+      </div>
+
+      <!-- Заблокированная игра ??? -->
+      <div class="game-card-container">
+        <div class="game-card locked">
+          <div class="game-header">
+            <div class="game-icon question">❓</div>
+            <div class="game-title question">???</div>
+          </div>
+          <div class="game-description question">
+            ???
+          </div>
+          <button class="glass-btn" id="lockedGameBtn" disabled>
+            <i class="fas fa-lock"></i>
+            <span>Locked</span>
+          </button>
+          <div class="lock-icon">
+            <i class="fas fa-lock"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -633,50 +682,20 @@
 
       // Элементы DOM
       const cvaptaBtn = document.getElementById('cvaptaBtn');
+      const lockedGameBtn = document.getElementById('lockedGameBtn');
       const loadingOverlay = document.getElementById('loadingOverlay');
       const errorText = document.querySelector('.error-text');
       const comingSoonBanner = document.getElementById('comingSoonBanner');
       const bannerText = document.getElementById('banner-text');
-      const dnsErrorScreen = document.getElementById('dnsErrorScreen');
       const mainContent = document.getElementById('mainContent');
       const bgCircles = document.getElementById('bgCircles');
       const emptyScreen = document.getElementById('emptyScreen');
 
-      // Функция проверки российского IP
-      function checkRussianIP() {
-        return new Promise((resolve) => {
-          fetch('https://api.country.is/')
-            .then(response => response.json())
-            .then(data => {
-              console.log('IP country:', data.country);
-              const isRussia = data.country === 'RU';
-              resolve(isRussia);
-            })
-            .catch(error => {
-              console.log('IP check failed:', error);
-              resolve(false); // Если проверка не удалась - не блокируем
-            });
-        });
-      }
-
       // Основная функция
       async function initializeApp() {
-        // Проверяем российский IP
-        const isRussianIP = await checkRussianIP();
-        
-        // Скрываем пустой экран
+        // Скрываем пустой экран и показываем сайт всем пользователям
         emptyScreen.classList.add('hidden');
-        
-        if (isRussianIP) {
-          console.log('Russian IP detected - showing DNS error for 100% of users');
-          
-          // 100% шанс ошибки для России
-          console.log('Showing DNS error for Russian user');
-          dnsErrorScreen.classList.add('active');
-        } else {
-          console.log('Non-Russian IP - showing normal site');
-          showNormalSite();
-        }
+        showNormalSite();
       }
 
       // Функция показа нормального сайта
@@ -696,8 +715,15 @@
           }, 1500);
         });
 
+        // Обработчик для заблокированной игры
+        lockedGameBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          showNotification('This game is currently locked. Coming soon!');
+        });
+
         // Добавляем обработчики для анимации кнопок
-        document.querySelectorAll('.glass-btn').forEach(btn => {
+        document.querySelectorAll('.glass-btn:not(:disabled)').forEach(btn => {
           btn.addEventListener('touchstart', function() {
             this.style.transform = 'scale(0.98)';
           }, { passive: true });
@@ -710,7 +736,9 @@
         // Добавляем обработчики для анимации карточек игр
         document.querySelectorAll('.game-card-container').forEach(card => {
           card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
+            if (!this.querySelector('.game-card.locked')) {
+              this.style.transform = 'translateY(-5px)';
+            }
           });
           
           card.addEventListener('mouseleave', function() {
@@ -718,7 +746,7 @@
           });
         });
 
-        console.log('✅ Normal app initialized');
+        console.log('✅ App initialized for all users');
       }
 
       // Функции утилиты
