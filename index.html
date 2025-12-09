@@ -17,6 +17,12 @@
       --winter-teal: #2DD4BF;
       --winter-cyan: #22D3EE;
       --winter-light: #BAE6FD;
+      --frog-green: #22C55E;
+      --frog-light-green: #86EFAC;
+      --frog-dark-green: #16A34A;
+      --gift-gold: #FFD700;
+      --gift-red: #FF6B6B;
+      --gift-green: #51CF66;
       
       /* Glass Morphism Variables */
       --glass-bg: rgba(30, 41, 59, 0.25);
@@ -30,7 +36,7 @@
       
       /* Мобильные отступы */
       --mobile-padding: 12px;
-      --mobile-margin: 8px;
+      --mobile-margin: 6px;
     }
 
     /* Базовый сброс стилей с оптимизацией для мобильных */
@@ -41,6 +47,10 @@
       -webkit-tap-highlight-color: transparent;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     html, body {
@@ -64,6 +74,7 @@
       padding: var(--mobile-padding);
       position: relative;
       min-height: 100vh;
+      overflow: hidden;
     }
 
     /* Пустой экран - изначально показан */
@@ -79,6 +90,67 @@
 
     .empty-screen.hidden {
       display: none;
+    }
+
+    /* СНЕЖИНКИ - ИСПРАВЛЕННАЯ ВЕРСИЯ */
+    .snowflakes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .snowflake {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      filter: blur(0.5px);
+      animation-name: snowfall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      will-change: transform, opacity;
+    }
+
+    /* Разные размеры снежинок */
+    .snowflake.small {
+      width: 4px;
+      height: 4px;
+    }
+
+    .snowflake.medium {
+      width: 6px;
+      height: 6px;
+      opacity: 0.9;
+    }
+
+    .snowflake.large {
+      width: 8px;
+      height: 8px;
+      opacity: 1;
+      filter: blur(0px);
+    }
+
+    /* Анимация падения снежинок - ИСПРАВЛЕННАЯ */
+    @keyframes snowfall {
+      0% {
+        transform: translateY(-100px) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(100vh) translateX(20px) rotate(360deg);
+        opacity: 0;
+      }
     }
 
     /* Основной контент - изначально скрыт */
@@ -237,52 +309,62 @@
 
     /* Стили для заблокированной игры */
     .game-card.locked {
-      opacity: 0.6;
+      opacity: 0.7;
       cursor: not-allowed;
       position: relative;
     }
 
-    .game-card.locked::after {
+    /* Слой блюра поверх карточки */
+    .game-card.blurred::before {
+      opacity: 0;
+    }
+
+    .game-card.blurred::after {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(15, 23, 42, 0.5);
-      backdrop-filter: blur(2px);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(10px);
       border-radius: var(--control-radius);
       z-index: 1;
     }
 
-    .game-card.locked:hover::before {
-      opacity: 0;
+    /* Размытие содержимого внутри карточки */
+    .game-card.blurred .game-header,
+    .game-card.blurred .game-description,
+    .game-card.blurred .glass-btn {
+      filter: blur(4px);
+      -webkit-filter: blur(4px);
+      opacity: 0.6;
     }
 
-    .game-card.locked .glass-btn {
-      background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.1));
-      color: rgba(240, 249, 255, 0.5);
-      cursor: not-allowed;
-      border-color: rgba(255, 255, 255, 0.05);
-    }
-
-    .game-card.locked .glass-btn:hover::before {
-      left: -100%;
-    }
-
-    .game-card.locked .glass-btn:active {
-      transform: scale(1);
-    }
-
+    /* ЗАМОК ПОСЕРЕДИНЕ - БОЛЬШОЙ */
     .lock-icon {
       position: absolute;
       top: 50%;
-      right: 1.5rem;
-      transform: translateY(-50%);
+      left: 50%;
+      transform: translate(-50%, -50%);
       color: var(--winter-light);
-      font-size: 1.5rem;
-      z-index: 2;
-      opacity: 0.8;
+      font-size: 3rem;
+      z-index: 3;
+      opacity: 0.9;
+      text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+      animation: lockPulse 2s infinite alternate;
+    }
+
+    @keyframes lockPulse {
+      0% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+      }
+      100% { 
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 1;
+      }
     }
 
     .game-header {
@@ -310,24 +392,44 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    .game-icon.question {
-      background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.1));
-      color: rgba(240, 249, 255, 0.5);
+    .game-icon.frog {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
+      color: var(--frog-green);
+      animation: frogPulse 3s infinite alternate;
+    }
+
+    @keyframes frogPulse {
+      0% { 
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      }
+      100% { 
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+      }
+    }
+
+    .game-icon.gift {
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 215, 0, 0.1));
+      color: var(--gift-gold);
     }
 
     .game-title {
       font-size: 1.3rem;
       font-weight: 600;
-      background: linear-gradient(135deg, var(--winter-light), var(--winter-blue));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
       line-height: 1.2;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
-    .game-title.question {
-      background: linear-gradient(135deg, rgba(240, 249, 255, 0.5), rgba(160, 174, 192, 0.5));
+    .game-title.frog {
+      background: linear-gradient(135deg, var(--frog-light-green), var(--frog-green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .game-title.gift {
+      background: linear-gradient(135deg, var(--gift-gold), var(--gift-red));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -338,14 +440,30 @@
       line-height: 1.5;
       margin-bottom: 1.5rem;
       opacity: 0.9;
-      color: rgba(240, 249, 255, 0.9);
       position: relative;
       z-index: 2;
     }
 
-    .game-description.question {
-      color: rgba(240, 249, 255, 0.6);
-      font-style: italic;
+    .game-description.frog {
+      color: rgba(240, 249, 255, 0.9);
+      background: linear-gradient(135deg, 
+        rgba(34, 197, 94, 0.1), 
+        rgba(134, 239, 172, 0.05), 
+        rgba(22, 163, 74, 0.08));
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--frog-green);
+    }
+
+    .game-description.gift {
+      color: rgba(240, 249, 255, 0.9);
+      background: linear-gradient(135deg, 
+        rgba(255, 107, 107, 0.1), 
+        rgba(255, 215, 0, 0.05), 
+        rgba(81, 207, 102, 0.08));
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--gift-gold);
     }
 
     .glass-btn {
@@ -378,6 +496,16 @@
       z-index: 2;
     }
 
+    .glass-btn.frog {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .glass-btn.gift {
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 215, 0, 0.05));
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
     .glass-btn::before {
       content: '';
       position: absolute;
@@ -405,40 +533,6 @@
 
     .glass-btn i {
       font-size: 0.95rem;
-    }
-
-    .notification-banner {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      background: linear-gradient(135deg, rgba(45, 212, 191, 0.2), rgba(96, 165, 250, 0.2));
-      backdrop-filter: blur(20px);
-      color: var(--winter-light);
-      padding: 0.8rem 1.2rem;
-      border-radius: 12px;
-      border: 1px solid rgba(96, 165, 250, 0.3);
-      box-shadow: var(--glass-shadow);
-      font-size: 0.85rem;
-      z-index: 1000;
-      animation: slideDown 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-align: center;
-      transform: translateZ(0);
-      will-change: transform, opacity;
-    }
-
-    @keyframes slideDown {
-      from { 
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to { 
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .hidden { 
@@ -474,7 +568,7 @@
       width: 50px;
       height: 50px;
       border: 3px solid rgba(255,255,255,0.1);
-      border-top: 3px solid var(--winter-blue);
+      border-top: 3px solid var(--frog-green);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 1.5rem;
@@ -517,11 +611,24 @@
       display: none;
     }
 
+    /* Защита от копирования */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999999;
+      pointer-events: none;
+      user-select: none;
+    }
+
     /* Адаптивность для мобильных */
     @media (max-width: 480px) {
       :root {
         --mobile-padding: 10px;
-        --mobile-margin: 6px;
+        --mobile-margin: 4px;
         --glass-blur: 10px;
         --control-radius: 14px;
       }
@@ -532,7 +639,7 @@
       }
 
       .header {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2rem;
       }
 
       .logo {
@@ -552,7 +659,7 @@
       }
 
       .game-card-container {
-        margin: 0 2px;
+        margin: 0 1px;
       }
 
       .game-card {
@@ -561,7 +668,7 @@
 
       .game-header {
         gap: 0.8rem;
-        margin-bottom: 0.9rem;
+        margin-bottom: 0.8rem;
       }
 
       .game-icon {
@@ -585,21 +692,63 @@
         font-size: 0.9rem;
       }
 
-      .notification-banner {
-        top: 8px;
-        left: 8px;
-        right: 8px;
-        padding: 0.7rem 1rem;
-        font-size: 0.8rem;
-      }
-
       .error-text {
         font-size: 1.2rem;
       }
 
       .lock-icon {
-        right: 1rem;
-        font-size: 1.2rem;
+        font-size: 2.5rem;
+      }
+
+      /* Меньше снежинок на мобильных */
+      .snowflake {
+        opacity: 0.6;
+      }
+      
+      .snowflake.small {
+        width: 3px;
+        height: 3px;
+      }
+
+      .snowflake.medium {
+        width: 5px;
+        height: 5px;
+      }
+
+      .snowflake.large {
+        width: 7px;
+        height: 7px;
+      }
+    }
+
+    /* Для очень маленьких экранов */
+    @media (max-width: 320px) {
+      :root {
+        --mobile-padding: 8px;
+        --mobile-margin: 3px;
+      }
+
+      .game-card {
+        padding: 1rem;
+      }
+
+      .game-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5rem;
+      }
+
+      .game-title {
+        font-size: 1rem;
+      }
+
+      .game-description {
+        font-size: 0.75rem;
+        padding: 0.6rem;
+      }
+
+      .lock-icon {
+        font-size: 2rem;
       }
     }
   </style>
@@ -608,15 +757,13 @@
   <!-- Пустой экран - показан изначально -->
   <div class="empty-screen" id="emptyScreen"></div>
 
+  <!-- СНЕЖИНКИ -->
+  <div class="snowflakes" id="snowflakes"></div>
+
   <!-- Основной контент - изначально скрыт -->
   <div class="bg-circles" id="bgCircles">
     <div class="circle circle-1"></div>
     <div class="circle circle-2"></div>
-  </div>
-
-  <div class="notification-banner hidden" id="comingSoonBanner">
-    <i class="fas fa-rocket"></i>
-    <span id="banner-text">New Game Coming Soon!</span>
   </div>
 
   <div class="main-content" id="mainContent">
@@ -627,37 +774,38 @@
     </div>
 
     <div class="games-grid">
-      <!-- Игра Cvapta -->
+      <!-- Игра Cvapta - ЗЕЛЁНАЯ ТЕМА -->
       <div class="game-card-container">
         <div class="game-card">
           <div class="game-header">
-            <div class="game-icon">🐸</div>
-            <div class="game-title">Cvapta</div>
+            <div class="game-icon frog">🐸</div>
+            <div class="game-title frog">Cvapta</div>
           </div>
-          <div class="game-description">
-            Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises!
+          <div class="game-description frog">
+            Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises in this enchanting adventure!
           </div>
-          <button class="glass-btn" id="cvaptaBtn">
+          <button class="glass-btn frog" id="cvaptaBtn">
             <i class="fas fa-play"></i>
             <span>Play Now</span>
           </button>
         </div>
       </div>
 
-      <!-- Заблокированная игра ??? -->
+      <!-- Игра Gift Hero - ЗАБЛЮРЕННАЯ С БОЛЬШИМ ЗАМКОМ ПОСЕРЕДИНЕ -->
       <div class="game-card-container">
-        <div class="game-card locked">
+        <div class="game-card locked blurred" id="giftHeroCard">
           <div class="game-header">
-            <div class="game-icon question">❓</div>
-            <div class="game-title question">???</div>
+            <div class="game-icon gift">🎁</div>
+            <div class="game-title gift">Gift Hero</div>
           </div>
-          <div class="game-description question">
-            ???
+          <div class="game-description gift">
+            Move clockwise and counterclockwise, dodge the Wrath's attacks. Collect gifts in this intense circular survival challenge!
           </div>
-          <button class="glass-btn" id="lockedGameBtn" disabled>
+          <button class="glass-btn gift" id="giftHeroBtn" disabled>
             <i class="fas fa-lock"></i>
-            <span>Locked</span>
+            <span>Coming Soon</span>
           </button>
+          <!-- БОЛЬШОЙ ЗАМОК ПОСЕРЕДИНЕ -->
           <div class="lock-icon">
             <i class="fas fa-lock"></i>
           </div>
@@ -682,17 +830,70 @@
 
       // Элементы DOM
       const cvaptaBtn = document.getElementById('cvaptaBtn');
-      const lockedGameBtn = document.getElementById('lockedGameBtn');
+      const giftHeroBtn = document.getElementById('giftHeroBtn');
+      const giftHeroCard = document.getElementById('giftHeroCard');
       const loadingOverlay = document.getElementById('loadingOverlay');
       const errorText = document.querySelector('.error-text');
-      const comingSoonBanner = document.getElementById('comingSoonBanner');
-      const bannerText = document.getElementById('banner-text');
       const mainContent = document.getElementById('mainContent');
       const bgCircles = document.getElementById('bgCircles');
       const emptyScreen = document.getElementById('emptyScreen');
+      const snowflakesContainer = document.getElementById('snowflakes');
+
+      // Функция создания снежинок - ИСПРАВЛЕННАЯ
+      function createSnowflakes() {
+        const snowflakeCount = window.innerWidth < 480 ? 30 : 50; // Меньше снежинок на мобильных
+        
+        // Очищаем контейнер
+        snowflakesContainer.innerHTML = '';
+        
+        for (let i = 0; i < snowflakeCount; i++) {
+          const snowflake = document.createElement('div');
+          const size = Math.random();
+          let sizeClass = 'small';
+          let duration = 8 + Math.random() * 4; // 8-12 секунд
+          
+          if (size > 0.7) {
+            sizeClass = 'large';
+            duration = 12 + Math.random() * 4; // 12-16 секунд для больших
+          } else if (size > 0.4) {
+            sizeClass = 'medium';
+            duration = 10 + Math.random() * 4; // 10-14 секунд для средних
+          }
+          
+          snowflake.classList.add('snowflake', sizeClass);
+          
+          // Случайная начальная позиция
+          const startX = Math.random() * 100;
+          const startDelay = Math.random() * 5;
+          
+          snowflake.style.left = `${startX}vw`;
+          snowflake.style.animation = `snowfall ${duration}s linear ${startDelay}s infinite`;
+          
+          snowflakesContainer.appendChild(snowflake);
+        }
+      }
+
+      // Защита от копирования текста
+      document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+      });
 
       // Основная функция
       async function initializeApp() {
+        // Создаем снежинки
+        createSnowflakes();
+        
         // Скрываем пустой экран и показываем сайт всем пользователям
         emptyScreen.classList.add('hidden');
         showNormalSite();
@@ -716,10 +917,14 @@
         });
 
         // Обработчик для заблокированной игры
-        lockedGameBtn.addEventListener('click', function(e) {
+        giftHeroBtn.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
-          showNotification('This game is currently locked. Coming soon!');
+        });
+
+        giftHeroCard.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
         });
 
         // Добавляем обработчики для анимации кнопок
@@ -735,15 +940,16 @@
 
         // Добавляем обработчики для анимации карточек игр
         document.querySelectorAll('.game-card-container').forEach(card => {
-          card.addEventListener('mouseenter', function() {
-            if (!this.querySelector('.game-card.locked')) {
+          const gameCard = card.querySelector('.game-card');
+          if (!gameCard.classList.contains('locked')) {
+            card.addEventListener('mouseenter', function() {
               this.style.transform = 'translateY(-5px)';
-            }
-          });
-          
-          card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-          });
+            });
+            
+            card.addEventListener('mouseleave', function() {
+              this.style.transform = 'translateY(0)';
+            });
+          }
         });
 
         console.log('✅ App initialized for all users');
@@ -762,15 +968,6 @@
         }, 3000);
       }
 
-      function showNotification(message) {
-        bannerText.textContent = message;
-        comingSoonBanner.classList.remove('hidden');
-        
-        setTimeout(() => {
-          comingSoonBanner.classList.add('hidden');
-        }, 3000);
-      }
-
       // Запускаем приложение
       initializeApp();
 
@@ -778,6 +975,13 @@
       window.addEventListener('error', function(e) {
         console.error('Global error:', e.error);
         showError();
+      });
+
+      // Пересоздание снежинок при изменении размера окна
+      let resizeTimeout;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(createSnowflakes, 250);
       });
     });
   </script>
