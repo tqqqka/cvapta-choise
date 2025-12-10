@@ -23,6 +23,12 @@
       --gift-gold: #FFD700;
       --gift-red: #FF6B6B;
       --gift-green: #51CF66;
+      --timer-glow: rgba(255, 107, 107, 0.5);
+      --demon-red: #DC2626;
+      --demon-dark: #7F1D1D;
+      --new-blue: #3B82F6;
+      --new-blue-light: #60A5FA;
+      --new-blue-dark: #1E40AF;
       
       /* Glass Morphism Variables */
       --glass-bg: rgba(30, 41, 59, 0.25);
@@ -92,7 +98,7 @@
       display: none;
     }
 
-    /* СНЕЖИНКИ - ИСПРАВЛЕННАЯ ВЕРСИЯ */
+    /* СНЕЖИНКИ */
     .snowflakes {
       position: fixed;
       top: 0;
@@ -135,7 +141,7 @@
       filter: blur(0px);
     }
 
-    /* Анимация падения снежинок - ИСПРАВЛЕННАЯ */
+    /* Анимация падения снежинок */
     @keyframes snowfall {
       0% {
         transform: translateY(-100px) translateX(0) rotate(0deg);
@@ -208,6 +214,247 @@
       background: linear-gradient(135deg, var(--winter-teal), var(--winter-light));
     }
 
+    /* КАТ-СЦЕНА - АВТОМАТИЧЕСКИ ПРИ ОКОНЧАНИИ ВРЕМЕНИ */
+    .cutscene-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0);
+      z-index: 99999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      transition: background 1s ease;
+    }
+
+    .cutscene-overlay.active {
+      display: flex;
+      background: rgba(0, 0, 0, 0.95);
+    }
+
+    .cutscene-content {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Демон вверху */
+    .demon {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 120px;
+      filter: drop-shadow(0 0 20px var(--demon-red));
+      z-index: 2;
+    }
+
+    /* Игрок внизу */
+    .player {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 80px;
+      filter: drop-shadow(0 0 15px var(--gift-gold));
+      z-index: 2;
+    }
+
+    /* Злой смайлик */
+    .evil-smiley {
+      position: absolute;
+      font-size: 60px;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      filter: drop-shadow(0 0 15px var(--demon-red));
+      z-index: 1;
+    }
+
+    /* Речь демона */
+    .speech-bubble {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(220, 38, 38, 0.9);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 20px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      opacity: 0;
+      z-index: 3;
+      border: 3px solid white;
+      box-shadow: 0 0 30px rgba(220, 38, 38, 0.7);
+      max-width: 80%;
+    }
+
+    /* ГОЛУБАЯ РАМКА "NEW" - ПОСЛЕ КАТ-СЦЕНЫ */
+    .new-game-frame {
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
+      border: 3px solid var(--new-blue);
+      border-radius: calc(var(--control-radius) + 4px);
+      z-index: 5;
+      display: none;
+      pointer-events: none;
+      box-shadow: 
+        0 0 25px rgba(59, 130, 246, 0.6),
+        inset 0 0 15px rgba(59, 130, 246, 0.2);
+      animation: pulse-blue-frame 2s infinite;
+    }
+
+    .new-game-frame.active {
+      display: block;
+    }
+
+    .new-game-label {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: linear-gradient(135deg, var(--new-blue), var(--new-blue-dark));
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 6;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5);
+      transform: rotate(15deg);
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      min-width: 50px;
+      text-align: center;
+    }
+
+    /* Простые анимации */
+    @keyframes appear {
+      0% { 
+        opacity: 0; 
+        transform: translateX(-50%) scale(0); 
+      }
+      100% { 
+        opacity: 1; 
+        transform: translateX(-50%) scale(1); 
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+
+    @keyframes throw {
+      0% { 
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      100% { 
+        opacity: 1;
+        transform: translateX(-50%) translateY(40vh);
+      }
+    }
+
+    @keyframes hit {
+      0% { 
+        opacity: 1;
+        filter: drop-shadow(0 0 15px var(--demon-red));
+      }
+      100% { 
+        opacity: 0;
+        filter: drop-shadow(0 0 40px var(--demon-red)) brightness(2);
+      }
+    }
+
+    @keyframes pulse-blue-frame {
+      0% { 
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.6), inset 0 0 15px rgba(59, 130, 246, 0.2);
+        border-color: var(--new-blue);
+      }
+      50% { 
+        box-shadow: 0 0 35px rgba(59, 130, 246, 0.8), inset 0 0 20px rgba(59, 130, 246, 0.3);
+        border-color: var(--new-blue-light);
+      }
+      100% { 
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.6), inset 0 0 15px rgba(59, 130, 246, 0.2);
+        border-color: var(--new-blue);
+      }
+    }
+
+    /* ТАЙМЕР ДО 24 ДЕКАБРЯ 2025 20:30 МСК */
+    .timer-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      text-align: center;
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .timer-title {
+      font-size: 0.9rem;
+      color: var(--winter-light);
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Montserrat', monospace;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--gift-gold);
+      text-shadow: 0 0 10px var(--timer-glow);
+    }
+
+    .timer-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timer-value {
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .timer-unit {
+      font-size: 0.7rem;
+      color: var(--winter-light);
+      margin-top: 2px;
+      font-weight: 400;
+      text-shadow: none;
+    }
+
+    .timer-separator {
+      color: var(--gift-red);
+      margin-top: 4px;
+    }
+
+    .timer-date {
+      font-size: 0.8rem;
+      color: var(--winter-light);
+      margin-top: 8px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      font-weight: 300;
+    }
+
     /* Остальные стили */
     .header {
       text-align: center;
@@ -234,12 +481,6 @@
       color: transparent;
       line-height: 1;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-      animation: logoGlow 3s infinite alternate;
-    }
-
-    @keyframes logoGlow {
-      0% { filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
-      100% { filter: drop-shadow(0 4px 15px rgba(96, 165, 250, 0.5)); }
     }
 
     .subtitle {
@@ -260,14 +501,25 @@
       margin-bottom: 2rem;
     }
 
+    /* ИЗМЕНЕНИЕ: Gift Hero теперь ПЕРВАЯ карточка */
+    .game-card-container.gift-hero {
+      order: 1;
+      position: relative;
+    }
+
+    .game-card-container.cvapta {
+      order: 2;
+    }
+
     .game-card-container {
       position: relative;
-      margin: 0 var(--mobile-margin);
+      margin: 0;
       cursor: pointer;
       transform: translateZ(0);
       will-change: transform;
       border-radius: var(--control-radius);
       overflow: hidden;
+      width: 100%;
     }
 
     .game-card {
@@ -280,6 +532,8 @@
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      width: 100%;
+      text-align: center;
     }
 
     .game-card::before {
@@ -307,14 +561,14 @@
       transition: transform 0.1s ease;
     }
 
-    /* Стили для заблокированной игры */
+    /* Стили для заблокированной игры - СТАТИЧНЫЕ */
     .game-card.locked {
       opacity: 0.7;
       cursor: not-allowed;
       position: relative;
     }
 
-    /* Слой блюра поверх карточки */
+    /* Слой блюра поверх карточки - СТАТИЧНЫЙ */
     .game-card.blurred::before {
       opacity: 0;
     }
@@ -332,7 +586,7 @@
       z-index: 1;
     }
 
-    /* Размытие содержимого внутри карточки */
+    /* Размытие содержимого внутри карточки - СТАТИЧНОЕ */
     .game-card.blurred .game-header,
     .game-card.blurred .game-description,
     .game-card.blurred .glass-btn {
@@ -341,35 +595,10 @@
       opacity: 0.6;
     }
 
-    /* ЗАМОК ПОСЕРЕДИНЕ - БОЛЬШОЙ */
-    .lock-icon {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: var(--winter-light);
-      font-size: 3rem;
-      z-index: 3;
-      opacity: 0.9;
-      text-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
-      animation: lockPulse 2s infinite alternate;
-    }
-
-    @keyframes lockPulse {
-      0% { 
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.8;
-      }
-      100% { 
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 1;
-      }
-    }
-
     .game-header {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1rem;
       margin-bottom: 1rem;
       position: relative;
@@ -395,18 +624,6 @@
     .game-icon.frog {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
       color: var(--frog-green);
-      animation: frogPulse 3s infinite alternate;
-    }
-
-    @keyframes frogPulse {
-      0% { 
-        transform: scale(1);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      }
-      100% { 
-        transform: scale(1.05);
-        box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
-      }
     }
 
     .game-icon.gift {
@@ -419,6 +636,7 @@
       font-weight: 600;
       line-height: 1.2;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      text-align: center;
     }
 
     .game-title.frog {
@@ -442,6 +660,8 @@
       opacity: 0.9;
       position: relative;
       z-index: 2;
+      text-align: center;
+      width: 100%;
     }
 
     .game-description.frog {
@@ -504,6 +724,13 @@
     .glass-btn.gift {
       background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 215, 0, 0.05));
       border: 1px solid rgba(255, 107, 107, 0.3);
+      cursor: not-allowed;
+    }
+
+    .glass-btn.unlocked {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      cursor: pointer !important;
     }
 
     .glass-btn::before {
@@ -520,11 +747,11 @@
       transition: left 0.5s ease;
     }
 
-    .glass-btn:hover::before {
+    .glass-btn:not(:disabled):hover::before {
       left: 100%;
     }
 
-    .glass-btn:active {
+    .glass-btn:not(:disabled):active {
       transform: scale(0.98);
       box-shadow: 0 2px 8px rgba(0,0,0,0.3), 
                   inset 0 1px 0 rgba(255,255,255,0.1);
@@ -551,7 +778,7 @@
       align-items: center;
       flex-direction: column;
       backdrop-filter: blur(10px);
-      z-index: 9999;
+      z-index: 99999;
       opacity: 0;
       visibility: hidden;
       transition: var(--transition);
@@ -659,11 +886,70 @@
       }
 
       .game-card-container {
-        margin: 0 1px;
+        margin: 0;
       }
 
       .game-card {
         padding: 1.2rem;
+      }
+
+      /* Кат-сцена на мобильных */
+      .demon {
+        font-size: 80px;
+        top: 15%;
+      }
+
+      .speech-bubble {
+        font-size: 1.2rem;
+        padding: 15px 20px;
+        top: 30%;
+      }
+
+      .player {
+        font-size: 60px;
+        bottom: 15%;
+      }
+
+      .evil-smiley {
+        font-size: 45px;
+      }
+
+      .timer {
+        font-size: 1.5rem;
+        gap: 6px;
+      }
+
+      .timer-value {
+        min-width: 30px;
+      }
+
+      .timer-title {
+        font-size: 0.8rem;
+      }
+
+      .timer-unit {
+        font-size: 0.6rem;
+      }
+
+      .timer-date {
+        font-size: 0.7rem;
+      }
+
+      /* Рамка на мобильных */
+      .new-game-frame {
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+        border-width: 2px;
+      }
+      
+      .new-game-label {
+        top: -12px;
+        right: -12px;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        min-width: 45px;
       }
 
       .game-header {
@@ -694,10 +980,6 @@
 
       .error-text {
         font-size: 1.2rem;
-      }
-
-      .lock-icon {
-        font-size: 2.5rem;
       }
 
       /* Меньше снежинок на мобильных */
@@ -732,6 +1014,61 @@
         padding: 1rem;
       }
 
+      .demon {
+        font-size: 60px;
+      }
+
+      .speech-bubble {
+        font-size: 1rem;
+        padding: 10px 15px;
+      }
+
+      .player {
+        font-size: 50px;
+      }
+
+      .evil-smiley {
+        font-size: 35px;
+      }
+
+      .timer {
+        font-size: 1.3rem;
+        gap: 4px;
+      }
+
+      .timer-value {
+        min-width: 25px;
+      }
+
+      .timer-title {
+        font-size: 0.75rem;
+      }
+
+      .timer-unit {
+        font-size: 0.55rem;
+      }
+
+      .timer-date {
+        font-size: 0.65rem;
+      }
+
+      /* Рамка на очень маленьких экранах */
+      .new-game-frame {
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+        border-width: 1.5px;
+      }
+      
+      .new-game-label {
+        top: -10px;
+        right: -10px;
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        min-width: 40px;
+      }
+
       .game-icon {
         width: 45px;
         height: 45px;
@@ -746,10 +1083,6 @@
         font-size: 0.75rem;
         padding: 0.6rem;
       }
-
-      .lock-icon {
-        font-size: 2rem;
-      }
     }
   </style>
 </head>
@@ -759,6 +1092,23 @@
 
   <!-- СНЕЖИНКИ -->
   <div class="snowflakes" id="snowflakes"></div>
+
+  <!-- КАТ-СЦЕНА - АВТОМАТИЧЕСКИ ПРИ ОКОНЧАНИИ ВРЕМЕНИ -->
+  <div class="cutscene-overlay" id="cutsceneOverlay">
+    <div class="cutscene-content" id="cutsceneContent">
+      <!-- Демон -->
+      <div class="demon" id="demon">😈</div>
+      
+      <!-- Речь демона -->
+      <div class="speech-bubble" id="speechBubble">Пора уничтожить подарки!</div>
+      
+      <!-- Игрок -->
+      <div class="player" id="player">🎁</div>
+      
+      <!-- Злой смайлик -->
+      <div class="evil-smiley" id="evilSmiley">👿</div>
+    </div>
+  </div>
 
   <!-- Основной контент - изначально скрыт -->
   <div class="bg-circles" id="bgCircles">
@@ -774,8 +1124,56 @@
     </div>
 
     <div class="games-grid">
-      <!-- Игра Cvapta - ЗЕЛЁНАЯ ТЕМА -->
-      <div class="game-card-container">
+      <!-- Игра Gift Hero - ТЕПЕРЬ ПЕРВАЯ (ВЫШЕ) -->
+      <div class="game-card-container gift-hero">
+        <!-- ГОЛУБАЯ РАМКА "NEW" (после кат-сцены) -->
+        <div class="new-game-frame" id="newGameFrame">
+          <div class="new-game-label">NEW</div>
+        </div>
+        
+        <div class="game-card locked blurred" id="giftHeroCard">
+          <div class="game-header">
+            <div class="game-icon gift">🎁</div>
+            <div class="game-title gift">Gift Hero</div>
+          </div>
+          <div class="game-description gift">
+            Move clockwise and counterclockwise, dodge the Wrath's attacks. Collect gifts in this intense circular survival challenge!
+          </div>
+          <button class="glass-btn gift" id="giftHeroBtn" disabled>
+            <i class="fas fa-clock"></i>
+            <span>Available Soon</span>
+          </button>
+          <!-- ТАЙМЕР ДО 24 ДЕКАБРЯ 2025 20:30 МСК -->
+          <div class="timer-container" id="timerContainer">
+            <div class="timer-title">Available in:</div>
+            <div class="timer" id="timer">
+              <div class="timer-section">
+                <div class="timer-value" id="days">00</div>
+                <div class="timer-unit">days</div>
+              </div>
+              <div class="timer-separator">:</div>
+              <div class="timer-section">
+                <div class="timer-value" id="hours">00</div>
+                <div class="timer-unit">hours</div>
+              </div>
+              <div class="timer-separator">:</div>
+              <div class="timer-section">
+                <div class="timer-value" id="minutes">00</div>
+                <div class="timer-unit">min</div>
+              </div>
+              <div class="timer-separator">:</div>
+              <div class="timer-section">
+                <div class="timer-value" id="seconds">00</div>
+                <div class="timer-unit">sec</div>
+              </div>
+            </div>
+            <div class="timer-date">Until Dec 24, 2025 20:30 MSK</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Игра Cvapta - ТЕПЕРЬ ВТОРАЯ (НИЖЕ) -->
+      <div class="game-card-container cvapta">
         <div class="game-card">
           <div class="game-header">
             <div class="game-icon frog">🐸</div>
@@ -788,27 +1186,6 @@
             <i class="fas fa-play"></i>
             <span>Play Now</span>
           </button>
-        </div>
-      </div>
-
-      <!-- Игра Gift Hero - ЗАБЛЮРЕННАЯ С БОЛЬШИМ ЗАМКОМ ПОСЕРЕДИНЕ -->
-      <div class="game-card-container">
-        <div class="game-card locked blurred" id="giftHeroCard">
-          <div class="game-header">
-            <div class="game-icon gift">🎁</div>
-            <div class="game-title gift">Gift Hero</div>
-          </div>
-          <div class="game-description gift">
-            Move clockwise and counterclockwise, dodge the Wrath's attacks. Collect gifts in this intense circular survival challenge!
-          </div>
-          <button class="glass-btn gift" id="giftHeroBtn" disabled>
-            <i class="fas fa-lock"></i>
-            <span>Coming Soon</span>
-          </button>
-          <!-- БОЛЬШОЙ ЗАМОК ПОСЕРЕДИНЕ -->
-          <div class="lock-icon">
-            <i class="fas fa-lock"></i>
-          </div>
         </div>
       </div>
     </div>
@@ -825,165 +1202,523 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('DOM loaded - initializing app');
-
+    (function() {
+      console.log('🎮 Game initialization started...');
+      
+      // Глобальные переменные
+      window.GAME_STATE = {
+        targetDate: null,
+        timerExpired: false,
+        giftHeroUnlocked: false,
+        cutsceneShown: false,
+        showNewFrame: false
+      };
+      
       // Элементы DOM
-      const cvaptaBtn = document.getElementById('cvaptaBtn');
-      const giftHeroBtn = document.getElementById('giftHeroBtn');
-      const giftHeroCard = document.getElementById('giftHeroCard');
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      const errorText = document.querySelector('.error-text');
-      const mainContent = document.getElementById('mainContent');
-      const bgCircles = document.getElementById('bgCircles');
-      const emptyScreen = document.getElementById('emptyScreen');
-      const snowflakesContainer = document.getElementById('snowflakes');
-
-      // Функция создания снежинок - ИСПРАВЛЕННАЯ
-      function createSnowflakes() {
-        const snowflakeCount = window.innerWidth < 480 ? 30 : 50; // Меньше снежинок на мобильных
+      const elements = {
+        cvaptaBtn: document.getElementById('cvaptaBtn'),
+        giftHeroBtn: document.getElementById('giftHeroBtn'),
+        giftHeroCard: document.getElementById('giftHeroCard'),
+        loadingOverlay: document.getElementById('loadingOverlay'),
+        errorText: document.querySelector('.error-text'),
+        mainContent: document.getElementById('mainContent'),
+        bgCircles: document.getElementById('bgCircles'),
+        emptyScreen: document.getElementById('emptyScreen'),
+        snowflakesContainer: document.getElementById('snowflakes'),
+        cutsceneOverlay: document.getElementById('cutsceneOverlay'),
+        demon: document.getElementById('demon'),
+        speechBubble: document.getElementById('speechBubble'),
+        player: document.getElementById('player'),
+        evilSmiley: document.getElementById('evilSmiley'),
+        daysElement: document.getElementById('days'),
+        hoursElement: document.getElementById('hours'),
+        minutesElement: document.getElementById('minutes'),
+        secondsElement: document.getElementById('seconds'),
+        timerTitle: document.querySelector('.timer-title'),
+        timerDate: document.querySelector('.timer-date'),
+        timerContainer: document.getElementById('timerContainer'),
+        newGameFrame: document.getElementById('newGameFrame')
+      };
+      
+      // ТАЙМЕР: 24 декабря 2025 года 20:30 по Москве
+      let TARGET_DATE = new Date('2025-12-24T17:30:00Z'); // 20:30 МСК = 17:30 UTC
+      
+      // Для тестирования - раскомментировать строку ниже
+      // TARGET_DATE = new Date(Date.now() + 5000); // 5 секунд для теста
+      
+      let timerInterval;
+      
+      // Функция для вывода отладочной информации
+      function debugLog(message, data = null) {
+        console.log(`🔧 ${message}`, data || '');
+      }
+      
+      // Функция обновления таймера
+      function updateTimer() {
+        const now = new Date();
+        const timeDifference = TARGET_DATE - now;
         
-        // Очищаем контейнер
-        snowflakesContainer.innerHTML = '';
+        debugLog('Timer check:', {
+          now: now.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }),
+          target: TARGET_DATE.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }),
+          difference: timeDifference
+        });
+        
+        if (timeDifference <= 0) {
+          // Таймер истек
+          elements.daysElement.textContent = '00';
+          elements.hoursElement.textContent = '00';
+          elements.minutesElement.textContent = '00';
+          elements.secondsElement.textContent = '00';
+          
+          if (!window.GAME_STATE.timerExpired) {
+            window.GAME_STATE.timerExpired = true;
+            debugLog('🎉 Timer expired! Starting cutscene...');
+            
+            // Меняем текст таймера
+            elements.timerTitle.textContent = 'Available Now!';
+            elements.timerDate.textContent = 'Game is unlocked!';
+            
+            // Запускаем кат-сцену через 2 секунды
+            setTimeout(() => {
+              startCutscene();
+            }, 2000);
+          }
+          return;
+        }
+        
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+        
+        elements.daysElement.textContent = days.toString().padStart(2, '0');
+        elements.hoursElement.textContent = hours.toString().padStart(2, '0');
+        elements.minutesElement.textContent = minutes.toString().padStart(2, '0');
+        elements.secondsElement.textContent = seconds.toString().padStart(2, '0');
+      }
+      
+      // Функция разблокировки Gift Hero
+      function unlockGiftHero() {
+        window.GAME_STATE.giftHeroUnlocked = true;
+        
+        // Убираем блокировку с карточки
+        elements.giftHeroCard.classList.remove('locked', 'blurred');
+        
+        // Обновляем кнопку
+        elements.giftHeroBtn.disabled = false;
+        elements.giftHeroBtn.classList.remove('gift');
+        elements.giftHeroBtn.classList.add('unlocked');
+        elements.giftHeroBtn.innerHTML = '<i class="fas fa-play"></i><span>Play Now</span>';
+        
+        // Убираем таймер
+        elements.timerContainer.style.display = 'none';
+        
+        // Показываем голубую рамку "NEW"
+        window.GAME_STATE.showNewFrame = true;
+        elements.newGameFrame.classList.add('active');
+        
+        // Сохраняем в localStorage
+        localStorage.setItem('giftHeroUnlocked', 'true');
+        localStorage.setItem('giftHeroUnlockTime', Date.now().toString());
+        localStorage.setItem('showNewFrame', 'true');
+        
+        debugLog('🎁 Gift Hero unlocked with blue NEW frame');
+      }
+      
+      // Функция восстановления состояния
+      function restoreState() {
+        const savedUnlocked = localStorage.getItem('giftHeroUnlocked') === 'true';
+        const savedCutscene = localStorage.getItem('cutsceneShown') === 'true';
+        const savedNewFrame = localStorage.getItem('showNewFrame') === 'true';
+        
+        debugLog('Restoring state:', { savedUnlocked, savedCutscene, savedNewFrame });
+        
+        if (savedUnlocked) {
+          window.GAME_STATE.giftHeroUnlocked = true;
+          window.GAME_STATE.timerExpired = true;
+          unlockGiftHero();
+        }
+        
+        if (savedCutscene) {
+          window.GAME_STATE.cutsceneShown = true;
+        }
+        
+        // Если игра разблокирована, показываем рамку
+        if (savedNewFrame && window.GAME_STATE.giftHeroUnlocked) {
+          window.GAME_STATE.showNewFrame = true;
+          elements.newGameFrame.classList.add('active');
+        }
+        
+        return { savedUnlocked, savedCutscene };
+      }
+      
+      // Функция запуска кат-сцены (ТОЙ САМОЙ!)
+      function startCutscene() {
+        if (window.GAME_STATE.cutsceneShown) {
+          debugLog('Cutscene already shown, skipping...');
+          return;
+        }
+        
+        debugLog('🎬 Starting THE cutscene...');
+        
+        // Показываем кат-сцену
+        elements.cutsceneOverlay.classList.add('active');
+        
+        // Скрываем основной контент
+        elements.mainContent.style.opacity = '0';
+        elements.mainContent.style.pointerEvents = 'none';
+        
+        // Запускаем анимации по порядку
+        setTimeout(() => {
+          // 1. Показываем демона
+          elements.demon.style.animation = 'appear 0.8s ease-out forwards, float 3s ease-in-out infinite';
+          
+          setTimeout(() => {
+            // 2. Показываем речь демона
+            elements.speechBubble.style.animation = 'appear 0.5s ease-out forwards';
+            
+            setTimeout(() => {
+              // 3. Показываем игрока
+              elements.player.style.animation = 'appear 1s ease-out forwards';
+              
+              setTimeout(() => {
+                // 4. Демон кидает злой смайлик
+                elements.evilSmiley.style.animation = 'throw 1s ease-in forwards';
+                
+                setTimeout(() => {
+                  // 5. Смайлик попадает в игрока
+                  elements.evilSmiley.style.animation = 'hit 0.5s ease-out forwards';
+                  
+                  setTimeout(() => {
+                    // 6. Завершаем кат-сцену
+                    finishCutscene();
+                  }, 500);
+                }, 1000);
+              }, 1000);
+            }, 1000);
+          }, 1000);
+        }, 500);
+      }
+      
+      // Завершение кат-сцены
+      function finishCutscene() {
+        // Закрываем кат-сцену
+        elements.cutsceneOverlay.classList.remove('active');
+        
+        // Восстанавливаем основной контент
+        elements.mainContent.style.opacity = '1';
+        elements.mainContent.style.pointerEvents = 'auto';
+        
+        // Разблокируем игру Gift Hero
+        unlockGiftHero();
+        
+        // Сохраняем состояние
+        window.GAME_STATE.cutsceneShown = true;
+        localStorage.setItem('cutsceneShown', 'true');
+        
+        debugLog('🎬 Cutscene completed! Gift Hero is now available with blue NEW frame');
+        
+        // Показываем сообщение
+        showMessage('🎮 Gift Hero unlocked!', '#3B82F6');
+      }
+      
+      // Функция создания снежинок
+      function createSnowflakes() {
+        const snowflakeCount = window.innerWidth < 480 ? 30 : 50;
+        
+        elements.snowflakesContainer.innerHTML = '';
         
         for (let i = 0; i < snowflakeCount; i++) {
           const snowflake = document.createElement('div');
           const size = Math.random();
           let sizeClass = 'small';
-          let duration = 8 + Math.random() * 4; // 8-12 секунд
+          let duration = 8 + Math.random() * 4;
           
           if (size > 0.7) {
             sizeClass = 'large';
-            duration = 12 + Math.random() * 4; // 12-16 секунд для больших
+            duration = 12 + Math.random() * 4;
           } else if (size > 0.4) {
             sizeClass = 'medium';
-            duration = 10 + Math.random() * 4; // 10-14 секунд для средних
+            duration = 10 + Math.random() * 4;
           }
           
           snowflake.classList.add('snowflake', sizeClass);
           
-          // Случайная начальная позиция
           const startX = Math.random() * 100;
           const startDelay = Math.random() * 5;
           
           snowflake.style.left = `${startX}vw`;
           snowflake.style.animation = `snowfall ${duration}s linear ${startDelay}s infinite`;
           
-          snowflakesContainer.appendChild(snowflake);
+          elements.snowflakesContainer.appendChild(snowflake);
         }
       }
-
-      // Защита от копирования текста
-      document.addEventListener('copy', function(e) {
-        e.preventDefault();
-        return false;
-      });
-
-      document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        return false;
-      });
-
-      document.addEventListener('selectstart', function(e) {
-        e.preventDefault();
-        return false;
-      });
-
-      // Основная функция
-      async function initializeApp() {
+      
+      // Функция для тестирования F8 (быстрая разблокировка и кат-сцена)
+      function testUnlockGame() {
+        debugLog('🎮 F8 pressed - Testing unlock with cutscene...');
+        
+        // Устанавливаем таймер на 2 секунды вперед
+        TARGET_DATE = new Date(Date.now() + 2000);
+        
+        // Сразу обновляем таймер
+        updateTimer();
+        
+        // Очищаем старый интервал
+        if (timerInterval) clearInterval(timerInterval);
+        
+        // Запускаем новый интервал
+        timerInterval = setInterval(updateTimer, 1000);
+        
+        // Показываем сообщение
+        showMessage('🎬 Тест: кат-сцена запустится через 2 секунды!', '#FFD700');
+        
+        debugLog('Game will unlock with cutscene in 2 seconds...');
+      }
+      
+      // Функция для тестирования F4 (переключение голубой рамки NEW)
+      function toggleNewFrame() {
+        if (!window.GAME_STATE.giftHeroUnlocked) {
+          debugLog('Gift Hero not unlocked yet');
+          showMessage('Сначала разблокируйте игру!', '#FF6B6B');
+          return;
+        }
+        
+        window.GAME_STATE.showNewFrame = !window.GAME_STATE.showNewFrame;
+        
+        if (window.GAME_STATE.showNewFrame) {
+          elements.newGameFrame.classList.add('active');
+          debugLog('🆕 Blue NEW frame SHOWN');
+          showMessage('Голубая рамка "NEW" показана', '#3B82F6');
+        } else {
+          elements.newGameFrame.classList.remove('active');
+          debugLog('🆕 Blue NEW frame HIDDEN');
+          showMessage('Голубая рамка "NEW" скрыта', '#3B82F6');
+        }
+        
+        localStorage.setItem('showNewFrame', window.GAME_STATE.showNewFrame.toString());
+      }
+      
+      // Функция показа сообщения
+      function showMessage(text, color = '#3B82F6') {
+        const msg = document.createElement('div');
+        msg.style.cssText = `
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: ${color};
+          color: white;
+          padding: 12px 24px;
+          border-radius: 12px;
+          z-index: 9999;
+          font-weight: bold;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+          font-size: 14px;
+          text-align: center;
+          max-width: 90%;
+          border: 2px solid rgba(255,255,255,0.2);
+        `;
+        msg.textContent = text;
+        document.body.appendChild(msg);
+        
+        setTimeout(() => {
+          if (msg.parentNode) {
+            msg.parentNode.removeChild(msg);
+          }
+        }, 3000);
+      }
+      
+      // Обработчик горячих клавиш
+      function handleKeyDown(e) {
+        // F8 - тестовая разблокировка с кат-сценой
+        if (e.key === 'F8' || e.code === 'F8') {
+          e.preventDefault();
+          testUnlockGame();
+          return;
+        }
+        
+        // F4 - переключение голубой рамки NEW (только после разблокировки)
+        if (e.key === 'F4' || e.code === 'F4') {
+          e.preventDefault();
+          toggleNewFrame();
+          return;
+        }
+        
+        // F12 - отладочная информация
+        if (e.key === 'F12' || e.code === 'F12') {
+          e.preventDefault();
+          debugLog('=== GAME DEBUG INFO ===');
+          debugLog('Game State:', window.GAME_STATE);
+          debugLog('Target Date:', TARGET_DATE.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }));
+          debugLog('Current Time:', new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }));
+          debugLog('Hotkeys: F8 (test), F4 (toggle blue frame)');
+          return;
+        }
+      }
+      
+      // Инициализация приложения
+      function initializeApp() {
+        debugLog('Initializing app...');
+        
         // Создаем снежинки
         createSnowflakes();
         
-        // Скрываем пустой экран и показываем сайт всем пользователям
-        emptyScreen.classList.add('hidden');
-        showNormalSite();
+        // Скрываем пустой экран
+        elements.emptyScreen.classList.add('hidden');
+        
+        // Восстанавливаем состояние
+        const state = restoreState();
+        
+        // Показываем основной контент
+        elements.mainContent.classList.add('active');
+        elements.bgCircles.classList.add('active');
+        
+        // Запускаем таймер
+        updateTimer();
+        timerInterval = setInterval(updateTimer, 1000);
+        
+        // Инициализируем кнопки
+        initializeButtons();
+        
+        // Добавляем обработчик горячих клавиш
+        document.addEventListener('keydown', handleKeyDown);
+        
+        // Если таймер истек, но кат-сцена не была показана
+        const now = new Date();
+        if (now >= TARGET_DATE && !state.savedCutscene && !window.GAME_STATE.cutsceneShown) {
+          debugLog('Timer already expired, starting cutscene...');
+          setTimeout(() => {
+            startCutscene();
+          }, 2000);
+        }
+        
+        debugLog('✅ App initialized successfully');
+        debugLog('🎮 Hotkeys: F8 (test unlock with cutscene), F4 (toggle blue NEW frame)');
       }
-
-      // Функция показа нормального сайта
-      function showNormalSite() {
-        mainContent.classList.add('active');
-        bgCircles.classList.add('active');
-        initializeNormalApp();
-      }
-
-      // Инициализация нормального приложения
-      function initializeNormalApp() {
-        // Обработчики кнопок
-        cvaptaBtn.addEventListener('click', function() {
+      
+      // Инициализация кнопок
+      function initializeButtons() {
+        // Cvapta button
+        elements.cvaptaBtn.addEventListener('click', function() {
           showLoading();
           setTimeout(() => {
             window.location.href = 'https://tqqqka.github.io/capsavta/';
           }, 1500);
         });
-
-        // Обработчик для заблокированной игры
-        giftHeroBtn.addEventListener('click', function(e) {
+        
+        // Gift Hero button (после разблокировки)
+        elements.giftHeroBtn.addEventListener('click', function(e) {
           e.preventDefault();
           e.stopPropagation();
+          
+          if (window.GAME_STATE.giftHeroUnlocked) {
+            showLoading();
+            setTimeout(() => {
+              debugLog('Redirecting to https://tqqqka.github.io/event-game/');
+              window.location.href = 'https://tqqqka.github.io/event-game/';
+            }, 1000);
+          } else {
+            debugLog('Gift Hero is still locked');
+          }
         });
-
-        giftHeroCard.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
+        
+        // Gift Hero card click
+        elements.giftHeroCard.addEventListener('click', function(e) {
+          if (!e.target.closest('.glass-btn')) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (window.GAME_STATE.giftHeroUnlocked) {
+              showLoading();
+              setTimeout(() => {
+                window.location.href = 'https://tqqqka.github.io/event-game/';
+              }, 1000);
+            }
+          }
         });
-
-        // Добавляем обработчики для анимации кнопок
-        document.querySelectorAll('.glass-btn:not(:disabled)').forEach(btn => {
-          btn.addEventListener('touchstart', function() {
+        
+        // Touch animations
+        elements.cvaptaBtn.addEventListener('touchstart', function() {
+          this.style.transform = 'scale(0.98)';
+        }, { passive: true });
+        
+        elements.cvaptaBtn.addEventListener('touchend', function() {
+          this.style.transform = '';
+        }, { passive: true });
+        
+        if (window.GAME_STATE.giftHeroUnlocked) {
+          elements.giftHeroBtn.addEventListener('touchstart', function() {
             this.style.transform = 'scale(0.98)';
           }, { passive: true });
           
-          btn.addEventListener('touchend', function() {
+          elements.giftHeroBtn.addEventListener('touchend', function() {
             this.style.transform = '';
           }, { passive: true });
-        });
-
-        // Добавляем обработчики для анимации карточек игр
-        document.querySelectorAll('.game-card-container').forEach(card => {
-          const gameCard = card.querySelector('.game-card');
-          if (!gameCard.classList.contains('locked')) {
-            card.addEventListener('mouseenter', function() {
-              this.style.transform = 'translateY(-5px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-              this.style.transform = 'translateY(0)';
-            });
-          }
-        });
-
-        console.log('✅ App initialized for all users');
+        }
       }
-
-      // Функции утилиты
+      
+      // Вспомогательные функции
       function showLoading() {
-        loadingOverlay.classList.add('active');
-        errorText.classList.remove('active');
+        elements.loadingOverlay.classList.add('active');
+        elements.errorText.classList.remove('active');
       }
-
-      function showError() {
-        errorText.classList.add('active');
-        setTimeout(() => {
-          loadingOverlay.classList.remove('active');
-        }, 3000);
-      }
-
-      // Запускаем приложение
-      initializeApp();
-
-      // Обработка ошибок загрузки
-      window.addEventListener('error', function(e) {
-        console.error('Global error:', e.error);
-        showError();
+      
+      // Запуск при загрузке DOM
+      document.addEventListener('DOMContentLoaded', function() {
+        debugLog('DOM loaded, starting app...');
+        initializeApp();
+        
+        // Обработка ошибок
+        window.addEventListener('error', function(e) {
+          console.error('Global error:', e.error);
+          elements.errorText.classList.add('active');
+        });
+        
+        // Ресайз окна
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(createSnowflakes, 250);
+        });
+        
+        // Защита от копирования
+        document.addEventListener('copy', function(e) {
+          e.preventDefault();
+          return false;
+        });
+        
+        document.addEventListener('contextmenu', function(e) {
+          e.preventDefault();
+          return false;
+        });
+        
+        document.addEventListener('selectstart', function(e) {
+          e.preventDefault();
+          return false;
+        });
       });
-
-      // Пересоздание снежинок при изменении размера окна
-      let resizeTimeout;
-      window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(createSnowflakes, 250);
-      });
-    });
+      
+      // Экспортируем функции для отладки
+      window.debugGame = {
+        unlockNow: function() {
+          TARGET_DATE = new Date(Date.now() - 1000);
+          updateTimer();
+        },
+        showCutscene: startCutscene,
+        toggleFrame: toggleNewFrame,
+        getState: function() {
+          return {
+            ...window.GAME_STATE,
+            targetDate: TARGET_DATE,
+            now: new Date()
+          };
+        }
+      };
+      
+      debugLog('🎮 Game script loaded. Use window.debugGame for testing.');
+    })();
   </script>
 </body>
 </html>
