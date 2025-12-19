@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <style>
-    /* CSS переменные для синей новогодней темы */
     :root {
       --primary: #1E3A8A;
       --secondary: #3B82F6;
@@ -27,34 +26,19 @@
       --timer-glow: rgba(255, 107, 107, 0.5);
       --demon-red: #DC2626;
       --demon-dark: #7F1D1D;
-      
-      /* Glass Morphism Variables */
       --glass-bg: rgba(30, 41, 59, 0.25);
       --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-border-highlight: rgba(255, 255, 255, 0.2);
       --glass-blur: 12px;
-      --glass-saturation: 150%;
       --control-radius: 16px;
       --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      
-      /* Мобильные отступы */
-      --mobile-padding: 12px;
-      --mobile-margin: 6px;
     }
 
-    /* Базовый сброс стилей с оптимизацией для мобильных */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
     }
 
     html, body {
@@ -65,49 +49,18 @@
       width: 100%;
       overflow-x: hidden;
       position: relative;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      touch-action: manipulation;
     }
 
     body {
+      padding: 12px;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: var(--mobile-padding);
-      position: relative;
-      min-height: 100vh;
-      overflow: hidden;
     }
 
-    /* Пустой экран - изначально показан */
-    .empty-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
-      z-index: 100;
-    }
-
-    .empty-screen.hidden {
-      display: none;
-    }
-
-    /* Particles.js контейнер */
-    #particles-js {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* СНЕЖИНКИ */
+    /* Снежинки */
     .snowflakes {
       position: fixed;
       top: 0;
@@ -116,7 +69,6 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
-      overflow: hidden;
     }
 
     .snowflake {
@@ -125,105 +77,85 @@
       border-radius: 50%;
       opacity: 0.8;
       filter: blur(0.5px);
-      animation-name: snowfall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      will-change: transform, opacity;
     }
 
-    /* Разные размеры снежинок */
-    .snowflake.small {
-      width: 4px;
-      height: 4px;
-    }
-
-    .snowflake.medium {
-      width: 6px;
-      height: 6px;
-      opacity: 0.9;
-    }
-
-    .snowflake.large {
-      width: 8px;
-      height: 8px;
-      opacity: 1;
-      filter: blur(0px);
-    }
-
-    /* Анимация падения снежинок */
-    @keyframes snowfall {
+    @keyframes fall {
       0% {
-        transform: translateY(-100px) translateX(0) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.8;
-      }
-      90% {
-        opacity: 0.8;
+        transform: translateY(-100px) rotate(0deg);
       }
       100% {
-        transform: translateY(100vh) translateX(20px) rotate(360deg);
+        transform: translateY(100vh) rotate(360deg);
         opacity: 0;
       }
     }
 
-    /* Основной контент - изначально скрыт */
-    .main-content {
-      display: none;
-      flex-direction: column;
-      align-items: center;
+    /* Анимированные фоновые элементы */
+    .bg-decoration {
+      position: fixed;
       width: 100%;
-      max-width: 500px;
-      z-index: 10;
-      position: relative;
-      padding-bottom: 20px;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .main-content.active {
-      display: flex;
+    .floating-element {
+      position: absolute;
+      opacity: 0.05;
+      font-size: 30px;
+      animation: floatRotate 20s linear infinite;
     }
 
-    .bg-circles {
+    .floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .floating-element:nth-child(2) { top: 20%; right: 15%; animation-delay: -5s; }
+    .floating-element:nth-child(3) { bottom: 30%; left: 20%; animation-delay: -10s; }
+    .floating-element:nth-child(4) { bottom: 15%; right: 25%; animation-delay: -15s; }
+
+    @keyframes floatRotate {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+
+    .empty-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      display: none;
+      background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .bg-circles.active {
-      display: block;
-    }
-
-    .circle {
-      position: absolute;
+    .empty-screen .loader {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--winter-cyan);
       border-radius: 50%;
-      filter: blur(30px);
-      opacity: 0.15;
-      transform: translateZ(0);
+      animation: spin 1s linear infinite;
     }
 
-    .circle-1 {
-      width: 180px;
-      height: 180px;
-      top: -50px;
-      left: -50px;
-      background: linear-gradient(135deg, var(--winter-blue), var(--winter-cyan));
+    .empty-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
 
-    .circle-2 {
-      width: 150px;
-      height: 150px;
-      bottom: -30px;
-      right: -30px;
-      background: linear-gradient(135deg, var(--winter-teal), var(--winter-light));
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
 
-    /* КАТ-СЦЕНА - АВТОМАТИЧЕСКИ ПРИ ОКОНЧАНИИ ВРЕМЕНИ */
+    /* Cutscene Styles */
     .cutscene-overlay {
       position: fixed;
       top: 0;
@@ -235,22 +167,26 @@
       display: none;
       justify-content: center;
       align-items: center;
-      transition: background 1s ease;
+      overflow: hidden;
     }
 
     .cutscene-overlay.active {
       display: flex;
       background: rgba(0, 0, 0, 0.95);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { background: rgba(0, 0, 0, 0); }
+      to { background: rgba(0, 0, 0, 0.95); }
     }
 
     .cutscene-content {
       width: 100%;
       height: 100%;
       position: relative;
-      overflow: hidden;
     }
 
-    /* Демон вверху */
     .demon {
       position: absolute;
       top: 20%;
@@ -258,33 +194,10 @@
       transform: translateX(-50%) scale(0);
       font-size: 120px;
       filter: drop-shadow(0 0 20px var(--demon-red));
+      animation: appear 0.8s ease-out 0.5s forwards, float 3s ease-in-out 1.3s infinite;
       z-index: 2;
     }
 
-    /* Игрок внизу */
-    .player {
-      position: absolute;
-      bottom: 20%;
-      left: 50%;
-      transform: translateX(-50%) scale(0);
-      font-size: 80px;
-      filter: drop-shadow(0 0 15px var(--gift-gold));
-      z-index: 2;
-    }
-
-    /* Злой смайлик */
-    .evil-smiley {
-      position: absolute;
-      font-size: 60px;
-      top: 30%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      filter: drop-shadow(0 0 15px var(--demon-red));
-      z-index: 1;
-    }
-
-    /* Речь демона */
     .speech-bubble {
       position: absolute;
       top: 35%;
@@ -298,22 +211,39 @@
       font-weight: 700;
       text-align: center;
       opacity: 0;
-      z-index: 3;
       border: 3px solid white;
       box-shadow: 0 0 30px rgba(220, 38, 38, 0.7);
       max-width: 80%;
+      animation: appear 0.5s ease-out 1.5s forwards;
+      z-index: 3;
     }
 
-    /* Простые анимации */
+    .player {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 80px;
+      filter: drop-shadow(0 0 15px var(--gift-gold));
+      animation: appear 1s ease-out 2.5s forwards;
+      z-index: 1;
+    }
+
+    .evil-smiley {
+      position: absolute;
+      font-size: 60px;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      filter: drop-shadow(0 0 15px var(--demon-red));
+      animation: throw 1s ease-in 3.5s forwards, hit 0.5s ease-out 4.5s forwards;
+      z-index: 2;
+    }
+
     @keyframes appear {
-      0% { 
-        opacity: 0; 
-        transform: translateX(-50%) scale(0); 
-      }
-      100% { 
-        opacity: 1; 
-        transform: translateX(-50%) scale(1); 
-      }
+      0% { opacity: 0; transform: translateX(-50%) scale(0); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1); }
     }
 
     @keyframes float {
@@ -322,284 +252,50 @@
     }
 
     @keyframes throw {
-      0% { 
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-      100% { 
-        opacity: 1;
-        transform: translateX(-50%) translateY(40vh);
-      }
+      0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 1; transform: translateX(-50%) translateY(40vh); }
     }
 
     @keyframes hit {
-      0% { 
-        opacity: 1;
-        filter: drop-shadow(0 0 15px var(--demon-red));
-      }
-      100% { 
-        opacity: 0;
-        filter: drop-shadow(0 0 40px var(--demon-red)) brightness(2);
-      }
+      0% { opacity: 1; filter: drop-shadow(0 0 15px var(--demon-red)); }
+      100% { opacity: 0; filter: drop-shadow(0 0 40px var(--demon-red)) brightness(2); }
     }
 
-    /* Стили для списка событий */
-    /* Иконка событий */
-    .events-icon {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(96, 165, 250, 0.1));
-      backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      display: flex;
+    /* Main Content */
+    .main-content {
+      display: none;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 100;
-      box-shadow: var(--glass-shadow);
-      transition: var(--transition);
-      color: var(--winter-blue);
-      font-size: 1.2rem;
-    }
-
-    .events-icon:hover {
-      transform: scale(1.05);
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(96, 165, 250, 0.2));
-      color: var(--winter-cyan);
-    }
-
-    .events-icon:active {
-      transform: scale(0.95);
-    }
-
-    /* Оверлей событий */
-    .events-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      padding: 20px;
-    }
-
-    .events-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* Контент событий */
-    .events-content {
-      background: linear-gradient(135deg, 
-        rgba(15, 23, 42, 0.9),
-        rgba(30, 41, 59, 0.95));
-      backdrop-filter: blur(20px);
-      border-radius: var(--control-radius);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       max-width: 500px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      padding: 1.5rem;
+      z-index: 10;
       position: relative;
+      padding-bottom: 20px;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 0.3s forwards;
     }
 
-    .events-header {
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .main-content.active {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid var(--winter-blue);
     }
 
-    .events-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--winter-light), var(--winter-cyan));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 2px 10px rgba(96, 165, 250, 0.3);
-    }
-
-    .events-close {
-      background: transparent;
-      border: none;
-      color: var(--winter-light);
-      font-size: 1.8rem;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      transition: var(--transition);
-    }
-
-    .events-close:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--gift-red);
-    }
-
-    /* Список событий */
-    .events-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .event-item {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 1.2rem;
-      border-left: 4px solid var(--winter-blue);
-      transition: var(--transition);
-    }
-
-    .event-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateX(5px);
-    }
-
-    .event-date {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--winter-cyan);
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .event-time {
-      font-size: 0.9rem;
-      color: var(--winter-light);
-      margin-bottom: 0.8rem;
-      padding-left: 1.5rem;
-      opacity: 0.9;
-    }
-
-    .event-description {
-      font-size: 0.95rem;
-      line-height: 1.5;
-      color: rgba(240, 249, 255, 0.9);
-      padding-left: 1.5rem;
-      border-left: 2px solid rgba(96, 165, 250, 0.3);
-    }
-
-    .event-note {
-      margin-top: 1.5rem;
-      padding: 1rem;
-      background: rgba(34, 197, 94, 0.1);
-      border-radius: 10px;
-      border-left: 3px solid var(--frog-green);
-      font-size: 0.85rem;
-      color: rgba(240, 249, 255, 0.8);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.8rem;
-    }
-
-    .event-note i {
-      color: var(--frog-green);
-      font-size: 1rem;
-      margin-top: 0.1rem;
-    }
-
-    /* ТАЙМЕР ДО 24 ДЕКАБРЯ 2025 20:30 МСК - ТЕПЕРЬ ПОСЕРЕДИНЕ */
-    .timer-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 3;
-      text-align: center;
-      width: 100%;
-      padding: 0 20px;
-    }
-
-    .timer-title {
-      font-size: 0.9rem;
-      color: var(--winter-light);
-      margin-bottom: 8px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-
-    .timer {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      font-family: 'Montserrat', monospace;
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: var(--gift-gold);
-      text-shadow: 0 0 10px var(--timer-glow);
-    }
-
-    .timer-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .timer-value {
-      min-width: 40px;
-      text-align: center;
-    }
-
-    .timer-unit {
-      font-size: 0.7rem;
-      color: var(--winter-light);
-      margin-top: 2px;
-      font-weight: 400;
-      text-shadow: none;
-    }
-
-    .timer-separator {
-      color: var(--gift-red);
-      margin-top: 4px;
-    }
-
-    .timer-date {
-      font-size: 0.8rem;
-      color: var(--winter-light);
-      margin-top: 8px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      font-weight: 300;
-    }
-
-    /* Остальные стили */
     .header {
       text-align: center;
       margin-bottom: 1.5rem;
       width: 100%;
-      padding: 0 var(--mobile-margin);
-    }
-
-    .fluid {
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      font-weight: 700;
-      line-height: 1.1;
-      text-align: center;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+      animation: fadeInUp 0.8s ease 0.5s forwards;
+      opacity: 0;
     }
 
     .logo {
@@ -610,17 +306,41 @@
       background-clip: text;
       color: transparent;
       line-height: 1;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      animation: pulse 3s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    .fluid {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+      position: relative;
+    }
+
+    .fluid::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--winter-cyan), transparent);
+      border-radius: 1px;
     }
 
     .subtitle {
       font-size: 0.9rem;
-      font-weight: 300;
-      opacity: 0.9;
-      color: rgba(240, 249, 255, 0.8);
-      line-height: 1.4;
-      max-width: 90%;
-      margin: 0 auto;
+      opacity: 0.8;
+      margin-top: 0.5rem;
+      animation: fadeInUp 0.8s ease 0.7s forwards;
+      opacity: 0;
     }
 
     .games-grid {
@@ -629,32 +349,27 @@
       gap: 1.5rem;
       width: 100%;
       margin-bottom: 2rem;
-    }
-
-    /* ИЗМЕНЕНИЕ: Gift Hero теперь ПЕРВАЯ карточка */
-    .game-card-container.gift-hero {
-      order: 1;
-      position: relative;
-    }
-
-    .game-card-container.cvapta {
-      order: 2;
+      animation: fadeInUp 0.8s ease 0.9s forwards;
+      opacity: 0;
     }
 
     .game-card-container {
       position: relative;
       margin: 0;
       cursor: pointer;
-      transform: translateZ(0);
-      will-change: transform;
       border-radius: var(--control-radius);
       overflow: hidden;
       width: 100%;
+      transition: var(--transition);
+    }
+
+    .game-card-container:hover {
+      transform: translateY(-5px);
     }
 
     .game-card {
       background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
       border-radius: var(--control-radius);
       padding: 1.5rem;
       border: 1px solid var(--glass-border);
@@ -670,10 +385,6 @@
       justify-content: space-between;
     }
 
-    .game-card.locked {
-      min-height: 320px;
-    }
-
     .game-card::before {
       content: '';
       position: absolute;
@@ -681,34 +392,19 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, 
-        rgba(96, 165, 250, 0.1) 0%, 
-        rgba(45, 212, 191, 0.05) 50%, 
-        rgba(34, 211, 238, 0.1) 100%);
-      opacity: 0;
-      transition: var(--transition);
-      border-radius: var(--control-radius);
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      z-index: 0;
     }
 
-    .game-card:hover::before {
-      opacity: 1;
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    .game-card:active {
-      transform: scale(0.98) !important;
-      transition: transform 0.1s ease;
-    }
-
-    /* Стили для заблокированной игры - СТАТИЧНЫЕ */
     .game-card.locked {
       opacity: 0.7;
       cursor: not-allowed;
-      position: relative;
-    }
-
-    /* Слой блюра поверх карточки - СТАТИЧНЫЙ */
-    .game-card.blurred::before {
-      opacity: 0;
     }
 
     .game-card.blurred::after {
@@ -724,21 +420,20 @@
       z-index: 1;
     }
 
-    /* Размытие содержимого внутри карточки - СТАТИЧНОЕ */
     .game-card.blurred .game-header,
     .game-card.blurred .game-description,
     .game-card.blurred .glass-btn {
       filter: blur(4px);
-      -webkit-filter: blur(4px);
       opacity: 0.6;
+      position: relative;
+      z-index: 2;
     }
 
-    /* Таймер НЕ размывается */
     .game-card.blurred .timer-container {
       filter: none !important;
-      -webkit-filter: none !important;
       opacity: 1 !important;
-      z-index: 4;
+      position: relative;
+      z-index: 3;
     }
 
     .game-header {
@@ -762,14 +457,8 @@
       border-radius: 12px;
       backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border);
-      flex-shrink: 0;
-      transform: translateZ(0);
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .game-icon.frog {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
-      color: var(--frog-green);
+      transition: var(--transition);
     }
 
     .game-icon.gift {
@@ -777,23 +466,31 @@
       color: var(--gift-gold);
     }
 
+    .game-icon.frog {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
+      color: var(--frog-green);
+    }
+
+    .game-card-container:hover .game-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
     .game-title {
       font-size: 1.3rem;
       font-weight: 600;
       line-height: 1.2;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-      text-align: center;
     }
 
-    .game-title.frog {
-      background: linear-gradient(135deg, var(--frog-light-green), var(--frog-green));
+    .game-title.gift {
+      background: linear-gradient(135deg, var(--gift-gold), var(--gift-red));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
-    .game-title.gift {
-      background: linear-gradient(135deg, var(--gift-gold), var(--gift-red));
+    .game-title.frog {
+      background: linear-gradient(135deg, var(--frog-light-green), var(--frog-green));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -807,18 +504,6 @@
       position: relative;
       z-index: 2;
       text-align: center;
-      width: 100%;
-    }
-
-    .game-description.frog {
-      color: rgba(240, 249, 255, 0.9);
-      background: linear-gradient(135deg, 
-        rgba(34, 197, 94, 0.1), 
-        rgba(134, 239, 172, 0.05), 
-        rgba(22, 163, 74, 0.08));
-      padding: 0.8rem;
-      border-radius: 8px;
-      border-left: 3px solid var(--frog-green);
     }
 
     .game-description.gift {
@@ -832,8 +517,81 @@
       border-left: 3px solid var(--gift-gold);
     }
 
+    .game-description.frog {
+      color: rgba(240, 249, 255, 0.9);
+      background: linear-gradient(135deg, 
+        rgba(34, 197, 94, 0.1), 
+        rgba(134, 239, 172, 0.05), 
+        rgba(22, 163, 74, 0.08));
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--frog-green);
+    }
+
+    .timer-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      text-align: center;
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .timer-title {
+      font-size: 0.9rem;
+      color: var(--winter-light);
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Montserrat', monospace;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--gift-gold);
+      text-shadow: 0 0 10px var(--timer-glow);
+    }
+
+    .timer-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .timer-value {
+      min-width: 40px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      backdrop-filter: blur(5px);
+    }
+
+    .timer-unit {
+      font-size: 0.7rem;
+      color: var(--winter-light);
+      margin-top: 2px;
+    }
+
+    .timer-date {
+      font-size: 0.8rem;
+      color: var(--winter-light);
+      margin-top: 8px;
+      opacity: 0.8;
+    }
+
     .glass-btn {
-      --btn-bg: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -841,31 +599,19 @@
       padding: 1rem 1.5rem;
       border-radius: var(--control-radius);
       border: 1px solid var(--glass-border);
-      background: var(--btn-bg);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
       backdrop-filter: blur(15px) saturate(180%);
       box-shadow: 0 4px 15px rgba(0,0,0,0.3), 
                   inset 0 1px 0 rgba(255,255,255,0.1);
       color: var(--light);
       font-weight: 500;
-      text-decoration: none;
-      cursor: pointer;
+      cursor: button;
       transition: var(--transition);
       width: 100%;
       font-size: 0.95rem;
-      letter-spacing: 0.3px;
       position: relative;
       overflow: hidden;
-      touch-action: manipulation;
-      transform: translateZ(0);
-      -webkit-user-select: none;
-      user-select: none;
       z-index: 2;
-      margin-top: auto;
-    }
-
-    .glass-btn.frog {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
-      border: 1px solid rgba(34, 197, 94, 0.3);
     }
 
     .glass-btn.gift {
@@ -874,13 +620,18 @@
       cursor: not-allowed;
     }
 
+    .glass-btn.frog {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
     .glass-btn.unlocked {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
       border: 1px solid rgba(34, 197, 94, 0.3);
       cursor: pointer !important;
     }
 
-    .glass-btn::before {
+    .glass-btn:hover::before {
       content: '';
       position: absolute;
       top: 0;
@@ -889,28 +640,18 @@
       height: 100%;
       background: linear-gradient(90deg, 
         transparent, 
-        rgba(255,255,255,0.1), 
+        rgba(255,255,255,0.2), 
         transparent);
-      transition: left 0.5s ease;
+      animation: shine 0.8s ease;
     }
 
-    .glass-btn:not(:disabled):hover::before {
-      left: 100%;
+    .glass-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
 
-    .glass-btn:not(:disabled):active {
-      transform: scale(0.98);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3), 
-                  inset 0 1px 0 rgba(255,255,255,0.1);
-      transition: transform 0.1s ease;
-    }
-
-    .glass-btn i {
-      font-size: 0.95rem;
-    }
-
-    .hidden { 
-      display: none; 
+    @keyframes shine {
+      to { left: 100%; }
     }
 
     .loading-overlay {
@@ -929,8 +670,6 @@
       opacity: 0;
       visibility: hidden;
       transition: var(--transition);
-      padding: 15px;
-      transform: translateZ(0);
     }
 
     .loading-overlay.active {
@@ -946,7 +685,6 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 1.5rem;
-      transform: translateZ(0);
     }
 
     @keyframes spin {
@@ -954,404 +692,102 @@
       100% { transform: rotate(360deg); }
     }
 
-    .loading-text {
-      font-size: 1rem;
-      color: var(--light);
-      font-weight: 300;
-      text-align: center;
-      line-height: 1.4;
-    }
-
-    .error-text {
-      font-size: 1.5rem;
-      color: #ff4444;
-      font-weight: 600;
-      text-align: center;
-      margin-top: 1rem;
-      display: none;
-    }
-
-    .error-text.active {
-      display: block;
-      animation: errorPulse 0.5s ease-in-out;
-    }
-
-    @keyframes errorPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    .footer {
-      display: none;
-    }
-
-    /* Защита от копирования */
-    body::after {
-      content: "";
+    .message {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 999999;
-      pointer-events: none;
-      user-select: none;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--secondary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      z-index: 9999;
+      font-weight: bold;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      font-size: 14px;
+      text-align: center;
+      max-width: 90%;
+      border: 2px solid rgba(255,255,255,0.2);
+      animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
     }
 
-    /* Адаптивность для мобильных */
+    @keyframes slideDown {
+      from {
+        transform: translateX(-50%) translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+    }
+
     @media (max-width: 480px) {
-      :root {
-        --mobile-padding: 10px;
-        --mobile-margin: 4px;
-        --glass-blur: 10px;
-        --control-radius: 14px;
-      }
-      
-      body {
-        padding: var(--mobile-padding);
-        padding-top: 15px;
-      }
-
-      .header {
-        margin-bottom: 1.2rem;
-      }
-
-      .logo {
-        font-size: 2.5rem;
-      }
-
-      .fluid {
-        font-size: clamp(1.3rem, 5vw, 2rem);
-      }
-
-      .subtitle {
-        font-size: 0.8rem;
-      }
-
-      .games-grid {
-        gap: 1.2rem;
-      }
-
-      .game-card-container {
-        margin: 0;
-      }
-
-      .game-card {
-        padding: 1.2rem;
-        min-height: 280px;
-      }
-
-      .game-card.locked {
-        min-height: 280px;
-      }
-
-      /* Кат-сцена на мобильных */
-      .demon {
-        font-size: 80px;
-        top: 15%;
-      }
-
-      .speech-bubble {
-        font-size: 1.2rem;
-        padding: 15px 20px;
-        top: 30%;
-      }
-
-      .player {
-        font-size: 60px;
-        bottom: 15%;
-      }
-
-      .evil-smiley {
-        font-size: 45px;
-      }
-
-      .timer {
-        font-size: 1.5rem;
-        gap: 6px;
-      }
-
-      .timer-value {
-        min-width: 30px;
-      }
-
-      .timer-title {
-        font-size: 0.8rem;
-      }
-
-      .timer-unit {
-        font-size: 0.6rem;
-      }
-
-      .timer-date {
-        font-size: 0.7rem;
-      }
-
-      .events-icon {
-        top: 15px;
-        right: 15px;
-        width: 40px;
-        height: 40px;
-        font-size: 1.1rem;
-      }
-      
-      .events-content {
-        padding: 1.2rem;
-        max-height: 85vh;
-      }
-      
-      .events-title {
-        font-size: 1.3rem;
-      }
-      
-      .event-date {
-        font-size: 1rem;
-      }
-      
-      .event-description {
-        font-size: 0.9rem;
-      }
-      
-      .event-note {
-        font-size: 0.8rem;
-      }
-
-      .game-header {
-        gap: 0.8rem;
-        margin-bottom: 0.8rem;
-      }
-
-      .game-icon {
-        font-size: 1.7rem;
-        width: 50px;
-        height: 50px;
-        border-radius: 10px;
-      }
-
-      .game-title {
-        font-size: 1.1rem;
-      }
-
-      .game-description {
-        font-size: 0.8rem;
-        margin-bottom: 0.8rem;
-      }
-
-      .glass-btn {
-        padding: 0.9rem 1.2rem;
-        font-size: 0.9rem;
-      }
-
-      .error-text {
-        font-size: 1.2rem;
-      }
-
-      /* Меньше снежинок на мобильных */
-      .snowflake {
-        opacity: 0.6;
-      }
-      
-      .snowflake.small {
-        width: 3px;
-        height: 3px;
-      }
-
-      .snowflake.medium {
-        width: 5px;
-        height: 5px;
-      }
-
-      .snowflake.large {
-        width: 7px;
-        height: 7px;
-      }
-    }
-
-    /* Для очень маленьких экранов */
-    @media (max-width: 320px) {
-      :root {
-        --mobile-padding: 8px;
-        --mobile-margin: 3px;
-      }
-
-      .game-card {
-        padding: 1rem;
-        min-height: 260px;
-      }
-
-      .game-card.locked {
-        min-height: 260px;
-      }
-
-      .demon {
-        font-size: 60px;
-      }
-
-      .speech-bubble {
-        font-size: 1rem;
-        padding: 10px 15px;
-      }
-
-      .player {
-        font-size: 50px;
-      }
-
-      .evil-smiley {
-        font-size: 35px;
-      }
-
-      .timer {
-        font-size: 1.3rem;
-        gap: 4px;
-      }
-
-      .timer-value {
-        min-width: 25px;
-      }
-
-      .timer-title {
-        font-size: 0.75rem;
-      }
-
-      .timer-unit {
-        font-size: 0.55rem;
-      }
-
-      .timer-date {
-        font-size: 0.65rem;
-      }
-
-      .events-icon {
-        top: 10px;
-        right: 10px;
-        width: 36px;
-        height: 36px;
-        font-size: 1rem;
-      }
-      
-      .events-content {
-        padding: 1rem;
-      }
-      
-      .events-title {
-        font-size: 1.2rem;
-      }
-      
-      .event-item {
-        padding: 1rem;
-      }
-
-      .game-icon {
-        width: 45px;
-        height: 45px;
-        font-size: 1.5rem;
-      }
-
-      .game-title {
-        font-size: 1rem;
-      }
-
-      .game-description {
-        font-size: 0.75rem;
-        padding: 0.6rem;
-        margin-bottom: 0.6rem;
-      }
+      body { padding: 10px; }
+      .game-card { padding: 1.2rem; min-height: 280px; }
+      .game-icon { width: 50px; height: 50px; font-size: 1.7rem; }
+      .game-title { font-size: 1.1rem; }
+      .demon { font-size: 80px; }
+      .speech-bubble { font-size: 1.2rem; padding: 15px 20px; }
+      .player { font-size: 60px; }
+      .evil-smiley { font-size: 45px; }
+      .timer { font-size: 1.5rem; gap: 6px; }
+      .timer-value { min-width: 30px; }
+      .glass-btn { padding: 0.9rem 1.2rem; font-size: 0.9rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Пустой экран - показан изначально -->
-  <div class="empty-screen" id="emptyScreen"></div>
-
-  <!-- Particles.js контейнер -->
-  <div id="particles-js"></div>
-
-  <!-- СНЕЖИНКИ -->
   <div class="snowflakes" id="snowflakes"></div>
-
-  <!-- КАТ-СЦЕНА - АВТОМАТИЧЕСКИ ПРИ ОКОНЧАНИИ ВРЕМЕНИ -->
+  
+  <div class="bg-decoration">
+    <div class="floating-element">❄️</div>
+    <div class="floating-element">🎁</div>
+    <div class="floating-element">🐸</div>
+    <div class="floating-element">⭐</div>
+  </div>
+  
+  <div class="empty-screen" id="emptyScreen">
+    <div class="loader"></div>
+  </div>
+  
+  <div id="particles-js"></div>
+  
   <div class="cutscene-overlay" id="cutsceneOverlay">
     <div class="cutscene-content" id="cutsceneContent">
-      <!-- Демон -->
       <div class="demon" id="demon">😈</div>
-      
-      <!-- Речь демона -->
-      <div class="speech-bubble" id="speechBubble">Пора уничтожить подарки!</div>
-      
-      <!-- Игрок -->
+      <div class="speech-bubble" id="speechBubble">It's time to destroy the gift!</div>
       <div class="player" id="player">🎁</div>
-      
-      <!-- Злой смайлик -->
       <div class="evil-smiley" id="evilSmiley">👿</div>
     </div>
   </div>
-
-  <!-- Иконка открытия списка событий -->
-  <div class="events-icon" id="eventsIcon">
-    <i class="fas fa-calendar-alt"></i>
-  </div>
-
-  <!-- Оверлей списка событий -->
-  <div class="events-overlay" id="eventsOverlay">
-    <div class="events-content">
-      <div class="events-header">
-        <div class="events-title">❄️ Winter Events ❄️</div>
-        <button class="events-close" id="eventsClose">&times;</button>
-      </div>
-      <div class="events-list">
-        <div class="event-item">
-          <div class="event-date">⏳️ December 24</div>
-          <div class="event-time">⏰ 20:30 Moscow time</div>
-          <div class="event-description">
-            The appearance of a new game and ??? with ??? 😱
-          </div>
-        </div>
-        <div class="event-item">
-          <div class="event-date">⏳️ December 26</div>
-          <div class="event-description">
-            IRL stream in Russian, let's spin the reels! 🎰
-          </div>
-        </div>
-        <div class="event-item">
-          <div class="event-date">⏳️ December 31</div>
-          <div class="event-description">
-            A video with a secret... 🤫
-          </div>
-        </div>
-        <div class="event-note">
-          <i class="fas fa-info-circle"></i>
-          This list appears only once. You can always view it by clicking the calendar icon in the top right corner.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Основной контент - изначально скрыт -->
-  <div class="bg-circles" id="bgCircles">
-    <div class="circle circle-1"></div>
-    <div class="circle circle-2"></div>
-  </div>
-
+  
   <div class="main-content" id="mainContent">
     <div class="header">
       <div class="logo">❄️</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
       <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
-
+    
     <div class="games-grid">
-      <!-- Игра Gift Hero - ТЕПЕРЬ ПЕРВАЯ (ВЫШЕ) -->
-      <div class="game-card-container gift-hero">
+      <div class="game-card-container">
         <div class="game-card locked blurred" id="giftHeroCard">
           <div class="game-header">
             <div class="game-icon gift">🎁</div>
             <div class="game-title gift">Gift Hero</div>
           </div>
+          
           <div class="game-description gift">
             Move clockwise and counterclockwise, dodge the Wrath's attacks. Collect gifts in this intense circular survival challenge!
           </div>
           
-          <!-- ТАЙМЕР ПОСЕРЕДИНЕ КАРТОЧКИ -->
           <div class="timer-container" id="timerContainer">
             <div class="timer-title">Available in:</div>
             <div class="timer" id="timer">
@@ -1377,24 +813,25 @@
             </div>
             <div class="timer-date">Until Dec 24, 2025 20:30 MSK</div>
           </div>
-
+          
           <button class="glass-btn gift" id="giftHeroBtn" disabled>
             <i class="fas fa-clock"></i>
             <span>Available Soon</span>
           </button>
         </div>
       </div>
-
-      <!-- Игра Cvapta - ТЕПЕРЬ ВТОРАЯ (НИЖЕ) -->
-      <div class="game-card-container cvapta">
-        <div class="game-card">
+      
+      <div class="game-card-container">
+        <div class="game-card" id="cvaptaCard">
           <div class="game-header">
             <div class="game-icon frog">🐸</div>
             <div class="game-title frog">Cvapta</div>
           </div>
+          
           <div class="game-description frog">
             Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises in this enchanting adventure!
           </div>
+          
           <button class="glass-btn frog" id="cvaptaBtn">
             <i class="fas fa-play"></i>
             <span>Play Now</span>
@@ -1402,742 +839,401 @@
         </div>
       </div>
     </div>
-
-    <div class="footer">
-      <p></p>
-    </div>
   </div>
-
+  
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
     <div class="loading-text">Loading your adventure...</div>
-    <div class="error-text">Error!</div>
   </div>
-
+  
   <script>
     (function() {
       console.log('🎮 Game initialization started...');
       
-      // Глобальные переменные
-      window.GAME_STATE = {
-        targetDate: null,
-        timerExpired: false,
-        giftHeroUnlocked: false,
-        cutsceneShown: false,
-        isTestMode: false  // Флаг для тестового режима
-      };
-      
-      // Элементы DOM
       const elements = {
-        cvaptaBtn: document.getElementById('cvaptaBtn'),
-        giftHeroBtn: document.getElementById('giftHeroBtn'),
-        giftHeroCard: document.getElementById('giftHeroCard'),
-        loadingOverlay: document.getElementById('loadingOverlay'),
-        errorText: document.querySelector('.error-text'),
-        mainContent: document.getElementById('mainContent'),
-        bgCircles: document.getElementById('bgCircles'),
         emptyScreen: document.getElementById('emptyScreen'),
-        snowflakesContainer: document.getElementById('snowflakes'),
+        mainContent: document.getElementById('mainContent'),
         cutsceneOverlay: document.getElementById('cutsceneOverlay'),
         demon: document.getElementById('demon'),
         speechBubble: document.getElementById('speechBubble'),
         player: document.getElementById('player'),
         evilSmiley: document.getElementById('evilSmiley'),
-        daysElement: document.getElementById('days'),
-        hoursElement: document.getElementById('hours'),
-        minutesElement: document.getElementById('minutes'),
-        secondsElement: document.getElementById('seconds'),
-        timerTitle: document.querySelector('.timer-title'),
-        timerDate: document.querySelector('.timer-date'),
+        giftHeroCard: document.getElementById('giftHeroCard'),
+        giftHeroBtn: document.getElementById('giftHeroBtn'),
         timerContainer: document.getElementById('timerContainer'),
-        eventsIcon: document.getElementById('eventsIcon'),
-        eventsOverlay: document.getElementById('eventsOverlay'),
-        eventsClose: document.getElementById('eventsClose')
+        days: document.getElementById('days'),
+        hours: document.getElementById('hours'),
+        minutes: document.getElementById('minutes'),
+        seconds: document.getElementById('seconds'),
+        cvaptaBtn: document.getElementById('cvaptaBtn'),
+        loadingOverlay: document.getElementById('loadingOverlay'),
+        snowflakes: document.getElementById('snowflakes')
       };
       
-      // ТАЙМЕР: 24 декабря 2025 года 20:30 по Москве
-      let TARGET_DATE = new Date('2025-12-24T17:30:00Z'); // 20:30 МСК = 17:30 UTC
+      const gameState = {
+        giftHeroUnlocked: localStorage.getItem('giftHeroUnlocked') === 'true',
+        cutsceneShown: localStorage.getItem('cutsceneShown') === 'true',
+        snowflakesCount: 50
+      };
       
-      // Для тестирования - раскомментировать строку ниже
-      // TARGET_DATE = new Date(Date.now() + 5000); // 5 секунд для теста
+      // Таймер до 24 декабря 2025 20:30 МСК (17:30 UTC)
+      let TARGET_DATE = new Date('2025-12-24T17:30:00Z');
+      // Для теста: раскомментируй строку ниже и закомментируй верхнюю
+      // let TARGET_DATE = new Date(Date.now() + 10000); // 10 секунд для теста
       
       let timerInterval;
       
-      // Функция для вывода отладочной информации
       function debugLog(message, data = null) {
         console.log(`🔧 ${message}`, data || '');
       }
       
-      // Функция для сброса состояния игры
-      function resetGameState() {
-        localStorage.removeItem('giftHeroUnlocked');
-        localStorage.removeItem('cutsceneShown');
-        localStorage.removeItem('giftHeroUnlockTime');
-        localStorage.removeItem('eventsShown');
-        window.GAME_STATE.giftHeroUnlocked = false;
-        window.GAME_STATE.cutsceneShown = false;
-        window.GAME_STATE.timerExpired = false;
-        
-        // Перезагружаем страницу
-        location.reload();
+      // Создание снежинок
+      function createSnowflakes() {
+        for (let i = 0; i < gameState.snowflakesCount; i++) {
+          const snowflake = document.createElement('div');
+          snowflake.className = 'snowflake';
+          
+          const size = Math.random() * 5 + 2;
+          const posX = Math.random() * 100;
+          const delay = Math.random() * 5;
+          const duration = Math.random() * 10 + 10;
+          const opacity = Math.random() * 0.6 + 0.4;
+          
+          snowflake.style.width = `${size}px`;
+          snowflake.style.height = `${size}px`;
+          snowflake.style.left = `${posX}%`;
+          snowflake.style.opacity = opacity;
+          snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+          
+          elements.snowflakes.appendChild(snowflake);
+        }
       }
       
-      // Инициализация Particles.js
       function initParticles() {
-        debugLog('Initializing particles.js...');
-        
-        particlesJS('particles-js', {
-          particles: {
-            number: {
-              value: window.innerWidth < 480 ? 40 : 60,
-              density: {
-                enable: true,
-                value_area: 800
-              }
-            },
-            color: {
-              value: ['#60A5FA', '#22D3EE', '#FFFFFF']
-            },
-            shape: {
-              type: 'circle',
-              stroke: {
-                width: 0,
-                color: '#000000'
-              }
-            },
-            opacity: {
-              value: 0.3,
-              random: true,
-              anim: {
-                enable: true,
+        if (typeof particlesJS !== 'undefined') {
+          particlesJS('particles-js', {
+            particles: {
+              number: { value: 40 },
+              color: { value: ['#60A5FA', '#22D3EE', '#FFFFFF', '#BAE6FD'] },
+              opacity: { value: 0.3, random: true },
+              size: { value: 2, random: true },
+              line_linked: { 
+                enable: true, 
+                distance: 150, 
+                color: '#60A5FA', 
+                opacity: 0.1, 
+                width: 1 
+              },
+              move: { 
+                enable: true, 
                 speed: 1,
-                opacity_min: 0.1,
-                sync: false
+                direction: "none",
+                random: true,
+                straight: false,
+                out_mode: "out",
+                bounce: false
               }
             },
-            size: {
-              value: 2,
-              random: true,
-              anim: {
-                enable: true,
-                speed: 2,
-                size_min: 0.5,
-                sync: false
+            interactivity: {
+              detect_on: 'canvas',
+              events: { 
+                onhover: { enable: true, mode: 'repulse' }, 
+                resize: true 
               }
             },
-            line_linked: {
-              enable: true,
-              distance: 150,
-              color: '#60A5FA',
-              opacity: 0.1,
-              width: 1
-            },
-            move: {
-              enable: true,
-              speed: 1,
-              direction: 'none',
-              random: true,
-              straight: false,
-              out_mode: 'out',
-              bounce: false,
-              attract: {
-                enable: false,
-                rotateX: 600,
-                rotateY: 1200
-              }
-            }
-          },
-          interactivity: {
-            detect_on: 'canvas',
-            events: {
-              onhover: {
-                enable: true,
-                mode: 'repulse'
-              },
-              onclick: {
-                enable: false
-              },
-              resize: true
-            },
-            modes: {
-              grab: {
-                distance: 400,
-                line_linked: {
-                  opacity: 0.5
-                }
-              },
-              bubble: {
-                distance: 400,
-                size: 40,
-                duration: 2,
-                opacity: 8,
-                speed: 3
-              },
-              repulse: {
-                distance: 100,
-                duration: 0.4
-              },
-              push: {
-                particles_nb: 4
-              },
-              remove: {
-                particles_nb: 2
-              }
-            }
-          },
-          retina_detect: true
-        });
-        
-        debugLog('✅ particles.js initialized');
+            retina_detect: true
+          });
+        }
       }
       
-      // Функция обновления таймера
       function updateTimer() {
         const now = new Date();
-        const timeDifference = TARGET_DATE - now;
+        const diff = TARGET_DATE - now;
         
-        debugLog('Timer check:', {
-          now: now.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }),
-          target: TARGET_DATE.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }),
-          difference: timeDifference
-        });
-        
-        if (timeDifference <= 0) {
-          // Таймер истек
-          elements.daysElement.textContent = '00';
-          elements.hoursElement.textContent = '00';
-          elements.minutesElement.textContent = '00';
-          elements.secondsElement.textContent = '00';
+        if (diff <= 0) {
+          clearInterval(timerInterval);
+          elements.days.textContent = '00';
+          elements.hours.textContent = '00';
+          elements.minutes.textContent = '00';
+          elements.seconds.textContent = '00';
           
-          if (!window.GAME_STATE.timerExpired) {
-            window.GAME_STATE.timerExpired = true;
+          // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: запускаем кат-сцену при истечении времени
+          if (!gameState.cutsceneShown && !gameState.giftHeroUnlocked) {
             debugLog('🎉 Timer expired! Starting cutscene...');
+            if (elements.timerContainer.querySelector('.timer-title')) {
+              elements.timerContainer.querySelector('.timer-title').textContent = 'Available Now!';
+            }
+            if (elements.timerContainer.querySelector('.timer-date')) {
+              elements.timerContainer.querySelector('.timer-date').textContent = 'Game is unlocked!';
+            }
             
-            // Меняем текст таймера
-            elements.timerTitle.textContent = 'Available Now!';
-            elements.timerDate.textContent = 'Game is unlocked!';
-            
-            // Запускаем кат-сцену через 2 секунды
+            // Убираем задержку и сразу запускаем кат-сцену
             setTimeout(() => {
               startCutscene();
-            }, 2000);
+            }, 500);
           }
           return;
         }
         
-        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
         
-        elements.daysElement.textContent = days.toString().padStart(2, '0');
-        elements.hoursElement.textContent = hours.toString().padStart(2, '0');
-        elements.minutesElement.textContent = minutes.toString().padStart(2, '0');
-        elements.secondsElement.textContent = seconds.toString().padStart(2, '0');
+        if (elements.days) elements.days.textContent = days.toString().padStart(2, '0');
+        if (elements.hours) elements.hours.textContent = hours.toString().padStart(2, '0');
+        if (elements.minutes) elements.minutes.textContent = minutes.toString().padStart(2, '0');
+        if (elements.seconds) elements.seconds.textContent = seconds.toString().padStart(2, '0');
       }
       
-      // Функция разблокировки Gift Hero (РЕАЛЬНОЕ открытие)
       function unlockGiftHero() {
-        window.GAME_STATE.giftHeroUnlocked = true;
-        
-        // Убираем блокировку с карточки
+        gameState.giftHeroUnlocked = true;
         elements.giftHeroCard.classList.remove('locked', 'blurred');
-        
-        // Обновляем кнопку
         elements.giftHeroBtn.disabled = false;
         elements.giftHeroBtn.classList.remove('gift');
         elements.giftHeroBtn.classList.add('unlocked');
         elements.giftHeroBtn.innerHTML = '<i class="fas fa-play"></i><span>Play Now</span>';
-        
-        // Убираем таймер
-        elements.timerContainer.style.display = 'none';
-        
-        // Сохраняем в localStorage ТОЛЬКО если это не тестовый режим
-        if (!window.GAME_STATE.isTestMode) {
-          localStorage.setItem('giftHeroUnlocked', 'true');
-          localStorage.setItem('giftHeroUnlockTime', Date.now().toString());
-          debugLog('🎁 Gift Hero unlocked and saved to localStorage');
-        } else {
-          debugLog('🎁 Gift Hero unlocked in TEST MODE (not saved to localStorage)');
+        if (elements.timerContainer) {
+          elements.timerContainer.style.display = 'none';
         }
+        
+        localStorage.setItem('giftHeroUnlocked', 'true');
+        localStorage.setItem('giftHeroUnlockTime', Date.now().toString());
+        
+        showMessage('🎮 Gift Hero unlocked!', '#22C55E');
       }
       
-      // Функция тестовой разблокировки Gift Hero (НЕ сохраняется)
-      function testUnlockGiftHero() {
-        window.GAME_STATE.isTestMode = true;
-        window.GAME_STATE.giftHeroUnlocked = true;
-        
-        // Убираем блокировку с карточки
-        elements.giftHeroCard.classList.remove('locked', 'blurred');
-        
-        // Обновляем кнопку
-        elements.giftHeroBtn.disabled = false;
-        elements.giftHeroBtn.classList.remove('gift');
-        elements.giftHeroBtn.classList.add('unlocked');
-        elements.giftHeroBtn.innerHTML = '<i class="fas fa-play"></i><span>Play Now</span>';
-        
-        // Убираем таймер
-        elements.timerContainer.style.display = 'none';
-        
-        // НЕ сохраняем в localStorage
-        debugLog('🎁 Gift Hero unlocked in TEST MODE (not saved to localStorage)');
-        showMessage('🎮 Gift Hero unlocked in TEST MODE (not saved)', '#FFD700');
-      }
-      
-      // Функция восстановления состояния
       function restoreState() {
         const savedUnlocked = localStorage.getItem('giftHeroUnlocked') === 'true';
         const savedCutscene = localStorage.getItem('cutsceneShown') === 'true';
-        const savedUnlockTime = localStorage.getItem('giftHeroUnlockTime');
         
-        debugLog('Restoring state:', { savedUnlocked, savedCutscene, savedUnlockTime });
-        
-        // Проверяем, что текущая дата меньше целевой
-        const now = new Date();
-        const isTimeExpired = now >= TARGET_DATE;
-        
-        // Игра должна быть разблокирована ТОЛЬКО если:
-        // 1. Она была сохранена как разблокированная И
-        // 2. Время истекло (наступила дата 24 декабря 2025 20:30)
-        if (savedUnlocked && isTimeExpired) {
-          window.GAME_STATE.giftHeroUnlocked = true;
-          window.GAME_STATE.timerExpired = true;
-          unlockGiftHero();
-        } else if (savedUnlocked && !isTimeExpired) {
-          // Если игра сохранена как разблокированная, но время еще не наступило
-          // Значит это тестовое открытие - НЕ восстанавливаем его
-          debugLog('⚠️ Game was unlocked before target date. Resetting to locked state.');
-          
-          // Сбрасываем сохраненное состояние
-          localStorage.removeItem('giftHeroUnlocked');
-          localStorage.removeItem('giftHeroUnlockTime');
-          
-          // Оставляем игру заблокированной
-          window.GAME_STATE.giftHeroUnlocked = false;
+        if (savedUnlocked) {
+          gameState.giftHeroUnlocked = true;
         }
         
         if (savedCutscene) {
-          window.GAME_STATE.cutsceneShown = true;
+          gameState.cutsceneShown = true;
         }
-        
-        return { savedUnlocked, savedCutscene };
       }
       
-      // Функция запуска кат-сцены (ТОЙ САМОЙ!)
       function startCutscene() {
-        if (window.GAME_STATE.cutsceneShown) {
-          debugLog('Cutscene already shown, skipping...');
+        if (gameState.cutsceneShown || gameState.giftHeroUnlocked) {
+          debugLog('Cutscene already shown or game already unlocked, skipping...');
+          if (!gameState.giftHeroUnlocked) {
+            unlockGiftHero();
+          }
           return;
         }
         
-        debugLog('🎬 Starting THE cutscene...');
-        
-        // Показываем кат-сцену
+        debugLog('🎬 Starting cutscene...');
         elements.cutsceneOverlay.classList.add('active');
+        elements.mainContent.style.opacity = '0.3';
         
-        // Скрываем основной контент
-        elements.mainContent.style.opacity = '0';
-        elements.mainContent.style.pointerEvents = 'none';
+        // Сбрасываем анимации
+        elements.demon.style.animation = 'appear 0.8s ease-out 0.5s forwards, float 3s ease-in-out 1.3s infinite';
+        elements.speechBubble.style.animation = 'appear 0.5s ease-out 1.5s forwards';
+        elements.player.style.animation = 'appear 1s ease-out 2.5s forwards';
+        elements.evilSmiley.style.animation = 'throw 1s ease-in 3.5s forwards, hit 0.5s ease-out 4.5s forwards';
         
-        // Запускаем анимации по порядку
         setTimeout(() => {
-          // 1. Показываем демона
-          elements.demon.style.animation = 'appear 0.8s ease-out forwards, float 3s ease-in-out infinite';
-          
-          setTimeout(() => {
-            // 2. Показываем речь демона
-            elements.speechBubble.style.animation = 'appear 0.5s ease-out forwards';
-            
-            setTimeout(() => {
-              // 3. Показываем игрока
-              elements.player.style.animation = 'appear 1s ease-out forwards';
-              
-              setTimeout(() => {
-                // 4. Демон кидает злой смайлик
-                elements.evilSmiley.style.animation = 'throw 1s ease-in forwards';
-                
-                setTimeout(() => {
-                  // 5. Смайлик попадает в игрока
-                  elements.evilSmiley.style.animation = 'hit 0.5s ease-out forwards';
-                  
-                  setTimeout(() => {
-                    // 6. Завершаем кат-сцену
-                    finishCutscene();
-                  }, 500);
-                }, 1000);
-              }, 1000);
-            }, 1000);
-          }, 1000);
-        }, 500);
+          finishCutscene();
+        }, 5000);
       }
       
-      // Завершение кат-сцены
       function finishCutscene() {
-        // Закрываем кат-сцену
         elements.cutsceneOverlay.classList.remove('active');
-        
-        // Восстанавливаем основной контент
         elements.mainContent.style.opacity = '1';
-        elements.mainContent.style.pointerEvents = 'auto';
-        
-        // Разблокируем игру Gift Hero
         unlockGiftHero();
         
-        // Сохраняем состояние
-        window.GAME_STATE.cutsceneShown = true;
+        gameState.cutsceneShown = true;
         localStorage.setItem('cutsceneShown', 'true');
         
-        debugLog('🎬 Cutscene completed! Gift Hero is now available');
+        debugLog('🎬 Cutscene completed! Redirecting...');
         
-        // Показываем сообщение
-        showMessage('🎮 Gift Hero unlocked!', '#3B82F6');
-      }
-      
-      // Функция создания снежинок
-      function createSnowflakes() {
-        const snowflakeCount = window.innerWidth < 480 ? 30 : 50;
+        showMessage('🎮 Gift Hero unlocked! Redirecting...', '#3B82F6');
         
-        elements.snowflakesContainer.innerHTML = '';
-        
-        for (let i = 0; i < snowflakeCount; i++) {
-          const snowflake = document.createElement('div');
-          const size = Math.random();
-          let sizeClass = 'small';
-          let duration = 8 + Math.random() * 4;
-          
-          if (size > 0.7) {
-            sizeClass = 'large';
-            duration = 12 + Math.random() * 4;
-          } else if (size > 0.4) {
-            sizeClass = 'medium';
-            duration = 10 + Math.random() * 4;
-          }
-          
-          snowflake.classList.add('snowflake', sizeClass);
-          
-          const startX = Math.random() * 100;
-          const startDelay = Math.random() * 5;
-          
-          snowflake.style.left = `${startX}vw`;
-          snowflake.style.animation = `snowfall ${duration}s linear ${startDelay}s infinite`;
-          
-          elements.snowflakesContainer.appendChild(snowflake);
-        }
-      }
-      
-      // Функция инициализации списка событий
-      function initializeEvents() {
-        // Проверяем, показывался ли уже список событий
-        const eventsShown = localStorage.getItem('eventsShown') === 'true';
-        
-        // Если список еще не показывался, показываем его автоматически через 2 секунды
-        if (!eventsShown) {
+        // Переходим на страницу через 2 секунды
+        setTimeout(() => {
+          showLoading();
           setTimeout(() => {
-            elements.eventsOverlay.classList.add('active');
-            localStorage.setItem('eventsShown', 'true');
-            debugLog('❄️ Winter events list shown automatically');
-          }, 2000);
-        }
-        
-        // Обработчики для иконки и кнопки закрытия
-        elements.eventsIcon.addEventListener('click', () => {
-          elements.eventsOverlay.classList.add('active');
-        });
-        
-        elements.eventsClose.addEventListener('click', () => {
-          elements.eventsOverlay.classList.remove('active');
-        });
-        
-        // Закрытие при клике вне контента
-        elements.eventsOverlay.addEventListener('click', (e) => {
-          if (e.target === elements.eventsOverlay) {
-            elements.eventsOverlay.classList.remove('active');
-          }
-        });
-        
-        // Закрытие по Escape
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && elements.eventsOverlay.classList.contains('active')) {
-            elements.eventsOverlay.classList.remove('active');
-          }
-        });
+            debugLog('🚀 Redirecting to https://tqqqka.github.io/event/');
+            window.location.href = 'https://tqqqka.github.io/event/';
+          }, 1000);
+        }, 2000);
       }
       
-      // Функция для тестирования F8 (быстрая разблокировка и кат-сцена)
-      function testUnlockGame() {
-        debugLog('🎮 F8 pressed - Testing unlock with cutscene...');
-        
-        // Устанавливаем таймер на 2 секунды вперед
-        TARGET_DATE = new Date(Date.now() + 2000);
-        
-        // Сразу обновляем таймер
-        updateTimer();
-        
-        // Очищаем старый интервал
-        if (timerInterval) clearInterval(timerInterval);
-        
-        // Запускаем новый интервал
-        timerInterval = setInterval(updateTimer, 1000);
-        
-        // Показываем сообщение
-        showMessage('🎬 Тест: кат-сцена запустится через 2 секунды!', '#FFD700');
-        
-        debugLog('Game will unlock with cutscene in 2 seconds...');
-      }
-      
-      // Функция для тестирования F9 (быстрая разблокировка БЕЗ сохранения)
-      function testUnlockGameNoSave() {
-        debugLog('🎮 F9 pressed - Testing unlock WITHOUT saving...');
-        
-        // Немедленно разблокируем игру в тестовом режиме
-        testUnlockGiftHero();
-        
-        // Показываем сообщение
-        showMessage('🎮 Тест: игра разблокирована (не сохраняется)', '#FFD700');
-      }
-      
-      // Функция показа сообщения
-      function showMessage(text, color = '#3B82F6') {
+      function showMessage(text, color) {
         const msg = document.createElement('div');
-        msg.style.cssText = `
-          position: fixed;
-          top: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: ${color};
-          color: white;
-          padding: 12px 24px;
-          border-radius: 12px;
-          z-index: 9999;
-          font-weight: bold;
-          box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-          font-size: 14px;
-          text-align: center;
-          max-width: 90%;
-          border: 2px solid rgba(255,255,255,0.2);
-        `;
+        msg.className = 'message';
         msg.textContent = text;
+        msg.style.background = color;
         document.body.appendChild(msg);
         
         setTimeout(() => {
-          if (msg.parentNode) {
-            msg.parentNode.removeChild(msg);
-          }
+          msg.remove();
         }, 3000);
       }
       
-      // Обработчик горячих клавиш
-      function handleKeyDown(e) {
-        // F8 - тестовая разблокировка с кат-сценой
-        if (e.key === 'F8' || e.code === 'F8') {
-          e.preventDefault();
-          testUnlockGame();
-          return;
-        }
-        
-        // F9 - тестовая разблокировка БЕЗ сохранения
-        if (e.key === 'F9' || e.code === 'F9') {
-          e.preventDefault();
-          testUnlockGameNoSave();
-          return;
-        }
-        
-        // F5 - сброс состояния игры
-        if (e.key === 'F5' || e.code === 'F5') {
-          e.preventDefault();
-          resetGameState();
-          return;
-        }
-        
-        // Ctrl + R - сброс состояния игры
-        if (e.ctrlKey && e.key === 'r') {
-          e.preventDefault();
-          resetGameState();
-          return;
-        }
-        
-        // F12 - отладочная информация
-        if (e.key === 'F12' || e.code === 'F12') {
-          e.preventDefault();
-          debugLog('=== GAME DEBUG INFO ===');
-          debugLog('Game State:', window.GAME_STATE);
-          debugLog('Target Date:', TARGET_DATE.toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }));
-          debugLog('Current Time:', new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }));
-          debugLog('Hotkeys: F8 (test with cutscene), F9 (test no save), F5/Ctrl+R (reset)');
-          return;
-        }
+      function showLoading() {
+        elements.loadingOverlay.classList.add('active');
       }
       
-      // Инициализация приложения
-      function initializeApp() {
-        debugLog('Initializing app...');
+      // === ФУНКЦИИ ДЛЯ ТЕСТИРОВАНИЯ В КОНСОЛИ ===
+      window.testTimer = function(seconds = 5) {
+        console.log('⏱️ Setting timer to ' + seconds + ' seconds...');
         
-        // Инициализируем Particles.js
-        initParticles();
+        // Устанавливаем новую дату
+        TARGET_DATE = new Date(Date.now() + (seconds * 1000));
         
-        // Создаем снежинки
-        createSnowflakes();
+        // Сбрасываем состояние
+        localStorage.removeItem('giftHeroUnlocked');
+        localStorage.removeItem('cutsceneShown');
+        gameState.giftHeroUnlocked = false;
+        gameState.cutsceneShown = false;
         
-        // Скрываем пустой экран
-        elements.emptyScreen.classList.add('hidden');
+        // Восстанавливаем элементы
+        elements.giftHeroCard.classList.add('locked', 'blurred');
+        elements.giftHeroBtn.disabled = true;
+        elements.giftHeroBtn.classList.remove('unlocked');
+        elements.giftHeroBtn.classList.add('gift');
+        elements.giftHeroBtn.innerHTML = '<i class="fas fa-clock"></i><span>Available Soon</span>';
+        if (elements.timerContainer) {
+          elements.timerContainer.style.display = 'block';
+        }
         
-        // Восстанавливаем состояние
-        const state = restoreState();
-        
-        // Показываем основной контент
-        elements.mainContent.classList.add('active');
-        elements.bgCircles.classList.add('active');
-        
-        // Запускаем таймер
+        // Обновляем таймер
+        if (timerInterval) {
+          clearInterval(timerInterval);
+        }
         updateTimer();
         timerInterval = setInterval(updateTimer, 1000);
         
-        // Инициализируем кнопки
-        initializeButtons();
+        console.log('✅ Timer set to ' + seconds + ' seconds');
+        console.log('⏰ Unlock time: ' + TARGET_DATE.toLocaleTimeString());
         
-        // Инициализируем список событий
-        initializeEvents();
+        showMessage('⏱️ Timer set to ' + seconds + ' seconds', '#FFD700');
         
-        // Добавляем обработчик горячих клавиш
-        document.addEventListener('keydown', handleKeyDown);
-        
-        // Если таймер истек, но кат-сцена не была показана
-        const now = new Date();
-        if (now >= TARGET_DATE && !state.savedCutscene && !window.GAME_STATE.cutsceneShown) {
-          debugLog('Timer already expired, starting cutscene...');
+        // Если 0 секунд - мгновенная разблокировка
+        if (seconds <= 0) {
           setTimeout(() => {
             startCutscene();
-          }, 2000);
-        }
-        
-        debugLog('✅ App initialized successfully');
-        debugLog('🎮 Hotkeys: F8 (test unlock with cutscene), F9 (test unlock no save), F5/Ctrl+R (reset)');
-      }
-      
-      // Инициализация кнопок
-      function initializeButtons() {
-        // Cvapta button
-        elements.cvaptaBtn.addEventListener('click', function() {
-          showLoading();
-          setTimeout(() => {
-            window.location.href = 'https://tqqqka.github.io/capsavta/';
-          }, 1500);
-        });
-        
-        // Gift Hero button (после разблокировки)
-        elements.giftHeroBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          if (window.GAME_STATE.giftHeroUnlocked) {
-            showLoading();
-            setTimeout(() => {
-              debugLog('Redirecting to https://tqqqka.github.io/event-game/');
-              window.location.href = 'https://tqqqka.github.io/event-game/';
-            }, 1000);
-          } else {
-            debugLog('Gift Hero is still locked');
-          }
-        });
-        
-        // Gift Hero card click
-        elements.giftHeroCard.addEventListener('click', function(e) {
-          if (!e.target.closest('.glass-btn')) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (window.GAME_STATE.giftHeroUnlocked) {
-              showLoading();
-              setTimeout(() => {
-                window.location.href = 'https://tqqqka.github.io/event-game/';
-              }, 1000);
-            }
-          }
-        });
-        
-        // Touch animations
-        elements.cvaptaBtn.addEventListener('touchstart', function() {
-          this.style.transform = 'scale(0.98)';
-        }, { passive: true });
-        
-        elements.cvaptaBtn.addEventListener('touchend', function() {
-          this.style.transform = '';
-        }, { passive: true });
-        
-        if (window.GAME_STATE.giftHeroUnlocked) {
-          elements.giftHeroBtn.addEventListener('touchstart', function() {
-            this.style.transform = 'scale(0.98)';
-          }, { passive: true });
-          
-          elements.giftHeroBtn.addEventListener('touchend', function() {
-            this.style.transform = '';
-          }, { passive: true });
-        }
-      }
-      
-      // Вспомогательные функции
-      function showLoading() {
-        elements.loadingOverlay.classList.add('active');
-        elements.errorText.classList.remove('active');
-      }
-      
-      // Запуск при загрузке DOM
-      document.addEventListener('DOMContentLoaded', function() {
-        debugLog('DOM loaded, starting app...');
-        initializeApp();
-        
-        // Обработка ошибок
-        window.addEventListener('error', function(e) {
-          console.error('Global error:', e.error);
-          elements.errorText.classList.add('active');
-        });
-        
-        // Ресайз окна
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(() => {
-            createSnowflakes();
-            // Particles.js автоматически обрабатывает ресайз благодаря настройке resize: true
-          }, 250);
-        });
-        
-        // Защита от копирования
-        document.addEventListener('copy', function(e) {
-          e.preventDefault();
-          return false;
-        });
-        
-        document.addEventListener('contextmenu', function(e) {
-          e.preventDefault();
-          return false;
-        });
-        
-        document.addEventListener('selectstart', function(e) {
-          e.preventDefault();
-          return false;
-        });
-      });
-      
-      // Экспортируем функции для отладки
-      window.debugGame = {
-        unlockNow: function() {
-          TARGET_DATE = new Date(Date.now() - 1000);
-          updateTimer();
-        },
-        unlockNoSave: testUnlockGameNoSave,
-        showCutscene: startCutscene,
-        resetState: resetGameState,
-        getState: function() {
-          return {
-            ...window.GAME_STATE,
-            targetDate: TARGET_DATE,
-            now: new Date()
-          };
+          }, 1000);
         }
       };
       
-      debugLog('🎮 Game script loaded. Use window.debugGame for testing.');
+      window.unlockNow = function() {
+        console.log('🎮 Instant unlock...');
+        startCutscene();
+      };
+      
+      window.resetGame = function() {
+        console.log('🔄 Resetting game...');
+        localStorage.clear();
+        location.reload();
+      };
+      
+      window.showGameState = function() {
+        console.log('📊 Game State:', gameState);
+        console.log('🎯 Target Date:', TARGET_DATE);
+        console.log('⏰ Time Left:', TARGET_DATE - new Date());
+      };
+      
+      function init() {
+        debugLog('Initializing app...');
+        initParticles();
+        createSnowflakes();
+        
+        // Скрываем загрузочный экран с анимацией
+        setTimeout(() => {
+          elements.emptyScreen.classList.add('hidden');
+          setTimeout(() => {
+            elements.mainContent.classList.add('active');
+          }, 500);
+        }, 1000);
+        
+        restoreState();
+        
+        // КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Проверяем, не рано ли игра разблокирована
+        const now = new Date();
+        if (now < TARGET_DATE) {
+          // Если время еще не наступило, всегда блокируем игру
+          debugLog('⌛ Time not yet reached, forcing lock...');
+          gameState.giftHeroUnlocked = false;
+          gameState.cutsceneShown = false;
+          
+          // Восстанавливаем заблокированный вид
+          elements.giftHeroCard.classList.add('locked', 'blurred');
+          elements.giftHeroBtn.disabled = true;
+          elements.giftHeroBtn.classList.remove('unlocked');
+          elements.giftHeroBtn.classList.add('gift');
+          elements.giftHeroBtn.innerHTML = '<i class="fas fa-clock"></i><span>Available Soon</span>';
+          
+          if (elements.timerContainer) {
+            elements.timerContainer.style.display = 'block';
+          }
+        } else if (gameState.giftHeroUnlocked) {
+          // Если время наступило и игра уже разблокирована - показываем разблокированной
+          elements.giftHeroCard.classList.remove('locked', 'blurred');
+          elements.giftHeroBtn.disabled = false;
+          elements.giftHeroBtn.classList.remove('gift');
+          elements.giftHeroBtn.classList.add('unlocked');
+          elements.giftHeroBtn.innerHTML = '<i class="fas fa-play"></i><span>Play Now</span>';
+          if (elements.timerContainer) {
+            elements.timerContainer.style.display = 'none';
+          }
+        }
+        
+        updateTimer();
+        timerInterval = setInterval(updateTimer, 1000);
+        
+        // Обработчики кликов
+        elements.cvaptaBtn.addEventListener('click', () => {
+          showLoading();
+          setTimeout(() => {
+            window.location.href = 'https://tqqqka.github.io/capsavta/';
+          }, 800);
+        });
+        
+        elements.giftHeroBtn.addEventListener('click', () => {
+          if (gameState.giftHeroUnlocked) {
+            showLoading();
+            setTimeout(() => {
+              window.location.href = 'https://tqqqka.github.io/event/';
+            }, 800);
+          }
+        });
+        
+        elements.giftHeroCard.addEventListener('click', (e) => {
+          if (!e.target.closest('.glass-btn') && gameState.giftHeroUnlocked) {
+            showLoading();
+            setTimeout(() => {
+              window.location.href = 'https://tqqqka.github.io/event/';
+            }, 800);
+          }
+        });
+        
+        // Автоматическая проверка времени при загрузке
+        if (now >= TARGET_DATE && !gameState.cutsceneShown && !gameState.giftHeroUnlocked) {
+          setTimeout(() => {
+            startCutscene();
+          }, 1500);
+        }
+        
+        debugLog('✅ App initialized successfully');
+        
+        // Информация для тестирования
+        console.log('🎮 Для тестирования в консоли используй:');
+        console.log('testTimer(5) - установить таймер на 5 секунд');
+        console.log('testTimer(0) - мгновенная разблокировка');
+        console.log('unlockNow() - сразу запустить кат-сцену');
+        console.log('resetGame() - сбросить игру');
+        console.log('showGameState() - показать состояние игры');
+        console.log('🎯 Текущая дата разблокировки:', TARGET_DATE.toLocaleString());
+        console.log('⏰ Сейчас:', now.toLocaleString());
+        console.log('⏳ Осталось времени:', TARGET_DATE - now, 'ms');
+      }
+      
+      document.addEventListener('DOMContentLoaded', init);
     })();
   </script>
 </body>
