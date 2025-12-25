@@ -118,6 +118,179 @@
       100% { transform: translateY(0) rotate(360deg); }
     }
 
+    /* Иконка событий */
+    .events-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(96, 165, 250, 0.1));
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: var(--glass-shadow);
+      transition: var(--transition);
+      color: var(--winter-blue);
+      font-size: 1.2rem;
+    }
+
+    .events-icon:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(96, 165, 250, 0.2));
+      color: var(--winter-cyan);
+    }
+
+    /* Оверлей событий */
+    .events-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      padding: 20px;
+    }
+
+    .events-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Контент событий */
+    .events-content {
+      background: linear-gradient(135deg, 
+        rgba(15, 23, 42, 0.9),
+        rgba(30, 41, 59, 0.95));
+      backdrop-filter: blur(20px);
+      border-radius: var(--control-radius);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .events-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--winter-blue);
+    }
+
+    .events-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--winter-light), var(--winter-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 10px rgba(96, 165, 250, 0.3);
+    }
+
+    .events-close {
+      background: transparent;
+      border: none;
+      color: var(--winter-light);
+      font-size: 1.8rem;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .events-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--gift-red);
+    }
+
+    /* Список событий */
+    .events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .event-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 1.2rem;
+      border-left: 4px solid var(--winter-blue);
+      transition: var(--transition);
+    }
+
+    .event-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(5px);
+    }
+
+    .event-date {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--winter-cyan);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .event-time {
+      font-size: 0.9rem;
+      color: var(--winter-light);
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .event-description {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: rgba(240, 249, 255, 0.9);
+      padding-left: 1.5rem;
+      border-left: 2px solid rgba(96, 165, 250, 0.3);
+    }
+
+    .event-note {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(34, 197, 94, 0.1);
+      border-radius: 10px;
+      border-left: 3px solid var(--frog-green);
+      font-size: 0.85rem;
+      color: rgba(240, 249, 255, 0.8);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .event-note i {
+      color: var(--frog-green);
+      font-size: 1rem;
+      margin-top: 0.1rem;
+    }
+
     .empty-screen {
       position: fixed;
       top: 0;
@@ -525,6 +698,29 @@
       .game-icon { width: 50px; height: 50px; font-size: 1.7rem; }
       .game-title { font-size: 1.1rem; }
       .glass-btn { padding: 0.9rem 1.2rem; font-size: 0.9rem; }
+      .events-icon {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+      }
+      .events-content {
+        padding: 1.2rem;
+        max-height: 85vh;
+      }
+      .events-title {
+        font-size: 1.3rem;
+      }
+      .event-date {
+        font-size: 1rem;
+      }
+      .event-description {
+        font-size: 0.9rem;
+      }
+      .event-note {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -543,6 +739,46 @@
   </div>
   
   <div id="particles-js"></div>
+  
+  <!-- Иконка открытия списка событий -->
+  <div class="events-icon" id="eventsIcon">
+    <i class="fas fa-calendar-alt"></i>
+  </div>
+
+  <!-- Оверлей списка событий -->
+  <div class="events-overlay" id="eventsOverlay">
+    <div class="events-content">
+      <div class="events-header">
+        <div class="events-title">❄️ Winter Events ❄️</div>
+        <button class="events-close" id="eventsClose">&times;</button>
+      </div>
+      <div class="events-list">
+        <div class="event-item">
+          <div class="event-date">⏳️ December 24</div>
+          <div class="event-time">⏰ 20:30 Moscow time</div>
+          <div class="event-description">
+            The appearance of a new game and ??? with ??? 😱
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-date">⏳️ December 26</div>
+          <div class="event-description">
+            IRL stream in Russian, let's spin the reels! 🎰
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-date">⏳️ December 31</div>
+          <div class="event-description">
+            A video with a secret... 🤫
+          </div>
+        </div>
+        <div class="event-note">
+          <i class="fas fa-info-circle"></i>
+          This list appears only once. You can always view it by clicking the calendar icon in the top right corner.
+        </div>
+      </div>
+    </div>
+  </div>
   
   <div class="main-content" id="mainContent">
     <div class="header">
@@ -605,10 +841,51 @@
         giftHeroBtn: document.getElementById('giftHeroBtn'),
         cvaptaBtn: document.getElementById('cvaptaBtn'),
         loadingOverlay: document.getElementById('loadingOverlay'),
-        snowflakes: document.getElementById('snowflakes')
+        snowflakes: document.getElementById('snowflakes'),
+        eventsIcon: document.getElementById('eventsIcon'),
+        eventsOverlay: document.getElementById('eventsOverlay'),
+        eventsClose: document.getElementById('eventsClose')
       };
       
       const snowflakesCount = 50;
+      
+      // Инициализация новогоднего списка событий
+      function initializeEvents() {
+        // Проверяем, показывался ли уже список событий
+        const eventsShown = localStorage.getItem('eventsShown') === 'true';
+        
+        // Если список событий еще не показывался, показываем его автоматически через 2 секунды
+        if (!eventsShown) {
+          setTimeout(() => {
+            elements.eventsOverlay.classList.add('active');
+            localStorage.setItem('eventsShown', 'true');
+            console.log('❄️ Winter events list shown automatically');
+          }, 2000);
+        }
+        
+        // Обработчики для иконки и кнопки закрытия
+        elements.eventsIcon.addEventListener('click', () => {
+          elements.eventsOverlay.classList.add('active');
+        });
+        
+        elements.eventsClose.addEventListener('click', () => {
+          elements.eventsOverlay.classList.remove('active');
+        });
+        
+        // Закрытие при клике вне контента
+        elements.eventsOverlay.addEventListener('click', (e) => {
+          if (e.target === elements.eventsOverlay) {
+            elements.eventsOverlay.classList.remove('active');
+          }
+        });
+        
+        // Закрытие по Escape
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && elements.eventsOverlay.classList.contains('active')) {
+            elements.eventsOverlay.classList.remove('active');
+          }
+        });
+      }
       
       // Создание снежинок
       function createSnowflakes() {
@@ -679,6 +956,9 @@
         // Инициализация частиц и снежинок
         initParticles();
         createSnowflakes();
+        
+        // Инициализация списка событий
+        initializeEvents();
         
         // Скрываем загрузочный экран с анимацией
         setTimeout(() => {
