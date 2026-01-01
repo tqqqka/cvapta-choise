@@ -58,19 +58,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      padding-top: 2vh; /* Уменьшен отступ сверху для поднятия выше */
     }
 
-    /* Оверлей для ПК пользователей */
+    /* Оверлей для ПК пользователей - всегда поверх всего */
     .pc-warning-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(20px);
-      z-index: 99999;
+      background: rgba(0, 0, 0, 0.97);
+      backdrop-filter: blur(25px);
+      z-index: 999999; /* Самый высокий z-index */
       display: none;
       justify-content: center;
       align-items: center;
@@ -83,18 +84,19 @@
 
     .pc-warning-content {
       background: linear-gradient(135deg, 
-        rgba(239, 68, 68, 0.15),
-        rgba(239, 68, 68, 0.05));
-      backdrop-filter: blur(25px) saturate(200%);
+        rgba(239, 68, 68, 0.2),
+        rgba(239, 68, 68, 0.1));
+      backdrop-filter: blur(30px) saturate(200%);
       border-radius: var(--control-radius);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      box-shadow: 0 20px 60px rgba(239, 68, 68, 0.2);
+      border: 2px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 25px 70px rgba(239, 68, 68, 0.3);
       max-width: 500px;
       width: 100%;
-      padding: 2rem;
+      padding: 2.5rem;
       text-align: center;
       position: relative;
       overflow: hidden;
+      margin-top: -8vh; /* Поднято еще выше */
     }
 
     .pc-warning-content::before {
@@ -103,7 +105,7 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 5px;
       background: linear-gradient(90deg, 
         var(--error-red), 
         var(--error-light), 
@@ -111,81 +113,88 @@
     }
 
     .pc-warning-icon {
-      font-size: 4rem;
+      font-size: 4.5rem;
       margin-bottom: 1.5rem;
       color: var(--error-red);
-      animation: pulse 2s infinite;
+      animation: pulse 1.5s infinite;
+      filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
     }
 
     @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.9; }
     }
 
     .pc-warning-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
       background: linear-gradient(135deg, var(--error-light), var(--error-red));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+      text-shadow: 0 3px 15px rgba(239, 68, 68, 0.4);
+      letter-spacing: -0.5px;
     }
 
     .pc-warning-message {
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-      opacity: 0.9;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      font-weight: 500;
     }
 
     .pc-device-icon {
       display: flex;
       justify-content: center;
-      gap: 2rem;
-      margin: 2rem 0;
+      gap: 3rem;
+      margin: 2.5rem 0;
     }
 
     .device-icon {
-      font-size: 2.5rem;
+      font-size: 3rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.8rem;
     }
 
     .device-icon.pc {
       color: var(--error-red);
-      opacity: 0.7;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
     }
 
     .device-icon.phone {
       color: var(--frog-green);
+      filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.4));
     }
 
     .device-label {
-      font-size: 0.8rem;
-      opacity: 0.8;
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0.9;
     }
 
     .pc-note {
-      font-size: 0.85rem;
-      background: rgba(239, 68, 68, 0.1);
-      padding: 1rem;
-      border-radius: 10px;
-      border-left: 3px solid var(--error-red);
-      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      background: rgba(239, 68, 68, 0.15);
+      padding: 1.2rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--error-red);
+      margin-top: 2rem;
       text-align: left;
       display: flex;
       align-items: flex-start;
-      gap: 0.8rem;
+      gap: 1rem;
+      border: 1px solid rgba(239, 68, 68, 0.2);
     }
 
     .pc-note i {
       color: var(--error-red);
-      font-size: 1rem;
+      font-size: 1.2rem;
       margin-top: 0.1rem;
     }
 
@@ -242,19 +251,19 @@
       }
     }
 
-    /* Main Content - центрирование */
+    /* Main Content - поднят выше */
     .main-content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       width: 100%;
       max-width: 500px;
       z-index: 10;
       position: relative;
       margin: auto;
       padding: 20px;
-      min-height: 70vh;
+      margin-top: 3vh; /* Поднят выше */
     }
 
     .header {
@@ -265,7 +274,7 @@
 
     .logo {
       font-size: 3rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem; /* Уменьшен отступ */
       background: linear-gradient(135deg, 
         var(--light-blue-gradient-start), 
         var(--light-blue-gradient-middle), 
@@ -281,7 +290,7 @@
       font-weight: 700;
       line-height: 1.1;
       text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem; /* Уменьшен отступ */
       text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
       position: relative;
     }
@@ -300,7 +309,7 @@
     .subtitle {
       font-size: 0.9rem;
       opacity: 0.8;
-      margin-top: 0.5rem;
+      margin-top: 0.3rem; /* Уменьшен отступ */
     }
 
     .games-grid {
@@ -310,7 +319,7 @@
       justify-content: center;
       gap: 1.5rem;
       width: 100%;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem; /* Уменьшен отступ */
     }
 
     .game-card-container {
@@ -334,7 +343,7 @@
       overflow: hidden;
       width: 100%;
       text-align: center;
-      min-height: 320px;
+      min-height: 300px; /* Уменьшена высота */
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -483,11 +492,12 @@
       body { 
         padding: 10px; 
         justify-content: flex-start;
-        padding-top: 20vh;
+        padding-top: 5vh; /* Уменьшен отступ сверху для мобильных */
       }
       .main-content {
         min-height: auto;
         padding: 10px;
+        margin-top: 0; /* Сброс отступа для мобильных */
       }
       .game-card { 
         padding: 1.2rem; 
@@ -506,48 +516,67 @@
         font-size: 0.9rem; 
       }
       .pc-warning-content {
-        padding: 1.5rem;
+        padding: 1.8rem;
+        margin-top: -5vh; /* Меньший подъем для мобильных */
       }
       .pc-warning-title {
-        font-size: 1.5rem;
+        font-size: 1.7rem;
+      }
+      .pc-device-icon {
+        gap: 2rem;
+      }
+      .device-icon {
+        font-size: 2.5rem;
       }
     }
 
     @media (min-height: 800px) {
       .main-content {
-        min-height: 60vh;
+        margin-top: 5vh; /* Меньший отступ для высоких экранов */
+      }
+      body {
+        padding-top: 3vh;
+      }
+    }
+
+    @media (min-height: 1000px) {
+      .main-content {
+        margin-top: 7vh; /* Меньший отступ для очень высоких экранов */
+      }
+      body {
+        padding-top: 4vh;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Оверлей для ПК пользователей -->
+  <!-- Оверлей для ПК пользователей - всегда наверху -->
   <div class="pc-warning-overlay" id="pcWarningOverlay">
     <div class="pc-warning-content">
-      <div class="pc-warning-icon">⚠️</div>
-      <div class="pc-warning-title">Mobile Only Experience</div>
+      <div class="pc-warning-icon">📱</div>
+      <div class="pc-warning-title">MOBILE DEVICES ONLY</div>
       
       <div class="pc-warning-message">
-        This game is designed specifically for mobile devices. 
-        Please open this page on your smartphone or tablet for the best experience.
+        <strong>This game is optimized exclusively for mobile devices.</strong><br>
+        Please use your smartphone or tablet to access the game.
       </div>
       
       <div class="pc-device-icon">
         <div class="device-icon pc">
           <i class="fas fa-desktop"></i>
-          <div class="device-label">Not Supported</div>
+          <div class="device-label">DESKTOP<br>BLOCKED</div>
         </div>
         <div class="device-icon phone">
           <i class="fas fa-mobile-alt"></i>
-          <div class="device-label">Supported</div>
+          <div class="device-label">MOBILE<br>REQUIRED</div>
         </div>
       </div>
       
       <div class="pc-note">
-        <i class="fas fa-info-circle"></i>
+        <i class="fas fa-exclamation-triangle"></i>
         <div>
-          <strong>Note:</strong> This game uses touch controls and is optimized for mobile screens. 
-          Some features may not work correctly on desktop devices.
+          <strong>Important:</strong> Desktop access is restricted. The game requires touch controls 
+          and mobile-specific features that are not available on desktop computers.
         </div>
       </div>
     </div>
@@ -596,42 +625,53 @@
         cvaptaBtn: document.getElementById('cvaptaBtn'),
         loadingOverlay: document.getElementById('loadingOverlay'),
         snowflakes: document.getElementById('snowflakes'),
-        pcWarningOverlay: document.getElementById('pcWarningOverlay')
+        pcWarningOverlay: document.getElementById('pcWarningOverlay'),
+        mainContent: document.getElementById('mainContent')
       };
       
       const snowflakesCount = 30;
       
-      // Проверка устройства
+      // Проверка устройства - СТРОГАЯ версия
       function checkDevice() {
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const isTablet = /iPad|Android(?!.*Mobile)|Tablet/i.test(navigator.userAgent);
         const screenWidth = window.innerWidth;
+        const touchSupported = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         
-        // Если это не мобильное устройство и ширина экрана больше 768px (планшет/ПК)
-        if (!isMobile && screenWidth > 768) {
-          console.log('📱 Device detected: Desktop');
+        // Если это не мобильное устройство ИЛИ ширина экрана больше 768px (планшет/ПК)
+        if (!isMobile || screenWidth > 768) {
+          console.log('🚫 Device detected: Desktop/Large Screen - BLOCKING');
+          
+          // Показываем предупреждение всегда, независимо от localStorage
           elements.pcWarningOverlay.classList.add('active');
-          return false;
-        } else if (isTablet && screenWidth > 768) {
-          console.log('📱 Device detected: Tablet (large screen)');
-          // Для планшетов тоже показываем предупреждение, но можно разрешить
-          elements.pcWarningOverlay.classList.add('active');
+          
+          // Скрываем основной контент
+          elements.mainContent.style.display = 'none';
+          
+          // Блокируем скролл
+          document.body.style.overflow = 'hidden';
+          
           return false;
         } else {
-          console.log('📱 Device detected: Mobile');
+          console.log('📱 Device detected: Mobile - ALLOWING');
+          elements.mainContent.style.display = 'flex';
+          document.body.style.overflow = 'auto';
           return true;
         }
       }
       
-      // Обработчик для закрытия по F8 (без уведомления пользователя)
+      // Обработчик для закрытия по F8 (скрытый функционал)
       function setupF8Close() {
         document.addEventListener('keydown', function(e) {
           // F8 key code is 119
           if (e.keyCode === 119) {
-            console.log('🔓 F8 pressed - closing PC warning');
+            console.log('🔓 F8 pressed - bypassing PC restriction');
             elements.pcWarningOverlay.classList.remove('active');
-            // Можно также добавить куки или localStorage, чтобы запомнить выбор
-            localStorage.setItem('pcWarningClosed', 'true');
+            elements.mainContent.style.display = 'flex';
+            document.body.style.overflow = 'auto';
+            
+            // Сохраняем в sessionStorage (только на эту сессию)
+            sessionStorage.setItem('pcBypass', 'true');
           }
         });
       }
@@ -639,9 +679,10 @@
       // Защита от копирования текста через контекстное меню
       document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
+        return false;
       });
       
-      // Защита от копирования через клавиатуру (Ctrl+C, Ctrl+A и т.д.)
+      // Защита от копирования через клавиатуру
       document.addEventListener('keydown', function(e) {
         // Блокировка Ctrl+C, Ctrl+A, Ctrl+U, Ctrl+S, Ctrl+P
         if ((e.ctrlKey || e.metaKey) && 
@@ -651,17 +692,18 @@
              e.keyCode === 83 || // S
              e.keyCode === 80)) { // P
           e.preventDefault();
+          return false;
         }
         
         // Блокировка F12 (инструменты разработчика)
         if (e.keyCode === 123) {
           e.preventDefault();
+          return false;
         }
       });
       
-      // Создание снежинок - исправленная версия
+      // Создание снежинок
       function createSnowflakes() {
-        // Очищаем старые снежинки
         elements.snowflakes.innerHTML = '';
         
         for (let i = 0; i < snowflakesCount; i++) {
@@ -684,7 +726,6 @@
             
             elements.snowflakes.appendChild(snowflake);
             
-            // Плавное появление
             setTimeout(() => {
               snowflake.style.opacity = opacity;
             }, 100);
@@ -700,12 +741,16 @@
       function init() {
         console.log('Initializing app...');
         
-        // Проверяем, не закрывал ли пользователь уже предупреждение
-        const warningClosed = localStorage.getItem('pcWarningClosed') === 'true';
+        // Проверяем, не был ли обойден restriction через F8 в этой сессии
+        const pcBypass = sessionStorage.getItem('pcBypass') === 'true';
         
-        // Проверяем устройство и показываем предупреждение если нужно
-        if (!warningClosed) {
+        if (!pcBypass) {
+          // Проверяем устройство - СТРОГАЯ проверка
           checkDevice();
+        } else {
+          console.log('⚠️ PC restriction bypassed via F8');
+          elements.mainContent.style.display = 'flex';
+          document.body.style.overflow = 'auto';
         }
         
         // Настраиваем закрытие по F8
@@ -717,10 +762,13 @@
         // Обработчики кликов - проверяем устройство перед переходом
         elements.cvaptaBtn.addEventListener('click', () => {
           const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          const screenWidth = window.innerWidth;
           
-          if (!isMobileDevice && window.innerWidth > 768) {
-            // Показываем предупреждение если его закрыли через F8
+          if ((!isMobileDevice || screenWidth > 768) && !sessionStorage.getItem('pcBypass')) {
+            // Показываем предупреждение если не мобильное и не было обхода через F8
             elements.pcWarningOverlay.classList.add('active');
+            elements.mainContent.style.display = 'none';
+            document.body.style.overflow = 'hidden';
             return;
           }
           
@@ -734,9 +782,12 @@
         document.getElementById('cvaptaCard').addEventListener('click', (e) => {
           if (!e.target.closest('.glass-btn')) {
             const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const screenWidth = window.innerWidth;
             
-            if (!isMobileDevice && window.innerWidth > 768) {
+            if ((!isMobileDevice || screenWidth > 768) && !sessionStorage.getItem('pcBypass')) {
               elements.pcWarningOverlay.classList.add('active');
+              elements.mainContent.style.display = 'none';
+              document.body.style.overflow = 'hidden';
               return;
             }
             
