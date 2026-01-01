@@ -6,7 +6,6 @@
   <title>Cvapta Experiences</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <style>
     :root {
       --primary: #1E3A8A;
@@ -20,18 +19,16 @@
       --frog-green: #22C55E;
       --frog-light-green: #86EFAC;
       --frog-dark-green: #16A34A;
-      --gift-gold: #FFD700;
-      --gift-red: #FF6B6B;
-      --gift-green: #51CF66;
-      --timer-glow: rgba(255, 107, 107, 0.5);
-      --demon-red: #DC2626;
-      --demon-dark: #7F1D1D;
+      --light-blue-gradient-start: #BAE6FD;
+      --light-blue-gradient-middle: #7DD3FC;
+      --light-blue-gradient-end: #38BDF8;
       --glass-bg: rgba(30, 41, 59, 0.25);
       --glass-border: rgba(255, 255, 255, 0.1);
       --glass-blur: 12px;
       --control-radius: 16px;
       --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --error-red: #EF4444;
+      --error-light: #FCA5A5;
     }
 
     * {
@@ -39,6 +36,10 @@
       padding: 0;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     html, body {
@@ -57,10 +58,154 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
     }
 
-    /* Снежинки */
+    /* Оверлей для ПК пользователей */
+    .pc-warning-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 99999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .pc-warning-overlay.active {
+      display: flex;
+    }
+
+    .pc-warning-content {
+      background: linear-gradient(135deg, 
+        rgba(239, 68, 68, 0.15),
+        rgba(239, 68, 68, 0.05));
+      backdrop-filter: blur(25px) saturate(200%);
+      border-radius: var(--control-radius);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      box-shadow: 0 20px 60px rgba(239, 68, 68, 0.2);
+      max-width: 500px;
+      width: 100%;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pc-warning-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, 
+        var(--error-red), 
+        var(--error-light), 
+        var(--error-red));
+    }
+
+    .pc-warning-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      color: var(--error-red);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .pc-warning-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--error-light), var(--error-red));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .pc-warning-message {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .pc-device-icon {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .device-icon {
+      font-size: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .device-icon.pc {
+      color: var(--error-red);
+      opacity: 0.7;
+    }
+
+    .device-icon.phone {
+      color: var(--frog-green);
+    }
+
+    .device-label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .pc-note {
+      font-size: 0.85rem;
+      background: rgba(239, 68, 68, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      border-left: 3px solid var(--error-red);
+      margin-top: 1.5rem;
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+    }
+
+    .pc-note i {
+      color: var(--error-red);
+      font-size: 1rem;
+      margin-top: 0.1rem;
+    }
+
+    /* Защита от выделения текста */
+    .main-content * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Разрешаем выделение только для кнопок для доступности */
+    .glass-btn {
+      -webkit-user-select: auto;
+      -moz-user-select: auto;
+      -ms-user-select: auto;
+      user-select: auto;
+    }
+
+    /* Снежинки - исправленная анимация */
     .snowflakes {
       position: fixed;
       top: 0;
@@ -69,316 +214,66 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
+      overflow: hidden;
     }
 
     .snowflake {
       position: absolute;
-      background: white;
+      background: rgba(255, 255, 255, 0.6);
       border-radius: 50%;
-      opacity: 0.8;
+      opacity: 0.4;
       filter: blur(0.5px);
     }
 
     @keyframes fall {
       0% {
-        transform: translateY(-100px) rotate(0deg);
+        transform: translateY(-100px) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.4;
+      }
+      90% {
+        opacity: 0.4;
       }
       100% {
-        transform: translateY(100vh) rotate(360deg);
+        transform: translateY(100vh) translateX(20px) rotate(360deg);
         opacity: 0;
       }
     }
 
-    /* Анимированные фоновые элементы */
-    .bg-decoration {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .floating-element {
-      position: absolute;
-      opacity: 0.05;
-      font-size: 30px;
-      animation: floatRotate 20s linear infinite;
-    }
-
-    .floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-    .floating-element:nth-child(2) { top: 20%; right: 15%; animation-delay: -5s; }
-    .floating-element:nth-child(3) { bottom: 30%; left: 20%; animation-delay: -10s; }
-    .floating-element:nth-child(4) { bottom: 15%; right: 25%; animation-delay: -15s; }
-
-    @keyframes floatRotate {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-      100% { transform: translateY(0) rotate(360deg); }
-    }
-
-    /* Иконка событий */
-    .events-icon {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(96, 165, 250, 0.1));
-      backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 100;
-      box-shadow: var(--glass-shadow);
-      transition: var(--transition);
-      color: var(--winter-blue);
-      font-size: 1.2rem;
-    }
-
-    .events-icon:hover {
-      transform: scale(1.05);
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(96, 165, 250, 0.2));
-      color: var(--winter-cyan);
-    }
-
-    /* Оверлей событий */
-    .events-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
-      z-index: 999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      padding: 20px;
-    }
-
-    .events-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* Контент событий */
-    .events-content {
-      background: linear-gradient(135deg, 
-        rgba(15, 23, 42, 0.9),
-        rgba(30, 41, 59, 0.95));
-      backdrop-filter: blur(20px);
-      border-radius: var(--control-radius);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-      max-width: 500px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      padding: 1.5rem;
-      position: relative;
-    }
-
-    .events-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid var(--winter-blue);
-    }
-
-    .events-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--winter-light), var(--winter-cyan));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 2px 10px rgba(96, 165, 250, 0.3);
-    }
-
-    .events-close {
-      background: transparent;
-      border: none;
-      color: var(--winter-light);
-      font-size: 1.8rem;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      transition: var(--transition);
-    }
-
-    .events-close:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--gift-red);
-    }
-
-    /* Список событий */
-    .events-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .event-item {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 1.2rem;
-      border-left: 4px solid var(--winter-blue);
-      transition: var(--transition);
-    }
-
-    .event-item:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateX(5px);
-    }
-
-    .event-date {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--winter-cyan);
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .event-time {
-      font-size: 0.9rem;
-      color: var(--winter-light);
-      margin-bottom: 0.8rem;
-      padding-left: 1.5rem;
-      opacity: 0.9;
-    }
-
-    .event-description {
-      font-size: 0.95rem;
-      line-height: 1.5;
-      color: rgba(240, 249, 255, 0.9);
-      padding-left: 1.5rem;
-      border-left: 2px solid rgba(96, 165, 250, 0.3);
-    }
-
-    .event-note {
-      margin-top: 1.5rem;
-      padding: 1rem;
-      background: rgba(34, 197, 94, 0.1);
-      border-radius: 10px;
-      border-left: 3px solid var(--frog-green);
-      font-size: 0.85rem;
-      color: rgba(240, 249, 255, 0.8);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.8rem;
-    }
-
-    .event-note i {
-      color: var(--frog-green);
-      font-size: 1rem;
-      margin-top: 0.1rem;
-    }
-
-    .empty-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .empty-screen .loader {
-      width: 60px;
-      height: 60px;
-      border: 3px solid rgba(255,255,255,0.1);
-      border-top: 3px solid var(--winter-cyan);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    .empty-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-
-    #particles-js {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    /* Main Content */
+    /* Main Content - центрирование */
     .main-content {
-      display: none;
+      display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       width: 100%;
       max-width: 500px;
       z-index: 10;
       position: relative;
-      padding-bottom: 20px;
-      opacity: 0;
-      animation: fadeInUp 0.8s ease 0.3s forwards;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .main-content.active {
-      display: flex;
+      margin: auto;
+      padding: 20px;
+      min-height: 70vh;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       width: 100%;
-      animation: fadeInUp 0.8s ease 0.5s forwards;
-      opacity: 0;
     }
 
     .logo {
       font-size: 3rem;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--winter-light), var(--winter-blue), var(--winter-cyan));
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, 
+        var(--light-blue-gradient-start), 
+        var(--light-blue-gradient-middle), 
+        var(--light-blue-gradient-end));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       line-height: 1;
-      animation: pulse 3s infinite alternate;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.05); }
     }
 
     .fluid {
@@ -406,18 +301,16 @@
       font-size: 0.9rem;
       opacity: 0.8;
       margin-top: 0.5rem;
-      animation: fadeInUp 0.8s ease 0.7s forwards;
-      opacity: 0;
     }
 
     .games-grid {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 1.5rem;
       width: 100%;
       margin-bottom: 2rem;
-      animation: fadeInUp 0.8s ease 0.9s forwards;
-      opacity: 0;
     }
 
     .game-card-container {
@@ -427,11 +320,7 @@
       border-radius: var(--control-radius);
       overflow: hidden;
       width: 100%;
-      transition: var(--transition);
-    }
-
-    .game-card-container:hover {
-      transform: translateY(-5px);
+      max-width: 400px;
     }
 
     .game-card {
@@ -441,7 +330,6 @@
       padding: 1.5rem;
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
-      transition: var(--transition);
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -461,12 +349,6 @@
       bottom: 0;
       background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 50%);
       z-index: 0;
-    }
-
-    .game-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .game-header {
@@ -491,12 +373,6 @@
       backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border);
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: var(--transition);
-    }
-
-    .game-icon.gift {
-      background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 215, 0, 0.1));
-      color: var(--gift-gold);
     }
 
     .game-icon.frog {
@@ -504,22 +380,11 @@
       color: var(--frog-green);
     }
 
-    .game-card-container:hover .game-icon {
-      transform: scale(1.1) rotate(5deg);
-    }
-
     .game-title {
       font-size: 1.3rem;
       font-weight: 600;
       line-height: 1.2;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }
-
-    .game-title.gift {
-      background: linear-gradient(135deg, var(--gift-gold), var(--gift-red));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
     }
 
     .game-title.frog {
@@ -537,17 +402,6 @@
       position: relative;
       z-index: 2;
       text-align: center;
-    }
-
-    .game-description.gift {
-      color: rgba(240, 249, 255, 0.9);
-      background: linear-gradient(135deg, 
-        rgba(255, 107, 107, 0.1), 
-        rgba(255, 215, 0, 0.05), 
-        rgba(81, 207, 102, 0.08));
-      padding: 0.8rem;
-      border-radius: 8px;
-      border-left: 3px solid var(--gift-gold);
     }
 
     .game-description.frog {
@@ -576,7 +430,6 @@
       color: var(--light);
       font-weight: 500;
       cursor: pointer;
-      transition: var(--transition);
       width: 100%;
       font-size: 0.95rem;
       position: relative;
@@ -584,37 +437,9 @@
       z-index: 2;
     }
 
-    .glass-btn.gift {
-      background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 215, 0, 0.05));
-      border: 1px solid rgba(255, 107, 107, 0.3);
-    }
-
     .glass-btn.frog {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
       border: 1px solid rgba(34, 197, 94, 0.3);
-    }
-
-    .glass-btn:hover::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, 
-        transparent, 
-        rgba(255,255,255,0.2), 
-        transparent);
-      animation: shine 0.8s ease;
-    }
-
-    .glass-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
-
-    @keyframes shine {
-      to { left: 100%; }
     }
 
     .loading-overlay {
@@ -632,7 +457,6 @@
       z-index: 99999;
       opacity: 0;
       visibility: hidden;
-      transition: var(--transition);
     }
 
     .loading-overlay.active {
@@ -655,157 +479,90 @@
       100% { transform: rotate(360deg); }
     }
 
-    .message {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--secondary);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 12px;
-      z-index: 9999;
-      font-weight: bold;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-      font-size: 14px;
-      text-align: center;
-      max-width: 90%;
-      border: 2px solid rgba(255,255,255,0.2);
-      animation: slideDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
-    }
-
-    @keyframes slideDown {
-      from {
-        transform: translateX(-50%) translateY(-100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-      }
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-20px);
-      }
-    }
-
     @media (max-width: 480px) {
-      body { padding: 10px; }
-      .game-card { padding: 1.2rem; min-height: 280px; }
-      .game-icon { width: 50px; height: 50px; font-size: 1.7rem; }
-      .game-title { font-size: 1.1rem; }
-      .glass-btn { padding: 0.9rem 1.2rem; font-size: 0.9rem; }
-      .events-icon {
-        top: 15px;
-        right: 15px;
-        width: 40px;
-        height: 40px;
-        font-size: 1.1rem;
+      body { 
+        padding: 10px; 
+        justify-content: flex-start;
+        padding-top: 20vh;
       }
-      .events-content {
-        padding: 1.2rem;
-        max-height: 85vh;
+      .main-content {
+        min-height: auto;
+        padding: 10px;
       }
-      .events-title {
-        font-size: 1.3rem;
+      .game-card { 
+        padding: 1.2rem; 
+        min-height: 280px; 
       }
-      .event-date {
-        font-size: 1rem;
+      .game-icon { 
+        width: 50px; 
+        height: 50px; 
+        font-size: 1.7rem; 
       }
-      .event-description {
-        font-size: 0.9rem;
+      .game-title { 
+        font-size: 1.1rem; 
       }
-      .event-note {
-        font-size: 0.8rem;
+      .glass-btn { 
+        padding: 0.9rem 1.2rem; 
+        font-size: 0.9rem; 
+      }
+      .pc-warning-content {
+        padding: 1.5rem;
+      }
+      .pc-warning-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (min-height: 800px) {
+      .main-content {
+        min-height: 60vh;
       }
     }
   </style>
 </head>
 <body>
-  <div class="snowflakes" id="snowflakes"></div>
-  
-  <div class="bg-decoration">
-    <div class="floating-element">❄️</div>
-    <div class="floating-element">🎁</div>
-    <div class="floating-element">🐸</div>
-    <div class="floating-element">⭐</div>
-  </div>
-  
-  <div class="empty-screen" id="emptyScreen">
-    <div class="loader"></div>
-  </div>
-  
-  <div id="particles-js"></div>
-  
-  <!-- Иконка открытия списка событий -->
-  <div class="events-icon" id="eventsIcon">
-    <i class="fas fa-calendar-alt"></i>
-  </div>
-
-  <!-- Оверлей списка событий -->
-  <div class="events-overlay" id="eventsOverlay">
-    <div class="events-content">
-      <div class="events-header">
-        <div class="events-title">❄️ Winter Events ❄️</div>
-        <button class="events-close" id="eventsClose">&times;</button>
+  <!-- Оверлей для ПК пользователей -->
+  <div class="pc-warning-overlay" id="pcWarningOverlay">
+    <div class="pc-warning-content">
+      <div class="pc-warning-icon">⚠️</div>
+      <div class="pc-warning-title">Mobile Only Experience</div>
+      
+      <div class="pc-warning-message">
+        This game is designed specifically for mobile devices. 
+        Please open this page on your smartphone or tablet for the best experience.
       </div>
-      <div class="events-list">
-        <div class="event-item">
-          <div class="event-date">⏳️ December 24</div>
-          <div class="event-time">⏰ 20:30 Moscow time</div>
-          <div class="event-description">
-            The appearance of a new game and ??? with ??? 😱
-          </div>
+      
+      <div class="pc-device-icon">
+        <div class="device-icon pc">
+          <i class="fas fa-desktop"></i>
+          <div class="device-label">Not Supported</div>
         </div>
-        <div class="event-item">
-          <div class="event-date">⏳️ December 26</div>
-          <div class="event-description">
-            IRL stream in Russian, let's spin the reels! 🎰
-          </div>
+        <div class="device-icon phone">
+          <i class="fas fa-mobile-alt"></i>
+          <div class="device-label">Supported</div>
         </div>
-        <div class="event-item">
-          <div class="event-date">⏳️ December 31</div>
-          <div class="event-description">
-            A video with a secret... 🤫
-          </div>
-        </div>
-        <div class="event-note">
-          <i class="fas fa-info-circle"></i>
-          This list appears only once. You can always view it by clicking the calendar icon in the top right corner.
+      </div>
+      
+      <div class="pc-note">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <strong>Note:</strong> This game uses touch controls and is optimized for mobile screens. 
+          Some features may not work correctly on desktop devices.
         </div>
       </div>
     </div>
   </div>
   
+  <div class="snowflakes" id="snowflakes"></div>
+  
   <div class="main-content" id="mainContent">
     <div class="header">
-      <div class="logo">❄️</div>
+      <div class="logo">🎮</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
       <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
     
     <div class="games-grid">
-      <div class="game-card-container">
-        <div class="game-card" id="giftHeroCard">
-          <div class="game-header">
-            <div class="game-icon gift">🎁</div>
-            <div class="game-title gift">Gift Hero</div>
-          </div>
-          
-          <div class="game-description gift">
-            Move clockwise and counterclockwise, dodge the Wrath's attacks. Collect gifts in this intense circular survival challenge!
-          </div>
-          
-          <button class="glass-btn gift" id="giftHeroBtn">
-            <i class="fas fa-play"></i>
-            <span>Play Now</span>
-          </button>
-        </div>
-      </div>
-      
       <div class="game-card-container">
         <div class="game-card" id="cvaptaCard">
           <div class="game-header">
@@ -836,113 +593,103 @@
       console.log('🎮 Game initialization started...');
       
       const elements = {
-        emptyScreen: document.getElementById('emptyScreen'),
-        mainContent: document.getElementById('mainContent'),
-        giftHeroBtn: document.getElementById('giftHeroBtn'),
         cvaptaBtn: document.getElementById('cvaptaBtn'),
         loadingOverlay: document.getElementById('loadingOverlay'),
         snowflakes: document.getElementById('snowflakes'),
-        eventsIcon: document.getElementById('eventsIcon'),
-        eventsOverlay: document.getElementById('eventsOverlay'),
-        eventsClose: document.getElementById('eventsClose')
+        pcWarningOverlay: document.getElementById('pcWarningOverlay')
       };
       
-      const snowflakesCount = 50;
+      const snowflakesCount = 30;
       
-      // Инициализация новогоднего списка событий
-      function initializeEvents() {
-        // Проверяем, показывался ли уже список событий
-        const eventsShown = localStorage.getItem('eventsShown') === 'true';
+      // Проверка устройства
+      function checkDevice() {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isTablet = /iPad|Android(?!.*Mobile)|Tablet/i.test(navigator.userAgent);
+        const screenWidth = window.innerWidth;
         
-        // Если список событий еще не показывался, показываем его автоматически через 2 секунды
-        if (!eventsShown) {
-          setTimeout(() => {
-            elements.eventsOverlay.classList.add('active');
-            localStorage.setItem('eventsShown', 'true');
-            console.log('❄️ Winter events list shown automatically');
-          }, 2000);
+        // Если это не мобильное устройство и ширина экрана больше 768px (планшет/ПК)
+        if (!isMobile && screenWidth > 768) {
+          console.log('📱 Device detected: Desktop');
+          elements.pcWarningOverlay.classList.add('active');
+          return false;
+        } else if (isTablet && screenWidth > 768) {
+          console.log('📱 Device detected: Tablet (large screen)');
+          // Для планшетов тоже показываем предупреждение, но можно разрешить
+          elements.pcWarningOverlay.classList.add('active');
+          return false;
+        } else {
+          console.log('📱 Device detected: Mobile');
+          return true;
         }
-        
-        // Обработчики для иконки и кнопки закрытия
-        elements.eventsIcon.addEventListener('click', () => {
-          elements.eventsOverlay.classList.add('active');
-        });
-        
-        elements.eventsClose.addEventListener('click', () => {
-          elements.eventsOverlay.classList.remove('active');
-        });
-        
-        // Закрытие при клике вне контента
-        elements.eventsOverlay.addEventListener('click', (e) => {
-          if (e.target === elements.eventsOverlay) {
-            elements.eventsOverlay.classList.remove('active');
-          }
-        });
-        
-        // Закрытие по Escape
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && elements.eventsOverlay.classList.contains('active')) {
-            elements.eventsOverlay.classList.remove('active');
+      }
+      
+      // Обработчик для закрытия по F8 (без уведомления пользователя)
+      function setupF8Close() {
+        document.addEventListener('keydown', function(e) {
+          // F8 key code is 119
+          if (e.keyCode === 119) {
+            console.log('🔓 F8 pressed - closing PC warning');
+            elements.pcWarningOverlay.classList.remove('active');
+            // Можно также добавить куки или localStorage, чтобы запомнить выбор
+            localStorage.setItem('pcWarningClosed', 'true');
           }
         });
       }
       
-      // Создание снежинок
+      // Защита от копирования текста через контекстное меню
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+      
+      // Защита от копирования через клавиатуру (Ctrl+C, Ctrl+A и т.д.)
+      document.addEventListener('keydown', function(e) {
+        // Блокировка Ctrl+C, Ctrl+A, Ctrl+U, Ctrl+S, Ctrl+P
+        if ((e.ctrlKey || e.metaKey) && 
+            (e.keyCode === 67 || // C
+             e.keyCode === 65 || // A
+             e.keyCode === 85 || // U
+             e.keyCode === 83 || // S
+             e.keyCode === 80)) { // P
+          e.preventDefault();
+        }
+        
+        // Блокировка F12 (инструменты разработчика)
+        if (e.keyCode === 123) {
+          e.preventDefault();
+        }
+      });
+      
+      // Создание снежинок - исправленная версия
       function createSnowflakes() {
+        // Очищаем старые снежинки
+        elements.snowflakes.innerHTML = '';
+        
         for (let i = 0; i < snowflakesCount; i++) {
-          const snowflake = document.createElement('div');
-          snowflake.className = 'snowflake';
-          
-          const size = Math.random() * 5 + 2;
-          const posX = Math.random() * 100;
-          const delay = Math.random() * 5;
-          const duration = Math.random() * 10 + 10;
-          const opacity = Math.random() * 0.6 + 0.4;
-          
-          snowflake.style.width = `${size}px`;
-          snowflake.style.height = `${size}px`;
-          snowflake.style.left = `${posX}%`;
-          snowflake.style.opacity = opacity;
-          snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
-          
-          elements.snowflakes.appendChild(snowflake);
-        }
-      }
-      
-      function initParticles() {
-        if (typeof particlesJS !== 'undefined') {
-          particlesJS('particles-js', {
-            particles: {
-              number: { value: 40 },
-              color: { value: ['#60A5FA', '#22D3EE', '#FFFFFF', '#BAE6FD'] },
-              opacity: { value: 0.3, random: true },
-              size: { value: 2, random: true },
-              line_linked: { 
-                enable: true, 
-                distance: 150, 
-                color: '#60A5FA', 
-                opacity: 0.1, 
-                width: 1 
-              },
-              move: { 
-                enable: true, 
-                speed: 1,
-                direction: "none",
-                random: true,
-                straight: false,
-                out_mode: "out",
-                bounce: false
-              }
-            },
-            interactivity: {
-              detect_on: 'canvas',
-              events: { 
-                onhover: { enable: true, mode: 'repulse' }, 
-                resize: true 
-              }
-            },
-            retina_detect: true
-          });
+          setTimeout(() => {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            
+            const size = Math.random() * 3 + 1;
+            const posX = Math.random() * 100;
+            const delay = Math.random() * 3;
+            const duration = Math.random() * 12 + 8;
+            const opacity = Math.random() * 0.3 + 0.2;
+            
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${posX}%`;
+            snowflake.style.top = `-20px`;
+            snowflake.style.opacity = 0;
+            snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+            
+            elements.snowflakes.appendChild(snowflake);
+            
+            // Плавное появление
+            setTimeout(() => {
+              snowflake.style.opacity = opacity;
+            }, 100);
+            
+          }, i * 300);
         }
       }
       
@@ -953,42 +700,49 @@
       function init() {
         console.log('Initializing app...');
         
-        // Инициализация частиц и снежинок
-        initParticles();
+        // Проверяем, не закрывал ли пользователь уже предупреждение
+        const warningClosed = localStorage.getItem('pcWarningClosed') === 'true';
+        
+        // Проверяем устройство и показываем предупреждение если нужно
+        if (!warningClosed) {
+          checkDevice();
+        }
+        
+        // Настраиваем закрытие по F8
+        setupF8Close();
+        
+        // Создание снежинок
         createSnowflakes();
         
-        // Инициализация списка событий
-        initializeEvents();
-        
-        // Скрываем загрузочный экран с анимацией
-        setTimeout(() => {
-          elements.emptyScreen.classList.add('hidden');
-          setTimeout(() => {
-            elements.mainContent.classList.add('active');
-          }, 500);
-        }, 1000);
-        
-        // Обработчики кликов
+        // Обработчики кликов - проверяем устройство перед переходом
         elements.cvaptaBtn.addEventListener('click', () => {
+          const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (!isMobileDevice && window.innerWidth > 768) {
+            // Показываем предупреждение если его закрыли через F8
+            elements.pcWarningOverlay.classList.add('active');
+            return;
+          }
+          
           showLoading();
           setTimeout(() => {
             window.location.href = 'https://tqqqka.github.io/capsavta/';
           }, 800);
         });
         
-        elements.giftHeroBtn.addEventListener('click', () => {
-          showLoading();
-          setTimeout(() => {
-            window.location.href = 'https://tqqqka.github.io/event-game/';
-          }, 800);
-        });
-        
-        // Клик на всю карточку Gift Hero
-        document.getElementById('giftHeroCard').addEventListener('click', (e) => {
+        // Клик на всю карточку Cvapta
+        document.getElementById('cvaptaCard').addEventListener('click', (e) => {
           if (!e.target.closest('.glass-btn')) {
+            const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (!isMobileDevice && window.innerWidth > 768) {
+              elements.pcWarningOverlay.classList.add('active');
+              return;
+            }
+            
             showLoading();
             setTimeout(() => {
-              window.location.href = 'https://tqqqka.github.io/event-game/';
+              window.location.href = 'https://tqqqka.github.io/capsavta/';
             }, 800);
           }
         });
