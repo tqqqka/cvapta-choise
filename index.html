@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -554,29 +554,29 @@
   <div class="pc-warning-overlay" id="pcWarningOverlay">
     <div class="pc-warning-content">
       <div class="pc-warning-icon">📱</div>
-      <div class="pc-warning-title">MOBILE DEVICES ONLY</div>
+      <div class="pc-warning-title">ТОЛЬКО ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ</div>
       
       <div class="pc-warning-message">
-        <strong>This game is optimized exclusively for mobile devices.</strong><br>
-        Please use your smartphone or tablet to access the game.
+        <strong>Эта игра оптимизирована исключительно для мобильных устройств.</strong><br>
+        Пожалуйста, используйте смартфон или планшет для доступа к игре.
       </div>
       
       <div class="pc-device-icon">
         <div class="device-icon pc">
           <i class="fas fa-desktop"></i>
-          <div class="device-label">DESKTOP<br>BLOCKED</div>
+          <div class="device-label">ПК<br>ЗАБЛОКИРОВАН</div>
         </div>
         <div class="device-icon phone">
           <i class="fas fa-mobile-alt"></i>
-          <div class="device-label">MOBILE<br>REQUIRED</div>
+          <div class="device-label">ТРЕБУЕТСЯ<br>СМАРТФОН</div>
         </div>
       </div>
       
       <div class="pc-note">
         <i class="fas fa-exclamation-triangle"></i>
         <div>
-          <strong>Important:</strong> Desktop access is restricted. The game requires touch controls 
-          and mobile-specific features that are not available on desktop computers.
+          <strong>Важно:</strong> Доступ с компьютера ограничен. Игра требует сенсорного управления 
+          и функций, специфичных для мобильных устройств, которые недоступны на компьютерах.
         </div>
       </div>
     </div>
@@ -588,7 +588,7 @@
     <div class="header">
       <div class="logo">🎮</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
-      <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
+      <p class="subtitle">Выберите своё приключение и погрузитесь в удивительные игровые впечатления</p>
     </div>
     
     <div class="games-grid">
@@ -600,12 +600,12 @@
           </div>
           
           <div class="game-description frog">
-            Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises in this enchanting adventure!
+            Отправьтесь в волшебное путешествие со своим дружелюбным лягушонком. Нажимайте, растите, собирайте звёзды и открывайте чудесные сюрпризы в этом очаровательном приключении!
           </div>
           
           <button class="glass-btn frog" id="cvaptaBtn">
             <i class="fas fa-play"></i>
-            <span>Play Now</span>
+            <span>Играть</span>
           </button>
         </div>
       </div>
@@ -614,12 +614,12 @@
   
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text">Loading your adventure...</div>
+    <div class="loading-text">Загружаем вашу игру...</div>
   </div>
   
   <script>
     (function() {
-      console.log('🎮 Game initialization started...');
+      console.log('🎮 Начата инициализация игры...');
       
       const elements = {
         cvaptaBtn: document.getElementById('cvaptaBtn'),
@@ -640,7 +640,7 @@
         
         // Если это не мобильное устройство ИЛИ ширина экрана больше 768px (планшет/ПК)
         if (!isMobile || screenWidth > 768) {
-          console.log('🚫 Device detected: Desktop/Large Screen - BLOCKING');
+          console.log('🚫 Обнаружено устройство: ПК/Большой экран - БЛОКИРОВКА');
           
           // Показываем предупреждение всегда, независимо от localStorage
           elements.pcWarningOverlay.classList.add('active');
@@ -653,7 +653,7 @@
           
           return false;
         } else {
-          console.log('📱 Device detected: Mobile - ALLOWING');
+          console.log('📱 Обнаружено устройство: Мобильное - РАЗРЕШЕНО');
           elements.mainContent.style.display = 'flex';
           document.body.style.overflow = 'auto';
           return true;
@@ -665,7 +665,7 @@
         document.addEventListener('keydown', function(e) {
           // F8 key code is 119
           if (e.keyCode === 119) {
-            console.log('🔓 F8 pressed - bypassing PC restriction');
+            console.log('🔓 Нажата F8 - обход ограничения для ПК');
             elements.pcWarningOverlay.classList.remove('active');
             elements.mainContent.style.display = 'flex';
             document.body.style.overflow = 'auto';
@@ -739,7 +739,7 @@
       }
       
       function init() {
-        console.log('Initializing app...');
+        console.log('Инициализация приложения...');
         
         // Проверяем, не был ли обойден restriction через F8 в этой сессии
         const pcBypass = sessionStorage.getItem('pcBypass') === 'true';
@@ -748,7 +748,7 @@
           // Проверяем устройство - СТРОГАЯ проверка
           checkDevice();
         } else {
-          console.log('⚠️ PC restriction bypassed via F8');
+          console.log('⚠️ Ограничение для ПК обойдено через F8');
           elements.mainContent.style.display = 'flex';
           document.body.style.overflow = 'auto';
         }
@@ -798,7 +798,7 @@
           }
         });
         
-        console.log('✅ App initialized successfully');
+        console.log('✅ Приложение успешно инициализировано');
       }
       
       document.addEventListener('DOMContentLoaded', init);
