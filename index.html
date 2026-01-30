@@ -19,6 +19,12 @@
       --frog-green: #22C55E;
       --frog-light-green: #86EFAC;
       --frog-dark-green: #16A34A;
+      --history-purple: #8B5CF6;
+      --history-light-purple: #A78BFA;
+      --history-dark-purple: #7C3AED;
+      --locked-gray: #6B7280;
+      --locked-light-gray: #9CA3AF;
+      --locked-dark-gray: #4B5563;
       --light-blue-gradient-start: #BAE6FD;
       --light-blue-gradient-middle: #7DD3FC;
       --light-blue-gradient-end: #38BDF8;
@@ -59,7 +65,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 2vh; /* Уменьшен отступ сверху для поднятия выше */
+      padding-top: 2vh;
     }
 
     /* Оверлей для ПК пользователей - всегда поверх всего */
@@ -71,7 +77,7 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.97);
       backdrop-filter: blur(25px);
-      z-index: 999999; /* Самый высокий z-index */
+      z-index: 999999;
       display: none;
       justify-content: center;
       align-items: center;
@@ -96,7 +102,7 @@
       text-align: center;
       position: relative;
       overflow: hidden;
-      margin-top: -8vh; /* Поднято еще выше */
+      margin-top: -8vh;
     }
 
     .pc-warning-content::before {
@@ -198,23 +204,7 @@
       margin-top: 0.1rem;
     }
 
-    /* Защита от выделения текста */
-    .main-content * {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    /* Разрешаем выделение только для кнопок для доступности */
-    .glass-btn {
-      -webkit-user-select: auto;
-      -moz-user-select: auto;
-      -ms-user-select: auto;
-      user-select: auto;
-    }
-
-    /* Снежинки - исправленная анимация */
+    /* Снежинки */
     .snowflakes {
       position: fixed;
       top: 0;
@@ -251,7 +241,7 @@
       }
     }
 
-    /* Main Content - поднят выше */
+    /* Main Content */
     .main-content {
       display: flex;
       flex-direction: column;
@@ -263,7 +253,7 @@
       position: relative;
       margin: auto;
       padding: 20px;
-      margin-top: 3vh; /* Поднят выше */
+      margin-top: 3vh;
     }
 
     .header {
@@ -274,7 +264,7 @@
 
     .logo {
       font-size: 3rem;
-      margin-bottom: 1.2rem; /* Уменьшен отступ */
+      margin-bottom: 1.2rem;
       background: linear-gradient(135deg, 
         var(--light-blue-gradient-start), 
         var(--light-blue-gradient-middle), 
@@ -290,7 +280,7 @@
       font-weight: 700;
       line-height: 1.1;
       text-align: center;
-      margin-bottom: 0.8rem; /* Уменьшен отступ */
+      margin-bottom: 0.8rem;
       text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
       position: relative;
     }
@@ -309,7 +299,7 @@
     .subtitle {
       font-size: 0.9rem;
       opacity: 0.8;
-      margin-top: 0.3rem; /* Уменьшен отступ */
+      margin-top: 0.3rem;
     }
 
     .games-grid {
@@ -319,34 +309,121 @@
       justify-content: center;
       gap: 1.5rem;
       width: 100%;
-      margin-bottom: 1.5rem; /* Уменьшен отступ */
+      margin-bottom: 1.5rem;
     }
 
-    .game-card-container {
+    .game-card-wrapper {
       position: relative;
-      margin: 0;
-      cursor: pointer;
-      border-radius: var(--control-radius);
-      overflow: hidden;
       width: 100%;
       max-width: 400px;
+    }
+
+    /* Баннер с датой открытия - ПЕРЕД карточкой */
+    .date-banner {
+      position: relative;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 5;
+      background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.95),
+        rgba(124, 58, 237, 0.85));
+      backdrop-filter: blur(15px);
+      border-radius: var(--control-radius) var(--control-radius) 0 0;
+      padding: 0.8rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-bottom: none;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: white;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      margin-bottom: -1px; /* Чтобы соединить с карточкой */
+    }
+
+    .date-banner i {
+      font-size: 1.1rem;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
     }
 
     .game-card {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-      border-radius: var(--control-radius);
+      border-radius: 0 0 var(--control-radius) var(--control-radius);
       padding: 1.5rem;
       border: 1px solid var(--glass-border);
+      border-top: none;
       box-shadow: var(--glass-shadow);
       position: relative;
       overflow: hidden;
       width: 100%;
       text-align: center;
-      min-height: 300px; /* Уменьшена высота */
+      min-height: 300px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+    }
+
+    /* Стиль для заблокированной игры */
+    .game-card.locked {
+      filter: blur(3px) grayscale(60%);
+      opacity: 0.8;
+      cursor: not-allowed;
+      pointer-events: none;
+      position: relative;
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .game-card.locked::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.1),
+        rgba(124, 58, 237, 0.08));
+      backdrop-filter: blur(5px);
+      z-index: 1;
+    }
+
+    .lock-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      pointer-events: none;
+      width: 100%;
+      padding: 0 1rem;
+    }
+
+    .lock-icon {
+      font-size: 2.8rem;
+      color: var(--history-purple);
+      filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));
+      margin-bottom: 0.5rem;
+    }
+
+    .locked-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--history-purple);
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
     }
 
     .game-card::before {
@@ -389,6 +466,11 @@
       color: var(--frog-green);
     }
 
+    .game-icon.history {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
+      color: var(--history-purple);
+    }
+
     .game-title {
       font-size: 1.3rem;
       font-weight: 600;
@@ -398,6 +480,13 @@
 
     .game-title.frog {
       background: linear-gradient(135deg, var(--frog-light-green), var(--frog-green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .game-title.history {
+      background: linear-gradient(135deg, var(--history-light-purple), var(--history-purple));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -422,6 +511,17 @@
       padding: 0.8rem;
       border-radius: 8px;
       border-left: 3px solid var(--frog-green);
+    }
+
+    .game-description.history {
+      color: rgba(240, 249, 255, 0.9);
+      background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.1), 
+        rgba(167, 139, 250, 0.05), 
+        rgba(124, 58, 237, 0.08));
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--history-purple);
     }
 
     .glass-btn {
@@ -449,6 +549,19 @@
     .glass-btn.frog {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
       border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .glass-btn.history {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(124, 58, 237, 0.05));
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    .glass-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      filter: grayscale(60%);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));
+      border: 1px solid rgba(139, 92, 246, 0.2);
     }
 
     .loading-overlay {
@@ -492,12 +605,12 @@
       body { 
         padding: 10px; 
         justify-content: flex-start;
-        padding-top: 5vh; /* Уменьшен отступ сверху для мобильных */
+        padding-top: 5vh;
       }
       .main-content {
         min-height: auto;
         padding: 10px;
-        margin-top: 0; /* Сброс отступа для мобильных */
+        margin-top: 0;
       }
       .game-card { 
         padding: 1.2rem; 
@@ -517,7 +630,7 @@
       }
       .pc-warning-content {
         padding: 1.8rem;
-        margin-top: -5vh; /* Меньший подъем для мобильных */
+        margin-top: -5vh;
       }
       .pc-warning-title {
         font-size: 1.7rem;
@@ -528,11 +641,21 @@
       .device-icon {
         font-size: 2.5rem;
       }
+      .date-banner {
+        font-size: 1rem;
+        padding: 0.6rem 1.2rem;
+      }
+      .lock-icon {
+        font-size: 2.2rem;
+      }
+      .locked-text {
+        font-size: 0.9rem;
+      }
     }
 
     @media (min-height: 800px) {
       .main-content {
-        margin-top: 5vh; /* Меньший отступ для высоких экранов */
+        margin-top: 5vh;
       }
       body {
         padding-top: 3vh;
@@ -541,7 +664,7 @@
 
     @media (min-height: 1000px) {
       .main-content {
-        margin-top: 7vh; /* Меньший отступ для очень высоких экранов */
+        margin-top: 7vh;
       }
       body {
         padding-top: 4vh;
@@ -550,7 +673,7 @@
   </style>
 </head>
 <body>
-  <!-- Оверлей для ПК пользователей - всегда наверху -->
+  <!-- Оверлей для ПК пользователей -->
   <div class="pc-warning-overlay" id="pcWarningOverlay">
     <div class="pc-warning-content">
       <div class="pc-warning-icon">📱</div>
@@ -592,7 +715,38 @@
     </div>
     
     <div class="games-grid">
-      <div class="game-card-container">
+      <!-- Новая игра: История Cvapta -->
+      <div class="game-card-wrapper">
+        <!-- Баннер с датой открытия - ОТДЕЛЬНО перед карточкой -->
+        <div class="date-banner">
+          <i class="fas fa-calendar-alt"></i>
+          1 Февраля 🎉
+        </div>
+        
+        <div class="game-card locked" id="historyCard">
+          <div class="lock-overlay">
+            <div class="lock-icon">🔒</div>
+            <div class="locked-text">Откроется скоро</div>
+          </div>
+          
+          <div class="game-header">
+            <div class="game-icon history">📜</div>
+            <div class="game-title history">История Cvapta</div>
+          </div>
+          
+          <div class="game-description history">
+            Погрузитесь в увлекательную историю создания Cvapta. Узнайте секреты, тайны и интересные факты о создании этой удивительной игры. Только для самых преданных фанатов!
+          </div>
+          
+          <button class="glass-btn history" id="historyBtn" disabled>
+            <i class="fas fa-lock"></i>
+            <span>Скоро откроется</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Существующая игра Cvapta -->
+      <div class="game-card-wrapper">
         <div class="game-card" id="cvaptaCard">
           <div class="game-header">
             <div class="game-icon frog">🐸</div>
@@ -623,11 +777,16 @@
       
       const elements = {
         cvaptaBtn: document.getElementById('cvaptaBtn'),
+        historyBtn: document.getElementById('historyBtn'),
+        historyCard: document.getElementById('historyCard'),
         loadingOverlay: document.getElementById('loadingOverlay'),
         snowflakes: document.getElementById('snowflakes'),
         pcWarningOverlay: document.getElementById('pcWarningOverlay'),
         mainContent: document.getElementById('mainContent')
       };
+      
+      // Игра заблокирована до 1 февраля
+      let isHistoryUnlocked = false;
       
       const snowflakesCount = 30;
       
@@ -636,21 +795,12 @@
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const isTablet = /iPad|Android(?!.*Mobile)|Tablet/i.test(navigator.userAgent);
         const screenWidth = window.innerWidth;
-        const touchSupported = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         
-        // Если это не мобильное устройство ИЛИ ширина экрана больше 768px (планшет/ПК)
         if (!isMobile || screenWidth > 768) {
           console.log('🚫 Обнаружено устройство: ПК/Большой экран - БЛОКИРОВКА');
-          
-          // Показываем предупреждение всегда, независимо от localStorage
           elements.pcWarningOverlay.classList.add('active');
-          
-          // Скрываем основной контент
           elements.mainContent.style.display = 'none';
-          
-          // Блокируем скролл
           document.body.style.overflow = 'hidden';
-          
           return false;
         } else {
           console.log('📱 Обнаружено устройство: Мобильное - РАЗРЕШЕНО');
@@ -660,42 +810,36 @@
         }
       }
       
-      // Обработчик для закрытия по F8 (скрытый функционал)
+      // Обработчик для закрытия по F8
       function setupF8Close() {
         document.addEventListener('keydown', function(e) {
-          // F8 key code is 119
-          if (e.keyCode === 119) {
+          if (e.keyCode === 119) { // F8
             console.log('🔓 Нажата F8 - обход ограничения для ПК');
             elements.pcWarningOverlay.classList.remove('active');
             elements.mainContent.style.display = 'flex';
             document.body.style.overflow = 'auto';
-            
-            // Сохраняем в sessionStorage (только на эту сессию)
             sessionStorage.setItem('pcBypass', 'true');
           }
         });
       }
       
-      // Защита от копирования текста через контекстное меню
+      // Защита от копирования текста
       document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
         return false;
       });
       
-      // Защита от копирования через клавиатуру
       document.addEventListener('keydown', function(e) {
-        // Блокировка Ctrl+C, Ctrl+A, Ctrl+U, Ctrl+S, Ctrl+P
         if ((e.ctrlKey || e.metaKey) && 
-            (e.keyCode === 67 || // C
-             e.keyCode === 65 || // A
-             e.keyCode === 85 || // U
-             e.keyCode === 83 || // S
-             e.keyCode === 80)) { // P
+            (e.keyCode === 67 || 
+             e.keyCode === 65 || 
+             e.keyCode === 85 || 
+             e.keyCode === 83 || 
+             e.keyCode === 80)) {
           e.preventDefault();
           return false;
         }
         
-        // Блокировка F12 (инструменты разработчика)
         if (e.keyCode === 123) {
           e.preventDefault();
           return false;
@@ -738,14 +882,34 @@
         elements.loadingOverlay.classList.add('active');
       }
       
+      // Общая функция проверки устройства перед переходом
+      function checkBeforeRedirect() {
+        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const screenWidth = window.innerWidth;
+        
+        if ((!isMobileDevice || screenWidth > 768) && !sessionStorage.getItem('pcBypass')) {
+          elements.pcWarningOverlay.classList.add('active');
+          elements.mainContent.style.display = 'none';
+          document.body.style.overflow = 'hidden';
+          return false;
+        }
+        return true;
+      }
+      
       function init() {
         console.log('Инициализация приложения...');
+        console.log('=========================================');
+        console.log('Игра "История Cvapta": Откроется 1 февраля');
+        console.log('=========================================');
         
-        // Проверяем, не был ли обойден restriction через F8 в этой сессии
+        // Игра уже заблокирована в HTML, но убедимся еще раз
+        elements.historyCard.classList.add('locked');
+        elements.historyBtn.disabled = true;
+        elements.historyBtn.innerHTML = '<i class="fas fa-lock"></i><span>Скоро откроется</span>';
+        
         const pcBypass = sessionStorage.getItem('pcBypass') === 'true';
         
         if (!pcBypass) {
-          // Проверяем устройство - СТРОГАЯ проверка
           checkDevice();
         } else {
           console.log('⚠️ Ограничение для ПК обойдено через F8');
@@ -753,24 +917,26 @@
           document.body.style.overflow = 'auto';
         }
         
-        // Настраиваем закрытие по F8
         setupF8Close();
-        
-        // Создание снежинок
         createSnowflakes();
         
-        // Обработчики кликов - проверяем устройство перед переходом
-        elements.cvaptaBtn.addEventListener('click', () => {
-          const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-          const screenWidth = window.innerWidth;
-          
-          if ((!isMobileDevice || screenWidth > 768) && !sessionStorage.getItem('pcBypass')) {
-            // Показываем предупреждение если не мобильное и не было обхода через F8
-            elements.pcWarningOverlay.classList.add('active');
-            elements.mainContent.style.display = 'none';
-            document.body.style.overflow = 'hidden';
+        // Обработчик для игры История Cvapta - заблокирована
+        elements.historyBtn.addEventListener('click', () => {
+          alert('🎮 "История Cvapta" откроется 1 февраля! Оставайтесь на связи!');
+          return;
+        });
+        
+        // Клик на всю карточку Истории Cvapta
+        elements.historyCard.addEventListener('click', (e) => {
+          if (!e.target.closest('.glass-btn')) {
+            alert('🎮 "История Cvapta" откроется 1 февраля! Оставайтесь на связи!');
             return;
           }
+        });
+        
+        // Обработчик для игры Cvapta
+        elements.cvaptaBtn.addEventListener('click', () => {
+          if (!checkBeforeRedirect()) return;
           
           showLoading();
           setTimeout(() => {
@@ -781,15 +947,7 @@
         // Клик на всю карточку Cvapta
         document.getElementById('cvaptaCard').addEventListener('click', (e) => {
           if (!e.target.closest('.glass-btn')) {
-            const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const screenWidth = window.innerWidth;
-            
-            if ((!isMobileDevice || screenWidth > 768) && !sessionStorage.getItem('pcBypass')) {
-              elements.pcWarningOverlay.classList.add('active');
-              elements.mainContent.style.display = 'none';
-              document.body.style.overflow = 'hidden';
-              return;
-            }
+            if (!checkBeforeRedirect()) return;
             
             showLoading();
             setTimeout(() => {
