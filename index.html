@@ -354,10 +354,7 @@
     .game-card {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-      border-radius: 0 0 var(--control-radius) var(--control-radius);
-      padding: 1.5rem;
       border: 1px solid var(--glass-border);
-      border-top: none;
       box-shadow: var(--glass-shadow);
       position: relative;
       overflow: hidden;
@@ -367,6 +364,18 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+    }
+
+    /* Для карточки с баннером (История Cvapta) */
+    .game-card.with-banner {
+      border-radius: 0 0 var(--control-radius) var(--control-radius);
+      border-top: none;
+    }
+
+    /* Для обычной карточки (Cvapta) */
+    .game-card.regular {
+      border-radius: var(--control-radius);
+      padding: 1.5rem;
     }
 
     /* Стиль для заблокированной игры */
@@ -613,8 +622,11 @@
         margin-top: 0;
       }
       .game-card { 
-        padding: 1.2rem; 
         min-height: 280px; 
+      }
+      .game-card.regular,
+      .game-card.with-banner {
+        padding: 1.2rem;
       }
       .game-icon { 
         width: 50px; 
@@ -717,13 +729,13 @@
     <div class="games-grid">
       <!-- Новая игра: История Cvapta -->
       <div class="game-card-wrapper">
-        <!-- Баннер с датой открытия - ОТДЕЛЬНО перед карточкой -->
+        <!-- Баннер с датой открытия - ПЕРЕД карточкой -->
         <div class="date-banner">
           <i class="fas fa-calendar-alt"></i>
           1 Февраля 🎉
         </div>
         
-        <div class="game-card locked" id="historyCard">
+        <div class="game-card with-banner locked" id="historyCard">
           <div class="lock-overlay">
             <div class="lock-icon">🔒</div>
             <div class="locked-text">Откроется скоро</div>
@@ -747,7 +759,7 @@
       
       <!-- Существующая игра Cvapta -->
       <div class="game-card-wrapper">
-        <div class="game-card" id="cvaptaCard">
+        <div class="game-card regular" id="cvaptaCard">
           <div class="game-header">
             <div class="game-icon frog">🐸</div>
             <div class="game-title frog">Cvapta</div>
