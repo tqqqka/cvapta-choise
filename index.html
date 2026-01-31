@@ -22,6 +22,9 @@
       --history-purple: #8B5CF6;
       --history-light-purple: #A78BFA;
       --history-dark-purple: #7C3AED;
+      --twitch-purple: #9146FF;
+      --twitch-dark-purple: #772CE8;
+      --twitch-light-purple: #A970FF;
       --locked-gray: #6B7280;
       --locked-light-gray: #9CA3AF;
       --locked-dark-gray: #4B5563;
@@ -318,36 +321,122 @@
       max-width: 400px;
     }
 
-    /* Баннер с датой открытия - ПЕРЕД карточкой */
+    /* Блок с Twitch кнопкой - над игрой */
+    .twitch-promo {
+      width: 100%;
+      background: linear-gradient(135deg, 
+        rgba(145, 70, 255, 0.9),
+        rgba(119, 44, 232, 0.85));
+      backdrop-filter: blur(15px);
+      border-radius: var(--control-radius) var(--control-radius) 0 0;
+      padding: 1rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-bottom: none;
+      box-shadow: 0 10px 30px rgba(145, 70, 255, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: -1px;
+      z-index: 5;
+    }
+
+    .twitch-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.1));
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 20px rgba(145, 70, 255, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .twitch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(145, 70, 255, 0.6);
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.2));
+    }
+
+    .twitch-btn:active {
+      transform: translateY(0);
+    }
+
+    .twitch-btn i {
+      font-size: 1.3rem;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    }
+
+    .stream-info {
+      font-size: 0.9rem;
+      text-align: center;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      width: 100%;
+    }
+
+    .stream-time {
+      font-weight: 700;
+      color: #FFD700;
+      font-size: 1rem;
+      margin-top: 0.2rem;
+      display: block;
+    }
+
+    .stream-prize {
+      font-weight: 600;
+      color: #FF6B9D;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    /* Баннер с датой открытия - между Twitch и игрой */
     .date-banner {
       position: relative;
       top: 0;
       left: 0;
       width: 100%;
-      z-index: 5;
+      z-index: 4;
       background: linear-gradient(135deg, 
-        rgba(139, 92, 246, 0.95),
-        rgba(124, 58, 237, 0.85));
+        rgba(139, 92, 246, 0.9),
+        rgba(124, 58, 237, 0.8));
       backdrop-filter: blur(15px);
-      border-radius: var(--control-radius) var(--control-radius) 0 0;
-      padding: 0.8rem 1.5rem;
+      padding: 0.6rem 1.5rem;
       border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: none;
       border-bottom: none;
-      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3),
+      box-shadow: 0 5px 20px rgba(139, 92, 246, 0.2),
                   inset 0 1px 0 rgba(255, 255, 255, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.8rem;
       font-weight: 700;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: white;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      margin-bottom: -1px; /* Чтобы соединить с карточкой */
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      margin-bottom: -1px;
     }
 
     .date-banner i {
-      font-size: 1.1rem;
+      font-size: 1rem;
       filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
     }
 
@@ -370,6 +459,7 @@
     .game-card.with-banner {
       border-radius: 0 0 var(--control-radius) var(--control-radius);
       border-top: none;
+      padding: 1.5rem;
     }
 
     /* Для обычной карточки (Cvapta) */
@@ -378,61 +468,43 @@
       padding: 1.5rem;
     }
 
-    /* Стиль для заблокированной игры */
-    .game-card.locked {
-      filter: blur(3px) grayscale(60%);
-      opacity: 0.8;
-      cursor: not-allowed;
-      pointer-events: none;
-      position: relative;
-      background: rgba(139, 92, 246, 0.15);
-      border: 1px solid rgba(139, 92, 246, 0.3);
+    /* Игра РАЗБЛОКИРОВАНА */
+    .game-card.unlocked {
+      filter: none;
+      opacity: 1;
+      cursor: pointer;
+      pointer-events: auto;
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.4);
     }
 
-    .game-card.locked::after {
-      content: '';
+    .game-card.unlocked:hover {
+      transform: translateY(-2px);
+      transition: transform 0.2s ease;
+      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.4);
+    }
+
+    .unlock-badge {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 10px;
+      right: 10px;
       background: linear-gradient(135deg, 
-        rgba(139, 92, 246, 0.1),
-        rgba(124, 58, 237, 0.08));
-      backdrop-filter: blur(5px);
-      z-index: 1;
-    }
-
-    .lock-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.8rem;
-      pointer-events: none;
-      width: 100%;
-      padding: 0 1rem;
-    }
-
-    .lock-icon {
-      font-size: 2.8rem;
-      color: var(--history-purple);
-      filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));
-      margin-bottom: 0.5rem;
-    }
-
-    .locked-text {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--history-purple);
-      background: rgba(255, 255, 255, 0.1);
-      padding: 0.4rem 0.8rem;
+        rgba(34, 197, 94, 0.9),
+        rgba(22, 163, 74, 0.8));
       border-radius: 8px;
-      border: 1px solid rgba(139, 92, 246, 0.3);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: white;
+      z-index: 10;
+      box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .unlock-badge i {
+      font-size: 0.7rem;
     }
 
     .game-card::before {
@@ -553,6 +625,12 @@
       position: relative;
       overflow: hidden;
       z-index: 2;
+      transition: all 0.2s ease;
+    }
+
+    .glass-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
 
     .glass-btn.frog {
@@ -561,8 +639,8 @@
     }
 
     .glass-btn.history {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(124, 58, 237, 0.05));
-      border: 1px solid rgba(139, 92, 246, 0.3);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
+      border: 1px solid rgba(139, 92, 246, 0.4);
     }
 
     .glass-btn:disabled {
@@ -653,15 +731,27 @@
       .device-icon {
         font-size: 2.5rem;
       }
-      .date-banner {
+      .twitch-promo {
+        padding: 0.8rem 1rem;
+      }
+      .twitch-btn {
         font-size: 1rem;
-        padding: 0.6rem 1.2rem;
+        padding: 0.7rem 1.2rem;
       }
-      .lock-icon {
-        font-size: 2.2rem;
+      .stream-info {
+        font-size: 0.8rem;
       }
-      .locked-text {
+      .stream-time,
+      .stream-prize {
         font-size: 0.9rem;
+      }
+      .date-banner {
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem;
+      }
+      .unlock-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
       }
     }
 
@@ -727,18 +817,32 @@
     </div>
     
     <div class="games-grid">
-      <!-- Новая игра: История Cvapta -->
+      <!-- Игра "История Cvapta" с Twitch промо -->
       <div class="game-card-wrapper">
-        <!-- Баннер с датой открытия - ПЕРЕД карточкой -->
+        <!-- Twitch промо блок -->
+        <div class="twitch-promo">
+          <a href="https://www.twitch.tv/cvapta" target="_blank" rel="noopener noreferrer" class="twitch-btn">
+            <i class="fab fa-twitch"></i>
+            Смотреть на Twitch
+          </a>
+          
+          <div class="stream-info">
+            <span class="stream-time">Стрим сегодня в 20:30 (МСК)</span>
+            <span class="stream-prize">РАЗЫГРЫВАЕМ ШТОРЫ ДЛЯ ВАННЫ Cvapta!</span>
+          </div>
+        </div>
+        
+        <!-- Баннер с датой открытия -->
         <div class="date-banner">
           <i class="fas fa-calendar-alt"></i>
           1 Февраля 🎉
         </div>
         
-        <div class="game-card with-banner locked" id="historyCard">
-          <div class="lock-overlay">
-            <div class="lock-icon">🔒</div>
-            <div class="locked-text">Откроется скоро</div>
+        <div class="game-card with-banner unlocked" id="historyCard">
+          <!-- Бейдж "ДОСТУПНО" -->
+          <div class="unlock-badge">
+            <i class="fas fa-check-circle"></i>
+            ДОСТУПНО
           </div>
           
           <div class="game-header">
@@ -750,9 +854,9 @@
             Погрузитесь в увлекательную историю создания Cvapta. Узнайте секреты, тайны и интересные факты о создании этой удивительной игры. Только для самых преданных фанатов!
           </div>
           
-          <button class="glass-btn history" id="historyBtn" disabled>
-            <i class="fas fa-lock"></i>
-            <span>Скоро откроется</span>
+          <button class="glass-btn history" id="historyBtn">
+            <i class="fas fa-play"></i>
+            <span>Играть</span>
           </button>
         </div>
       </div>
@@ -797,8 +901,8 @@
         mainContent: document.getElementById('mainContent')
       };
       
-      // Игра заблокирована до 1 февраля
-      let isHistoryUnlocked = false;
+      // Игра РАЗБЛОКИРОВАНА
+      let isHistoryUnlocked = true;
       
       const snowflakesCount = 30;
       
@@ -911,13 +1015,14 @@
       function init() {
         console.log('Инициализация приложения...');
         console.log('=========================================');
-        console.log('Игра "История Cvapta": Откроется 1 февраля');
+        console.log('Игра "История Cvapta": РАЗБЛОКИРОВАНА');
         console.log('=========================================');
         
-        // Игра уже заблокирована в HTML, но убедимся еще раз
-        elements.historyCard.classList.add('locked');
-        elements.historyBtn.disabled = true;
-        elements.historyBtn.innerHTML = '<i class="fas fa-lock"></i><span>Скоро откроется</span>';
+        // Игра разблокирована
+        elements.historyCard.classList.remove('locked');
+        elements.historyCard.classList.add('unlocked');
+        elements.historyBtn.disabled = false;
+        elements.historyBtn.innerHTML = '<i class="fas fa-play"></i><span>Играть</span>';
         
         const pcBypass = sessionStorage.getItem('pcBypass') === 'true';
         
@@ -932,17 +1037,25 @@
         setupF8Close();
         createSnowflakes();
         
-        // Обработчик для игры История Cvapta - заблокирована
+        // Обработчик для игры История Cvapta - РАЗБЛОКИРОВАНА
         elements.historyBtn.addEventListener('click', () => {
-          alert('🎮 "История Cvapta" откроется 1 февраля! Оставайтесь на связи!');
-          return;
+          if (!checkBeforeRedirect()) return;
+          
+          showLoading();
+          setTimeout(() => {
+            window.location.href = 'https://tqqqka.github.io/c-h/';
+          }, 800);
         });
         
         // Клик на всю карточку Истории Cvapta
         elements.historyCard.addEventListener('click', (e) => {
           if (!e.target.closest('.glass-btn')) {
-            alert('🎮 "История Cvapta" откроется 1 февраля! Оставайтесь на связи!');
-            return;
+            if (!checkBeforeRedirect()) return;
+            
+            showLoading();
+            setTimeout(() => {
+              window.location.href = 'https://tqqqka.github.io/c-h/';
+            }, 800);
           }
         });
         
