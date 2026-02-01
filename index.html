@@ -321,93 +321,7 @@
       max-width: 400px;
     }
 
-    /* Блок с Twitch кнопкой - над игрой */
-    .twitch-promo {
-      width: 100%;
-      background: linear-gradient(135deg, 
-        rgba(145, 70, 255, 0.9),
-        rgba(119, 44, 232, 0.85));
-      backdrop-filter: blur(15px);
-      border-radius: var(--control-radius) var(--control-radius) 0 0;
-      padding: 1rem 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-bottom: none;
-      box-shadow: 0 10px 30px rgba(145, 70, 255, 0.3),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: -1px;
-      z-index: 5;
-    }
-
-    .twitch-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
-      padding: 0.8rem 1.5rem;
-      border-radius: 12px;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0.1));
-      backdrop-filter: blur(10px);
-      box-shadow: 0 6px 20px rgba(145, 70, 255, 0.4),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
-      color: white;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      width: 100%;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-
-    .twitch-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(145, 70, 255, 0.6);
-      background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.3),
-        rgba(255, 255, 255, 0.2));
-    }
-
-    .twitch-btn:active {
-      transform: translateY(0);
-    }
-
-    .twitch-btn i {
-      font-size: 1.3rem;
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-    }
-
-    .stream-info {
-      font-size: 0.9rem;
-      text-align: center;
-      line-height: 1.4;
-      color: rgba(255, 255, 255, 0.95);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-      width: 100%;
-    }
-
-    .stream-time {
-      font-weight: 700;
-      color: #FFD700;
-      font-size: 1rem;
-      margin-top: 0.2rem;
-      display: block;
-    }
-
-    .stream-prize {
-      font-weight: 600;
-      color: #FF6B9D;
-      font-size: 1rem;
-      margin-top: 0.3rem;
-      display: block;
-    }
-
-    /* Баннер с датой открытия - между Twitch и игрой */
+    /* Баннер с датой открытия */
     .date-banner {
       position: relative;
       top: 0;
@@ -433,6 +347,7 @@
       color: white;
       text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
       margin-bottom: -1px;
+      border-radius: var(--control-radius) var(--control-radius) 0 0;
     }
 
     .date-banner i {
@@ -731,20 +646,6 @@
       .device-icon {
         font-size: 2.5rem;
       }
-      .twitch-promo {
-        padding: 0.8rem 1rem;
-      }
-      .twitch-btn {
-        font-size: 1rem;
-        padding: 0.7rem 1.2rem;
-      }
-      .stream-info {
-        font-size: 0.8rem;
-      }
-      .stream-time,
-      .stream-prize {
-        font-size: 0.9rem;
-      }
       .date-banner {
         font-size: 0.95rem;
         padding: 0.5rem 1rem;
@@ -817,21 +718,8 @@
     </div>
     
     <div class="games-grid">
-      <!-- Игра "История Cvapta" с Twitch промо -->
+      <!-- Игра "История Cvapta" -->
       <div class="game-card-wrapper">
-        <!-- Twitch промо блок -->
-        <div class="twitch-promo">
-          <a href="https://www.twitch.tv/cvapta" target="_blank" rel="noopener noreferrer" class="twitch-btn">
-            <i class="fab fa-twitch"></i>
-            Смотреть на Twitch
-          </a>
-          
-          <div class="stream-info">
-            <span class="stream-time">Стрим сегодня в 20:30 (МСК)</span>
-            <span class="stream-prize">РАЗЫГРЫВАЕМ ШТОРЫ ДЛЯ ВАННЫ Cvapta!</span>
-          </div>
-        </div>
-        
         <!-- Баннер с датой открытия -->
         <div class="date-banner">
           <i class="fas fa-calendar-alt"></i>
@@ -856,7 +744,7 @@
           
           <button class="glass-btn history" id="historyBtn">
             <i class="fas fa-play"></i>
-            <span>Играть</span>
+            <span>Смотреть</span>
           </button>
         </div>
       </div>
