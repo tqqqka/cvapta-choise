@@ -38,6 +38,8 @@
       --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       --error-red: #EF4444;
       --error-light: #FCA5A5;
+      --success-green: #10B981;
+      --success-light: #6EE7B7;
     }
 
     * {
@@ -205,6 +207,174 @@
       color: var(--error-red);
       font-size: 1.2rem;
       margin-top: 0.1rem;
+    }
+
+    /* Оверлей для ввода пароля */
+    .password-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 1000000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .password-overlay.active {
+      display: flex;
+    }
+
+    .password-content {
+      background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 0.8),
+        rgba(15, 23, 42, 0.9));
+      backdrop-filter: blur(30px) saturate(200%);
+      border-radius: var(--control-radius);
+      border: 2px solid rgba(59, 130, 246, 0.4);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+      max-width: 400px;
+      width: 100%;
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .password-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, 
+        var(--secondary), 
+        var(--winter-cyan), 
+        var(--secondary));
+    }
+
+    .password-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary);
+      animation: pulse 2s infinite;
+    }
+
+    .password-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--secondary), var(--winter-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .password-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 2rem;
+      color: var(--winter-light);
+    }
+
+    .password-input-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .password-input {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--control-radius);
+      color: var(--light);
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .password-input:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+
+    .password-input.error {
+      border-color: var(--error-red);
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .password-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      border: none;
+      border-radius: var(--control-radius);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    .password-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    .password-btn:active {
+      transform: translateY(0);
+    }
+
+    .password-error {
+      color: var(--error-red);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
+      display: none;
+    }
+
+    .password-error.show {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .password-success {
+      color: var(--success-green);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
+      display: none;
+    }
+
+    .password-success.show {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+
+    .password-hint {
+      font-size: 0.75rem;
+      opacity: 0.5;
+      margin-top: 1rem;
+      color: var(--winter-light);
     }
 
     /* Снежинки */
@@ -654,6 +824,12 @@
         font-size: 0.7rem;
         padding: 0.2rem 0.5rem;
       }
+      .password-content {
+        padding: 1.8rem;
+      }
+      .password-title {
+        font-size: 1.3rem;
+      }
     }
 
     @media (min-height: 800px) {
@@ -704,6 +880,40 @@
           <strong>Важно:</strong> Доступ с компьютера ограничен. Игра требует сенсорного управления 
           и функций, специфичных для мобильных устройств, которые недоступны на компьютерах.
         </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Оверлей для ввода пароля -->
+  <div class="password-overlay" id="passwordOverlay">
+    <div class="password-content">
+      <div class="password-icon">🔐</div>
+      <div class="password-title">ВВЕДИТЕ ПАРОЛЬ</div>
+      <div class="password-subtitle">Для обхода ограничения требуется пароль администратора</div>
+      
+      <div class="password-input-container">
+        <input type="password" 
+               class="password-input" 
+               id="passwordInput" 
+               placeholder="Введите пароль..."
+               autocomplete="off">
+      </div>
+      
+      <div class="password-error" id="passwordError">
+        Неверный пароль. Попробуйте снова.
+      </div>
+      
+      <div class="password-success" id="passwordSuccess">
+        ✅ Пароль верный! Доступ разрешен.
+      </div>
+      
+      <button class="password-btn" id="passwordSubmit">
+        <i class="fas fa-unlock-alt"></i>
+        РАЗБЛОКИРОВАТЬ
+      </button>
+      
+      <div class="password-hint">
+        Нажмите F8 для открытия этого окна
       </div>
     </div>
   </div>
@@ -786,11 +996,16 @@
         loadingOverlay: document.getElementById('loadingOverlay'),
         snowflakes: document.getElementById('snowflakes'),
         pcWarningOverlay: document.getElementById('pcWarningOverlay'),
+        passwordOverlay: document.getElementById('passwordOverlay'),
+        passwordInput: document.getElementById('passwordInput'),
+        passwordSubmit: document.getElementById('passwordSubmit'),
+        passwordError: document.getElementById('passwordError'),
+        passwordSuccess: document.getElementById('passwordSuccess'),
         mainContent: document.getElementById('mainContent')
       };
       
-      // Игра РАЗБЛОКИРОВАНА
-      let isHistoryUnlocked = true;
+      // Правильный пароль
+      const CORRECT_PASSWORD = "adminqwerty123";
       
       const snowflakesCount = 30;
       
@@ -814,18 +1029,116 @@
         }
       }
       
-      // Обработчик для закрытия по F8
-      function setupF8Close() {
-        document.addEventListener('keydown', function(e) {
-          if (e.keyCode === 119) { // F8
-            console.log('🔓 Нажата F8 - обход ограничения для ПК');
+      // Показать окно ввода пароля
+      function showPasswordOverlay() {
+        elements.passwordOverlay.classList.add('active');
+        elements.passwordInput.focus();
+        elements.passwordError.classList.remove('show');
+        elements.passwordSuccess.classList.remove('show');
+        elements.passwordInput.classList.remove('error');
+      }
+      
+      // Скрыть окно ввода пароля
+      function hidePasswordOverlay() {
+        elements.passwordOverlay.classList.remove('active');
+        elements.passwordInput.value = '';
+        elements.passwordError.classList.remove('show');
+        elements.passwordSuccess.classList.remove('show');
+        elements.passwordInput.classList.remove('error');
+      }
+      
+      // Проверка пароля
+      function checkPassword() {
+        const enteredPassword = elements.passwordInput.value.trim();
+        
+        if (enteredPassword === CORRECT_PASSWORD) {
+          // Правильный пароль
+          elements.passwordError.classList.remove('show');
+          elements.passwordSuccess.classList.add('show');
+          elements.passwordInput.classList.remove('error');
+          
+          // Скрываем предупреждение для ПК и показываем контент
+          setTimeout(() => {
             elements.pcWarningOverlay.classList.remove('active');
             elements.mainContent.style.display = 'flex';
             document.body.style.overflow = 'auto';
             sessionStorage.setItem('pcBypass', 'true');
+            hidePasswordOverlay();
+            
+            // Показываем сообщение об успехе на 2 секунды
+            const successMsg = document.createElement('div');
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Доступ разрешен!';
+            successMsg.style.position = 'fixed';
+            successMsg.style.top = '20px';
+            successMsg.style.right = '20px';
+            successMsg.style.background = 'linear-gradient(135deg, var(--success-green), var(--frog-green))';
+            successMsg.style.color = 'white';
+            successMsg.style.padding = '12px 20px';
+            successMsg.style.borderRadius = 'var(--control-radius)';
+            successMsg.style.zIndex = '1000000';
+            successMsg.style.fontWeight = '600';
+            successMsg.style.boxShadow = '0 5px 15px rgba(16, 185, 129, 0.4)';
+            successMsg.style.animation = 'fadeIn 0.3s';
+            document.body.appendChild(successMsg);
+            
+            setTimeout(() => {
+              successMsg.style.opacity = '0';
+              successMsg.style.transform = 'translateX(20px)';
+              setTimeout(() => successMsg.remove(), 300);
+            }, 2000);
+            
+          }, 800);
+        } else {
+          // Неправильный пароль
+          elements.passwordError.classList.add('show');
+          elements.passwordSuccess.classList.remove('show');
+          elements.passwordInput.classList.add('error');
+          
+          // Очищаем поле ввода
+          elements.passwordInput.value = '';
+          elements.passwordInput.focus();
+          
+          // Анимация ошибки
+          elements.passwordInput.style.animation = 'none';
+          setTimeout(() => {
+            elements.passwordInput.style.animation = 'shake 0.5s';
+          }, 10);
+        }
+      }
+      
+      // Обработчик для открытия по F8
+      function setupF8Handler() {
+        document.addEventListener('keydown', function(e) {
+          if (e.keyCode === 119) { // F8
+            e.preventDefault();
+            console.log('🔓 Нажата F8 - запрос пароля для обхода ограничения');
+            
+            // Показываем окно ввода парода только если видно предупреждение для ПК
+            if (elements.pcWarningOverlay.classList.contains('active')) {
+              showPasswordOverlay();
+            }
+            return false;
           }
         });
       }
+      
+      // Обработчик для ввода Enter в поле пароля
+      elements.passwordInput.addEventListener('keypress', function(e) {
+        if (e.keyCode === 13) { // Enter
+          e.preventDefault();
+          checkPassword();
+        }
+      });
+      
+      // Обработчик для кнопки "Разблокировать"
+      elements.passwordSubmit.addEventListener('click', checkPassword);
+      
+      // Обработчик для клика вне окна пароля
+      elements.passwordOverlay.addEventListener('click', function(e) {
+        if (e.target === elements.passwordOverlay) {
+          hidePasswordOverlay();
+        }
+      });
       
       // Защита от копирования текста
       document.addEventListener('contextmenu', function(e) {
@@ -917,12 +1230,12 @@
         if (!pcBypass) {
           checkDevice();
         } else {
-          console.log('⚠️ Ограничение для ПК обойдено через F8');
+          console.log('⚠️ Ограничение для ПК обойдено через пароль');
           elements.mainContent.style.display = 'flex';
           document.body.style.overflow = 'auto';
         }
         
-        setupF8Close();
+        setupF8Handler();
         createSnowflakes();
         
         // Обработчик для игры История Cvapta - РАЗБЛОКИРОВАНА
@@ -970,6 +1283,7 @@
         });
         
         console.log('✅ Приложение успешно инициализировано');
+        console.log('🔐 Пароль для обхода: adminqwerty123');
       }
       
       document.addEventListener('DOMContentLoaded', init);
