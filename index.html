@@ -91,6 +91,12 @@
 
     .pc-warning-overlay.active {
       display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .pc-warning-content {
@@ -127,14 +133,6 @@
       font-size: 4.5rem;
       margin-bottom: 1.5rem;
       color: var(--error-red);
-      animation: pulse 1.5s infinite;
-      filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.15); opacity: 1; }
-      100% { transform: scale(1); opacity: 0.9; }
     }
 
     .pc-warning-title {
@@ -227,6 +225,7 @@
 
     .password-overlay.active {
       display: flex;
+      animation: fadeIn 0.3s ease;
     }
 
     .password-content {
@@ -262,7 +261,6 @@
       font-size: 3.5rem;
       margin-bottom: 1.5rem;
       color: var(--secondary);
-      animation: pulse 2s infinite;
     }
 
     .password-title {
@@ -296,7 +294,6 @@
       color: var(--light);
       font-size: 1rem;
       font-family: 'Montserrat', sans-serif;
-      transition: all 0.3s ease;
       outline: none;
     }
 
@@ -307,13 +304,6 @@
 
     .password-input.error {
       border-color: var(--error-red);
-      animation: shake 0.5s;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
     }
 
     .password-btn {
@@ -326,17 +316,7 @@
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
       margin-bottom: 1rem;
-    }
-
-    .password-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
-    }
-
-    .password-btn:active {
-      transform: translateY(0);
     }
 
     .password-error {
@@ -349,12 +329,7 @@
 
     .password-error.show {
       display: block;
-      animation: fadeIn 0.3s;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      animation: fadeIn 0.3s ease;
     }
 
     .password-success {
@@ -367,7 +342,7 @@
 
     .password-success.show {
       display: block;
-      animation: fadeIn 0.3s;
+      animation: fadeIn 0.3s ease;
     }
 
     .password-hint {
@@ -399,7 +374,7 @@
 
     @keyframes fall {
       0% {
-        transform: translateY(-100px) translateX(0) rotate(0deg);
+        transform: translateY(-100px);
         opacity: 0;
       }
       10% {
@@ -409,7 +384,7 @@
         opacity: 0.4;
       }
       100% {
-        transform: translateY(100vh) translateX(20px) rotate(360deg);
+        transform: translateY(100vh);
         opacity: 0;
       }
     }
@@ -563,12 +538,6 @@
       border: 1px solid rgba(139, 92, 246, 0.4);
     }
 
-    .game-card.unlocked:hover {
-      transform: translateY(-2px);
-      transition: transform 0.2s ease;
-      box-shadow: 0 12px 30px rgba(139, 92, 246, 0.4);
-    }
-
     .unlock-badge {
       position: absolute;
       top: 10px;
@@ -710,12 +679,6 @@
       position: relative;
       overflow: hidden;
       z-index: 2;
-      transition: all 0.2s ease;
-    }
-
-    .glass-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
 
     .glass-btn.frog {
@@ -756,6 +719,7 @@
     .loading-overlay.active {
       opacity: 1;
       visibility: visible;
+      animation: fadeIn 0.3s ease;
     }
 
     .spinner {
@@ -1078,7 +1042,7 @@
             successMsg.style.zIndex = '1000000';
             successMsg.style.fontWeight = '600';
             successMsg.style.boxShadow = '0 5px 15px rgba(16, 185, 129, 0.4)';
-            successMsg.style.animation = 'fadeIn 0.3s';
+            successMsg.style.animation = 'fadeIn 0.3s ease';
             document.body.appendChild(successMsg);
             
             setTimeout(() => {
@@ -1097,12 +1061,6 @@
           // Очищаем поле ввода
           elements.passwordInput.value = '';
           elements.passwordInput.focus();
-          
-          // Анимация ошибки
-          elements.passwordInput.style.animation = 'none';
-          setTimeout(() => {
-            elements.passwordInput.style.animation = 'shake 0.5s';
-          }, 10);
         }
       }
       
