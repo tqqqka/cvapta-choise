@@ -19,18 +19,6 @@
       --frog-green: #22C55E;
       --frog-light-green: #86EFAC;
       --frog-dark-green: #16A34A;
-      --history-purple: #8B5CF6;
-      --history-light-purple: #A78BFA;
-      --history-dark-purple: #7C3AED;
-      --twitch-purple: #9146FF;
-      --twitch-dark-purple: #772CE8;
-      --twitch-light-purple: #A970FF;
-      --locked-gray: #6B7280;
-      --locked-light-gray: #9CA3AF;
-      --locked-dark-gray: #4B5563;
-      --light-blue-gradient-start: #BAE6FD;
-      --light-blue-gradient-middle: #7DD3FC;
-      --light-blue-gradient-end: #38BDF8;
       --glass-bg: rgba(30, 41, 59, 0.25);
       --glass-border: rgba(255, 255, 255, 0.1);
       --glass-blur: 12px;
@@ -414,9 +402,9 @@
       font-size: 3rem;
       margin-bottom: 1.2rem;
       background: linear-gradient(135deg, 
-        var(--light-blue-gradient-start), 
-        var(--light-blue-gradient-middle), 
-        var(--light-blue-gradient-end));
+        var(--winter-light), 
+        var(--winter-cyan), 
+        var(--winter-blue));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -466,40 +454,6 @@
       max-width: 400px;
     }
 
-    /* Баннер с датой открытия */
-    .date-banner {
-      position: relative;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 4;
-      background: linear-gradient(135deg, 
-        rgba(139, 92, 246, 0.9),
-        rgba(124, 58, 237, 0.8));
-      backdrop-filter: blur(15px);
-      padding: 0.6rem 1.5rem;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      border-top: none;
-      border-bottom: none;
-      box-shadow: 0 5px 20px rgba(139, 92, 246, 0.2),
-                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.8rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: white;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-      margin-bottom: -1px;
-      border-radius: var(--control-radius) var(--control-radius) 0 0;
-    }
-
-    .date-banner i {
-      font-size: 1rem;
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-    }
-
     .game-card {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(180%);
@@ -513,63 +467,8 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-
-    /* Для карточки с баннером (История Cvapta) */
-    .game-card.with-banner {
-      border-radius: 0 0 var(--control-radius) var(--control-radius);
-      border-top: none;
-      padding: 1.5rem;
-    }
-
-    /* Для обычной карточки (Cvapta) */
-    .game-card.regular {
       border-radius: var(--control-radius);
       padding: 1.5rem;
-    }
-
-    /* Игра РАЗБЛОКИРОВАНА */
-    .game-card.unlocked {
-      filter: none;
-      opacity: 1;
-      cursor: pointer;
-      pointer-events: auto;
-      background: rgba(139, 92, 246, 0.2);
-      border: 1px solid rgba(139, 92, 246, 0.4);
-    }
-
-    .unlock-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: linear-gradient(135deg, 
-        rgba(34, 197, 94, 0.9),
-        rgba(22, 163, 74, 0.8));
-      border-radius: 8px;
-      padding: 0.3rem 0.6rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: white;
-      z-index: 10;
-      box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .unlock-badge i {
-      font-size: 0.7rem;
-    }
-
-    .game-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 50%);
-      z-index: 0;
     }
 
     .game-header {
@@ -601,11 +500,6 @@
       color: var(--frog-green);
     }
 
-    .game-icon.history {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
-      color: var(--history-purple);
-    }
-
     .game-title {
       font-size: 1.3rem;
       font-weight: 600;
@@ -615,13 +509,6 @@
 
     .game-title.frog {
       background: linear-gradient(135deg, var(--frog-light-green), var(--frog-green));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .game-title.history {
-      background: linear-gradient(135deg, var(--history-light-purple), var(--history-purple));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -646,17 +533,6 @@
       padding: 0.8rem;
       border-radius: 8px;
       border-left: 3px solid var(--frog-green);
-    }
-
-    .game-description.history {
-      color: rgba(240, 249, 255, 0.9);
-      background: linear-gradient(135deg, 
-        rgba(139, 92, 246, 0.1), 
-        rgba(167, 139, 250, 0.05), 
-        rgba(124, 58, 237, 0.08));
-      padding: 0.8rem;
-      border-radius: 8px;
-      border-left: 3px solid var(--history-purple);
     }
 
     .glass-btn {
@@ -684,19 +560,6 @@
     .glass-btn.frog {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
       border: 1px solid rgba(34, 197, 94, 0.3);
-    }
-
-    .glass-btn.history {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.1));
-      border: 1px solid rgba(139, 92, 246, 0.4);
-    }
-
-    .glass-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      filter: grayscale(60%);
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));
-      border: 1px solid rgba(139, 92, 246, 0.2);
     }
 
     .loading-overlay {
@@ -779,14 +642,6 @@
       }
       .device-icon {
         font-size: 2.5rem;
-      }
-      .date-banner {
-        font-size: 0.95rem;
-        padding: 0.5rem 1rem;
-      }
-      .unlock-badge {
-        font-size: 0.7rem;
-        padding: 0.2rem 0.5rem;
       }
       .password-content {
         padding: 1.8rem;
@@ -892,40 +747,9 @@
     </div>
     
     <div class="games-grid">
-      <!-- Игра "История Cvapta" -->
+      <!-- Игра Cvapta -->
       <div class="game-card-wrapper">
-        <!-- Баннер с датой открытия -->
-        <div class="date-banner">
-          <i class="fas fa-calendar-alt"></i>
-          1 Февраля 🎉
-        </div>
-        
-        <div class="game-card with-banner unlocked" id="historyCard">
-          <!-- Бейдж "ДОСТУПНО" -->
-          <div class="unlock-badge">
-            <i class="fas fa-check-circle"></i>
-            ДОСТУПНО
-          </div>
-          
-          <div class="game-header">
-            <div class="game-icon history">📜</div>
-            <div class="game-title history">История Cvapta</div>
-          </div>
-          
-          <div class="game-description history">
-            Погрузитесь в увлекательную историю создания Cvapta. Узнайте секреты, тайны и интересные факты о создании этой удивительной игры. Только для самых преданных фанатов!
-          </div>
-          
-          <button class="glass-btn history" id="historyBtn">
-            <i class="fas fa-play"></i>
-            <span>Смотреть</span>
-          </button>
-        </div>
-      </div>
-      
-      <!-- Существующая игра Cvapta -->
-      <div class="game-card-wrapper">
-        <div class="game-card regular" id="cvaptaCard">
+        <div class="game-card" id="cvaptaCard">
           <div class="game-header">
             <div class="game-icon frog">🐸</div>
             <div class="game-title frog">Cvapta</div>
@@ -955,8 +779,6 @@
       
       const elements = {
         cvaptaBtn: document.getElementById('cvaptaBtn'),
-        historyBtn: document.getElementById('historyBtn'),
-        historyCard: document.getElementById('historyCard'),
         loadingOverlay: document.getElementById('loadingOverlay'),
         snowflakes: document.getElementById('snowflakes'),
         pcWarningOverlay: document.getElementById('pcWarningOverlay'),
@@ -1173,15 +995,6 @@
       
       function init() {
         console.log('Инициализация приложения...');
-        console.log('=========================================');
-        console.log('Игра "История Cvapta": РАЗБЛОКИРОВАНА');
-        console.log('=========================================');
-        
-        // Игра разблокирована
-        elements.historyCard.classList.remove('locked');
-        elements.historyCard.classList.add('unlocked');
-        elements.historyBtn.disabled = false;
-        elements.historyBtn.innerHTML = '<i class="fas fa-play"></i><span>Играть</span>';
         
         const pcBypass = sessionStorage.getItem('pcBypass') === 'true';
         
@@ -1195,28 +1008,6 @@
         
         setupF8Handler();
         createSnowflakes();
-        
-        // Обработчик для игры История Cvapta - РАЗБЛОКИРОВАНА
-        elements.historyBtn.addEventListener('click', () => {
-          if (!checkBeforeRedirect()) return;
-          
-          showLoading();
-          setTimeout(() => {
-            window.location.href = 'https://tqqqka.github.io/c-h/';
-          }, 800);
-        });
-        
-        // Клик на всю карточку Истории Cvapta
-        elements.historyCard.addEventListener('click', (e) => {
-          if (!e.target.closest('.glass-btn')) {
-            if (!checkBeforeRedirect()) return;
-            
-            showLoading();
-            setTimeout(() => {
-              window.location.href = 'https://tqqqka.github.io/c-h/';
-            }, 800);
-          }
-        });
         
         // Обработчик для игры Cvapta
         elements.cvaptaBtn.addEventListener('click', () => {
