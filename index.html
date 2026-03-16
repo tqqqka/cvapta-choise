@@ -1,37 +1,44 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cvapta Experiences · Pink & Frog</title>
+  <title>Cvapta Experiences</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      /* Розовая палитра (для всей страницы, кроме карточки Cvapta) */
-      --primary-pink: #B83280;
-      --secondary-pink: #FF6B9D;
-      --pink-deep: #D53A6B;
-      --pink-soft: #FFB6C1;
-      --pink-pale: #FFD9E6;
-      --pink-light: #FFE4E9;
-      --glass-bg-pink: rgba(255, 200, 220, 0.15);
-      --glass-border-pink: rgba(255, 200, 220, 0.3);
-
-      /* Зелёные акценты для лягушки (Cvapta) — оставляем оригинал */
+      --primary: #1E3A8A;
+      --secondary: #3B82F6;
+      --dark: #0F172A;
+      --light: #F0F9FF;
+      --winter-blue: #60A5FA;
+      --winter-teal: #2DD4BF;
+      --winter-cyan: #22D3EE;
+      --winter-light: #BAE6FD;
       --frog-green: #22C55E;
       --frog-light-green: #86EFAC;
       --frog-dark-green: #16A34A;
-
-      /* Общие цвета */
-      --dark: #2D1B2A;
-      --light: #FFF0F5;
+      --twitch-purple: #9146FF;
+      --twitch-dark-purple: #772CE8;
+      --twitch-light-purple: #A970FF;
+      --locked-gray: #6B7280;
+      --locked-light-gray: #9CA3AF;
+      --locked-dark-gray: #4B5563;
+      --light-blue-gradient-start: #BAE6FD;
+      --light-blue-gradient-middle: #7DD3FC;
+      --light-blue-gradient-end: #38BDF8;
+      --glass-bg: rgba(30, 41, 59, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.1);
       --glass-blur: 12px;
       --control-radius: 16px;
-      --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       --error-red: #EF4444;
       --error-light: #FCA5A5;
       --success-green: #10B981;
+      --success-light: #6EE7B7;
+      --ru-red: #B91C1C;
+      --ru-dark-red: #7F1D1D;
     }
 
     * {
@@ -47,7 +54,7 @@
 
     html, body {
       font-family: 'Montserrat', sans-serif;
-      background: radial-gradient(circle at 10% 30%, #3E1F2F, #2A1A2A, #1E151E);
+      background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
       color: var(--light);
       min-height: 100vh;
       width: 100%;
@@ -65,7 +72,7 @@
       padding-top: 2vh;
     }
 
-    /* --- ПК оверлей (без изменений) --- */
+    /* Desktop overlay - always above everything */
     .pc-warning-overlay {
       position: fixed;
       top: 0;
@@ -80,451 +87,1107 @@
       align-items: center;
       padding: 20px;
     }
-    .pc-warning-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .pc-warning-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .pc-warning-content {
-      background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.1));
+      background: linear-gradient(135deg, 
+        rgba(239, 68, 68, 0.2),
+        rgba(239, 68, 68, 0.1));
       backdrop-filter: blur(30px) saturate(200%);
       border-radius: var(--control-radius);
-      border: 2px solid rgba(239,68,68,0.4);
-      box-shadow: 0 25px 70px rgba(239,68,68,0.3);
-      max-width: 500px; width: 100%; padding: 2.5rem; text-align: center;
-      position: relative; overflow: hidden; margin-top: -8vh;
+      border: 2px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 25px 70px rgba(239, 68, 68, 0.3);
+      max-width: 500px;
+      width: 100%;
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-top: -8vh;
     }
+
     .pc-warning-content::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
-      background: linear-gradient(90deg, var(--error-red), var(--error-light), var(--error-red));
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, 
+        var(--error-red), 
+        var(--error-light), 
+        var(--error-red));
     }
-    .pc-warning-icon { font-size: 4.5rem; margin-bottom: 1.5rem; color: var(--error-red); }
-    .pc-warning-title {
-      font-size: 2rem; font-weight: 800; margin-bottom: 1.2rem;
-      background: linear-gradient(135deg, var(--error-light), var(--error-red));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      text-shadow: 0 3px 15px rgba(239,68,68,0.4);
-    }
-    .pc-warning-message { font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem; opacity: 0.95; font-weight: 500; }
-    .pc-device-icon { display: flex; justify-content: center; gap: 3rem; margin: 2.5rem 0; }
-    .device-icon { font-size: 3rem; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; }
-    .device-icon.pc { color: var(--error-red); opacity: 0.8; filter: drop-shadow(0 0 8px rgba(239,68,68,0.4)); }
-    .device-icon.phone { color: var(--success-green); filter: drop-shadow(0 0 8px rgba(34,197,94,0.4)); }
-    .device-label { font-size: 0.9rem; font-weight: 600; opacity: 0.9; }
-    .pc-note {
-      font-size: 0.9rem; background: rgba(239,68,68,0.15); padding: 1.2rem;
-      border-radius: 12px; border-left: 4px solid var(--error-red); margin-top: 2rem;
-      text-align: left; display: flex; align-items: flex-start; gap: 1rem;
-      border: 1px solid rgba(239,68,68,0.2);
-    }
-    .pc-note i { color: var(--error-red); font-size: 1.2rem; margin-top: 0.1rem; }
 
-    /* --- Оверлей для пароля (розовый) --- */
-    .password-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
-      z-index: 1000000; display: none; justify-content: center; align-items: center; padding: 20px;
+    .pc-warning-icon {
+      font-size: 4.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--error-red);
     }
-    .password-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
-    .password-content {
-      background: linear-gradient(135deg, rgba(45,27,42,0.9), rgba(30,20,30,0.95));
+
+    .pc-warning-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(135deg, var(--error-light), var(--error-red));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 3px 15px rgba(239, 68, 68, 0.4);
+      letter-spacing: -0.5px;
+    }
+
+    .pc-warning-message {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+
+    .pc-device-icon {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin: 2.5rem 0;
+    }
+
+    .device-icon {
+      font-size: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .device-icon.pc {
+      color: var(--error-red);
+      opacity: 0.8;
+      filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.4));
+    }
+
+    .device-icon.phone {
+      color: var(--frog-green);
+      filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.4));
+    }
+
+    .device-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    .pc-note {
+      font-size: 0.9rem;
+      background: rgba(239, 68, 68, 0.15);
+      padding: 1.2rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--error-red);
+      margin-top: 2rem;
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .pc-note i {
+      color: var(--error-red);
+      font-size: 1.2rem;
+      margin-top: 0.1rem;
+    }
+
+    /* Russia block overlay */
+    .ru-warning-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.98);
+      backdrop-filter: blur(30px);
+      z-index: 1000001;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .ru-warning-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .ru-warning-content {
+      background: linear-gradient(135deg, 
+        rgba(185, 28, 28, 0.2),
+        rgba(127, 29, 29, 0.1));
       backdrop-filter: blur(30px) saturate(200%);
       border-radius: var(--control-radius);
-      border: 2px solid rgba(255,107,157,0.5);
-      box-shadow: 0 25px 70px rgba(0,0,0,0.5);
-      max-width: 400px; width: 100%; padding: 2.5rem; text-align: center;
-      position: relative; overflow: hidden;
+      border: 2px solid rgba(185, 28, 28, 0.4);
+      box-shadow: 0 25px 70px rgba(185, 28, 28, 0.3);
+      max-width: 500px;
+      width: 100%;
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
+
+    .ru-warning-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, 
+        var(--ru-red), 
+        #FCA5A5, 
+        var(--ru-red));
+    }
+
+    .ru-warning-icon {
+      font-size: 4.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--ru-red);
+    }
+
+    .ru-warning-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #FCA5A5, var(--ru-red));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 3px 15px rgba(185, 28, 28, 0.4);
+    }
+
+    .ru-warning-message {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+
+    .ru-error-code {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background: rgba(185, 28, 28, 0.2);
+      border: 1px solid rgba(185, 28, 28, 0.3);
+      border-radius: 40px;
+      font-family: monospace;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FCA5A5;
+      letter-spacing: 1px;
+      margin-top: 1rem;
+    }
+
+    /* Unlock overlay */
+    .password-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 1000000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .password-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .password-content {
+      background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 0.8),
+        rgba(15, 23, 42, 0.9));
+      backdrop-filter: blur(30px) saturate(200%);
+      border-radius: var(--control-radius);
+      border: 2px solid rgba(59, 130, 246, 0.4);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+      max-width: 400px;
+      width: 100%;
+      padding: 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
     .password-content::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
-      background: linear-gradient(90deg, var(--secondary-pink), var(--pink-soft), var(--secondary-pink));
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, 
+        var(--secondary), 
+        var(--winter-cyan), 
+        var(--secondary));
     }
-    .password-icon { font-size: 3.5rem; margin-bottom: 1.5rem; color: var(--secondary-pink); }
+
+    .password-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary);
+    }
+
     .password-title {
-      font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;
-      background: linear-gradient(135deg, var(--secondary-pink), var(--pink-pale));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--secondary), var(--winter-cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    .password-subtitle { font-size: 0.9rem; opacity: 0.8; margin-bottom: 2rem; color: var(--pink-light); }
-    .password-input-container { position: relative; margin-bottom: 1.5rem; }
+
+    .password-subtitle {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 2rem;
+      color: var(--winter-light);
+    }
+
+    .password-input-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
     .password-input {
-      width: 100%; padding: 1rem 1.2rem; background: rgba(255,255,255,0.1);
-      border: 2px solid rgba(255,255,255,0.2); border-radius: var(--control-radius);
-      color: var(--light); font-size: 1rem; font-family: 'Montserrat', sans-serif; outline: none;
+      width: 100%;
+      padding: 1rem 1.2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--control-radius);
+      color: var(--light);
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      outline: none;
     }
-    .password-input:focus { border-color: var(--secondary-pink); box-shadow: 0 0 0 3px rgba(255,107,157,0.3); }
-    .password-input.error { border-color: var(--error-red); }
+
+    .password-input:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+
+    .password-input.error {
+      border-color: var(--error-red);
+    }
+
     .password-btn {
-      width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--secondary-pink), var(--primary-pink));
-      border: none; border-radius: var(--control-radius); color: white; font-size: 1rem;
-      font-weight: 600; cursor: pointer; margin-bottom: 1rem;
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      border: none;
+      border-radius: var(--control-radius);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 1rem;
     }
-    .password-error { color: var(--error-red); font-size: 0.85rem; margin-top: 0.5rem; min-height: 1.2rem; display: none; }
-    .password-error.show { display: block; animation: fadeIn 0.3s ease; }
-    .password-success { color: var(--success-green); font-size: 0.85rem; margin-top: 0.5rem; min-height: 1.2rem; display: none; }
-    .password-success.show { display: block; animation: fadeIn 0.3s ease; }
-    .password-hint { font-size: 0.75rem; opacity: 0.5; margin-top: 1rem; color: var(--pink-light); }
 
-    /* --- СНЕЖИНКИ УДАЛЕНЫ ПОЛНОСТЬЮ --- */
+    .password-error {
+      color: var(--error-red);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
+      display: none;
+    }
 
-    /* --- Основной контент --- */
+    .password-error.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .password-success {
+      color: var(--success-green);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
+      display: none;
+    }
+
+    .password-success.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .password-hint {
+      font-size: 0.75rem;
+      opacity: 0.5;
+      margin-top: 1rem;
+      color: var(--winter-light);
+    }
+
+    /* Snowflakes */
+    .snowflakes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .snowflake {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      opacity: 0.4;
+      filter: blur(0.5px);
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.4;
+      }
+      90% {
+        opacity: 0.4;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    /* Main Content */
     .main-content {
-      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-      width: 100%; max-width: 500px; z-index: 10; position: relative; margin: auto;
-      padding: 20px; margin-top: 3vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      max-width: 500px;
+      z-index: 10;
+      position: relative;
+      margin: auto;
+      padding: 20px;
+      margin-top: 3vh;
     }
 
-    .header { text-align: center; margin-bottom: 2rem; width: 100%; }
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      width: 100%;
+    }
 
-    /* Розовое сердечко в логотипе */
     .logo {
-      font-size: 3rem; margin-bottom: 1.2rem;
-      background: linear-gradient(135deg, #FFB3C6, #FF6B9D, #D53A6B);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      line-height: 1; text-shadow: 0 0 15px rgba(255,105,180,0.7);
+      font-size: 3rem;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(135deg, 
+        var(--light-blue-gradient-start), 
+        var(--light-blue-gradient-middle), 
+        var(--light-blue-gradient-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
     }
 
     .fluid {
-      font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.1;
-      text-align: center; margin-bottom: 0.8rem;
-      background: linear-gradient(135deg, #FFD9E6, #FFB6C1, #FF8C9E);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      text-shadow: 0 0 15px rgba(255,128,171,0.6);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
       position: relative;
     }
+
     .fluid::after {
-      content: ''; position: absolute; bottom: -5px; left: 25%; width: 50%; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--secondary-pink), transparent);
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--winter-cyan), transparent);
       border-radius: 1px;
     }
 
-    .subtitle { font-size: 0.9rem; opacity: 0.85; margin-top: 0.3rem; color: #FFE4E9; }
-
-    .games-grid { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; width: 100%; margin-bottom: 1.5rem; }
-    .game-card-wrapper { position: relative; width: 100%; max-width: 400px; }
-
-    /* --- Карточка игры (фон полупрозрачный розовый, но акценты зелёные) --- */
-    .game-card {
-      background: rgba(255, 220, 240, 0.15);
-      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-      border: 1px solid rgba(255, 200, 220, 0.3);
-      box-shadow: 0 8px 28px rgba(128, 0, 64, 0.2);
-      position: relative; overflow: hidden; width: 100%; text-align: center;
-      min-height: 300px; display: flex; flex-direction: column; justify-content: space-between;
-      border-radius: var(--control-radius); padding: 1.5rem;
+    .subtitle {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 0.3rem;
     }
 
-    .game-header { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem; position: relative; z-index: 2; }
+    .games-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
 
-    /* --- Зелёные стили для лягушки (оригинал) --- */
+    .game-card-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Opening date banner */
+    .date-banner {
+      position: relative;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 4;
+      background: linear-gradient(135deg, 
+        rgba(139, 92, 246, 0.9),
+        rgba(124, 58, 237, 0.8));
+      backdrop-filter: blur(15px);
+      padding: 0.6rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-top: none;
+      border-bottom: none;
+      box-shadow: 0 5px 20px rgba(139, 92, 246, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      margin-bottom: -1px;
+      border-radius: var(--control-radius) var(--control-radius) 0 0;
+    }
+
+    .date-banner i {
+      font-size: 1rem;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+    }
+
+    .game-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      text-align: center;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .game-card.with-banner {
+      border-radius: 0 0 var(--control-radius) var(--control-radius);
+      border-top: none;
+      padding: 1.5rem;
+    }
+
+    /* Standard card (Cvapta) */
+    .game-card.regular {
+      border-radius: var(--control-radius);
+      padding: 1.5rem;
+    }
+
+    /* Game UNLOCKED */
+    .game-card.unlocked {
+      filter: none;
+      opacity: 1;
+      cursor: pointer;
+      pointer-events: auto;
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+    }
+
+    .unlock-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, 
+        rgba(34, 197, 94, 0.9),
+        rgba(22, 163, 74, 0.8));
+      border-radius: 8px;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: white;
+      z-index: 10;
+      box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .unlock-badge i {
+      font-size: 0.7rem;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    .game-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .game-icon {
+      font-size: 2rem;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
     .game-icon.frog {
-      font-size: 2rem; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(22, 163, 74, 0.15));
-      border-radius: 12px; backdrop-filter: blur(10px);
-      border: 1px solid rgba(34, 197, 94, 0.4); box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
       color: var(--frog-green);
     }
 
+    .game-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.2;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
     .game-title.frog {
-      font-size: 1.3rem; font-weight: 600; line-height: 1.2;
       background: linear-gradient(135deg, var(--frog-light-green), var(--frog-green));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      filter: drop-shadow(0 2px 6px rgba(34, 197, 94, 0.4));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .game-description {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+      text-align: center;
     }
 
     .game-description.frog {
-      font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem; opacity: 0.95;
-      position: relative; z-index: 2; text-align: center;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(134, 239, 172, 0.05), rgba(22, 163, 74, 0.08));
-      padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--frog-green);
+      color: rgba(240, 249, 255, 0.9);
+      background: linear-gradient(135deg, 
+        rgba(34, 197, 94, 0.1), 
+        rgba(134, 239, 172, 0.05), 
+        rgba(22, 163, 74, 0.08));
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--frog-green);
+    }
+
+    .glass-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--control-radius);
+      border: 1px solid var(--glass-border);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      backdrop-filter: blur(15px) saturate(180%);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3), 
+                  inset 0 1px 0 rgba(255,255,255,0.1);
       color: var(--light);
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      font-size: 0.95rem;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
     }
 
     .glass-btn.frog {
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-      padding: 1rem 1.5rem; border-radius: var(--control-radius);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
-      backdrop-filter: blur(15px) saturate(180%);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-      color: white; font-weight: 600; cursor: pointer; width: 100%; font-size: 0.95rem;
-      position: relative; overflow: hidden; z-index: 2;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
+      border: 1px solid rgba(34, 197, 94, 0.3);
     }
 
-    /* Загрузочный оверлей */
+    .glass-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      filter: grayscale(60%);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
     .loading-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(20, 10, 20, 0.95); display: flex; justify-content: center;
-      align-items: center; flex-direction: column; backdrop-filter: blur(10px);
-      z-index: 99999; opacity: 0; visibility: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      backdrop-filter: blur(10px);
+      z-index: 99999;
+      opacity: 0;
+      visibility: hidden;
     }
-    .loading-overlay.active { opacity: 1; visibility: visible; animation: fadeIn 0.3s ease; }
+
+    .loading-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      animation: fadeIn 0.3s ease;
+    }
+
     .spinner {
-      width: 50px; height: 50px; border: 3px solid rgba(255,200,220,0.2);
-      border-top: 3px solid var(--secondary-pink); border-radius: 50%;
-      animation: spin 1s linear infinite; margin-bottom: 1.5rem;
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid var(--frog-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
     @media (max-width: 480px) {
-      body { padding: 10px; padding-top: 5vh; }
-      .main-content { min-height: auto; padding: 10px; margin-top: 0; }
-      .game-card { min-height: 280px; padding: 1.2rem; }
-      .game-icon.frog { width: 50px; height: 50px; font-size: 1.7rem; }
-      .game-title.frog { font-size: 1.1rem; }
-      .glass-btn.frog { padding: 0.9rem 1.2rem; font-size: 0.9rem; }
-      .pc-warning-content { padding: 1.8rem; margin-top: -5vh; }
-      .pc-warning-title { font-size: 1.7rem; }
-      .pc-device-icon { gap: 2rem; }
-      .device-icon { font-size: 2.5rem; }
-      .password-content { padding: 1.8rem; }
-      .password-title { font-size: 1.3rem; }
+      body { 
+        padding: 10px; 
+        justify-content: flex-start;
+        padding-top: 5vh;
+      }
+      .main-content {
+        min-height: auto;
+        padding: 10px;
+        margin-top: 0;
+      }
+      .game-card { 
+        min-height: 280px; 
+      }
+      .game-card.regular,
+      .game-card.with-banner {
+        padding: 1.2rem;
+      }
+      .game-icon { 
+        width: 50px; 
+        height: 50px; 
+        font-size: 1.7rem; 
+      }
+      .game-title { 
+        font-size: 1.1rem; 
+      }
+      .glass-btn { 
+        padding: 0.9rem 1.2rem; 
+        font-size: 0.9rem; 
+      }
+      .pc-warning-content,
+      .ru-warning-content {
+        padding: 1.8rem;
+        margin-top: -5vh;
+      }
+      .pc-warning-title,
+      .ru-warning-title {
+        font-size: 1.7rem;
+      }
+      .pc-device-icon {
+        gap: 2rem;
+      }
+      .device-icon {
+        font-size: 2.5rem;
+      }
+      .date-banner {
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem;
+      }
+      .unlock-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+      }
+      .password-content {
+        padding: 1.8rem;
+      }
+      .password-title {
+        font-size: 1.3rem;
+      }
     }
 
-    @media (min-height: 800px) { .main-content { margin-top: 5vh; } body { padding-top: 3vh; } }
-    @media (min-height: 1000px) { .main-content { margin-top: 7vh; } body { padding-top: 4vh; } }
+    @media (min-height: 800px) {
+      .main-content {
+        margin-top: 5vh;
+      }
+      body {
+        padding-top: 3vh;
+      }
+    }
+
+    @media (min-height: 1000px) {
+      .main-content {
+        margin-top: 7vh;
+      }
+      body {
+        padding-top: 4vh;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- ПК оверлей -->
+  <!-- Russia block overlay (503) -->
+  <div class="ru-warning-overlay" id="ruWarningOverlay">
+    <div class="ru-warning-content">
+      <div class="ru-warning-icon">🚫</div>
+      <div class="ru-warning-title">Доступ ограничен</div>
+      <div class="ru-warning-message">
+        <strong>Извините, данный сервис недоступен для пользователей из России.</strong><br>
+        Мы сожалеем о неудобствах.
+      </div>
+      <div class="ru-error-code">503 Service Unavailable</div>
+    </div>
+  </div>
+
+  <!-- Desktop warning overlay -->
   <div class="pc-warning-overlay" id="pcWarningOverlay">
     <div class="pc-warning-content">
       <div class="pc-warning-icon">📱</div>
-      <div class="pc-warning-title">ТОЛЬКО ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ</div>
+      <div class="pc-warning-title">MOBILE DEVICES ONLY</div>
+      
       <div class="pc-warning-message">
-        <strong>Эта игра оптимизирована исключительно для мобильных устройств.</strong><br>
-        Пожалуйста, используйте смартфон или планшет.
+        <strong>This game is optimized exclusively for mobile devices.</strong><br>
+        Please use a smartphone or tablet to access the game.
       </div>
+      
       <div class="pc-device-icon">
-        <div class="device-icon pc"><i class="fas fa-desktop"></i><div class="device-label">ПК<br>ЗАБЛОКИРОВАН</div></div>
-        <div class="device-icon phone"><i class="fas fa-mobile-alt"></i><div class="device-label">ТРЕБУЕТСЯ<br>СМАРТФОН</div></div>
+        <div class="device-icon pc">
+          <i class="fas fa-desktop"></i>
+          <div class="device-label">PC<br>BLOCKED</div>
+        </div>
+        <div class="device-icon phone">
+          <i class="fas fa-mobile-alt"></i>
+          <div class="device-label">SMARTPHONE<br>REQUIRED</div>
+        </div>
       </div>
+      
       <div class="pc-note">
         <i class="fas fa-exclamation-triangle"></i>
-        <div><strong>Важно:</strong> Доступ с компьютера ограничен. Игра требует сенсорного управления.</div>
+        <div>
+          <strong>Important:</strong> Desktop access is restricted. This game requires touch controls and mobile-specific features that are not available on computers.
+        </div>
       </div>
     </div>
   </div>
   
-  <!-- Оверлей для ввода пароля (розовый) -->
-  <div class="password-overlay" id="passwordOverlay">
-    <div class="password-content">
-      <div class="password-icon">🔐</div>
-      <div class="password-title">ВВЕДИТЕ ПАРОЛЬ</div>
-      <div class="password-subtitle">Для обхода ограничения требуется пароль администратора</div>
-      <div class="password-input-container">
-        <input type="password" class="password-input" id="passwordInput" placeholder="Введите пароль..." autocomplete="off">
-      </div>
-      <div class="password-error" id="passwordError">Неверный пароль. Попробуйте снова.</div>
-      <div class="password-success" id="passwordSuccess">✅ Пароль верный! Доступ разрешен.</div>
-      <button class="password-btn" id="passwordSubmit"><i class="fas fa-unlock-alt"></i> РАЗБЛОКИРОВАТЬ</button>
-      <div class="password-hint">Нажмите F8 для открытия этого окна</div>
-    </div>
-  </div>
+  <div class="snowflakes" id="snowflakes"></div>
   
-  <!-- СНЕЖИНКИ ПОЛНОСТЬЮ УДАЛЕНЫ -->
-
-  <!-- Основной контент -->
   <div class="main-content" id="mainContent">
     <div class="header">
-      <!-- Розовое сердечко -->
-      <div class="logo">💖</div>
+      <div class="logo">🎮</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
-      <p class="subtitle">Выберите своё приключение и погрузитесь в удивительные игровые впечатления</p>
+      <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
     
     <div class="games-grid">
-      <!-- Карточка игры Cvapta — зелёная лягушка (все классы .frog сохранены) -->
+      <!-- Cvapta game -->
       <div class="game-card-wrapper">
-        <div class="game-card" id="cvaptaCard">
+        <div class="game-card regular" id="cvaptaCard">
           <div class="game-header">
             <div class="game-icon frog">🐸</div>
             <div class="game-title frog">Cvapta</div>
           </div>
+          
           <div class="game-description frog">
-            Отправьтесь в волшебное путешествие со своим дружелюбным лягушонком. Нажимайте, растите, собирайте звёзды и открывайте чудесные сюрпризы в этом очаровательном приключении!
+            Go on a magical journey with your friendly little frog. Tap, grow, collect stars, and discover wonderful surprises in this charming adventure!
           </div>
+          
           <button class="glass-btn frog" id="cvaptaBtn">
             <i class="fas fa-play"></i>
-            <span>Играть</span>
+            <span>Play</span>
           </button>
         </div>
       </div>
     </div>
   </div>
   
-  <!-- Загрузочный оверлей -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text">Загружаем вашу игру...</div>
+    <div class="loading-text">Loading your game...</div>
   </div>
-  
+
   <script>
     (function() {
-      console.log('🌸 Розовая тема с зелёной лягушкой Cvapta');
-      
+      console.log('🎮 Game initialization started...');
+
+      const GAME_URL = 'https://tqqqka.github.io/capsavta/';
+      const SECRET_CODE = 'qwerty';
+      const SNOWFLAKES_COUNT = 30;
+
       const elements = {
         cvaptaBtn: document.getElementById('cvaptaBtn'),
+        cvaptaCard: document.getElementById('cvaptaCard'),
         loadingOverlay: document.getElementById('loadingOverlay'),
+        snowflakes: document.getElementById('snowflakes'),
         pcWarningOverlay: document.getElementById('pcWarningOverlay'),
-        passwordOverlay: document.getElementById('passwordOverlay'),
-        passwordInput: document.getElementById('passwordInput'),
-        passwordSubmit: document.getElementById('passwordSubmit'),
-        passwordError: document.getElementById('passwordError'),
-        passwordSuccess: document.getElementById('passwordSuccess'),
+        ruWarningOverlay: document.getElementById('ruWarningOverlay'),
         mainContent: document.getElementById('mainContent')
       };
-      
-      const CORRECT_PASSWORD = "adminqwerty123";
-      
+
+      let keyBuffer = '';
+
+      function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+
+      function unlockDesktopRestriction() {
+        // Если активна блокировка России, не разблокируем основной контент
+        if (elements.ruWarningOverlay.classList.contains('active')) {
+          return;
+        }
+        elements.pcWarningOverlay.classList.remove('active');
+        elements.mainContent.style.display = 'flex';
+        document.body.style.overflow = 'auto';
+        sessionStorage.setItem('pcBypass', 'true');
+        console.log('🔓 Desktop restriction removed with secret code.');
+      }
+
       function checkDevice() {
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const mobile = isMobileDevice();
         const screenWidth = window.innerWidth;
-        if (!isMobile || screenWidth > 768) {
-          console.log('🚫 ПК блокировка');
-          elements.pcWarningOverlay.classList.add('active');
-          elements.mainContent.style.display = 'none';
-          document.body.style.overflow = 'hidden';
-          return false;
-        } else {
-          console.log('📱 Мобильное — доступ');
-          elements.mainContent.style.display = 'flex';
-          document.body.style.overflow = 'auto';
-          return true;
-        }
-      }
-      
-      function showPasswordOverlay() {
-        elements.passwordOverlay.classList.add('active');
-        elements.passwordInput.focus();
-        elements.passwordError.classList.remove('show');
-        elements.passwordSuccess.classList.remove('show');
-        elements.passwordInput.classList.remove('error');
-      }
-      
-      function hidePasswordOverlay() {
-        elements.passwordOverlay.classList.remove('active');
-        elements.passwordInput.value = '';
-        elements.passwordError.classList.remove('show');
-        elements.passwordSuccess.classList.remove('show');
-        elements.passwordInput.classList.remove('error');
-      }
-      
-      function checkPassword() {
-        const enteredPassword = elements.passwordInput.value.trim();
-        if (enteredPassword === CORRECT_PASSWORD) {
-          elements.passwordError.classList.remove('show');
-          elements.passwordSuccess.classList.add('show');
-          elements.passwordInput.classList.remove('error');
-          
-          setTimeout(() => {
-            elements.pcWarningOverlay.classList.remove('active');
-            elements.mainContent.style.display = 'flex';
-            document.body.style.overflow = 'auto';
-            sessionStorage.setItem('pcBypass', 'true');
-            hidePasswordOverlay();
-            
-            const successMsg = document.createElement('div');
-            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Доступ разрешен!';
-            successMsg.style.position = 'fixed';
-            successMsg.style.top = '20px';
-            successMsg.style.right = '20px';
-            successMsg.style.background = 'linear-gradient(135deg, #10B981, #FF6B9D)';
-            successMsg.style.color = 'white';
-            successMsg.style.padding = '12px 20px';
-            successMsg.style.borderRadius = 'var(--control-radius)';
-            successMsg.style.zIndex = '1000000';
-            successMsg.style.fontWeight = '600';
-            successMsg.style.boxShadow = '0 5px 15px rgba(255,107,157,0.5)';
-            successMsg.style.animation = 'fadeIn 0.3s ease';
-            document.body.appendChild(successMsg);
-            
-            setTimeout(() => {
-              successMsg.style.opacity = '0';
-              successMsg.style.transform = 'translateX(20px)';
-              setTimeout(() => successMsg.remove(), 300);
-            }, 2000);
-          }, 800);
-        } else {
-          elements.passwordError.classList.add('show');
-          elements.passwordSuccess.classList.remove('show');
-          elements.passwordInput.classList.add('error');
-          elements.passwordInput.value = '';
-          elements.passwordInput.focus();
-        }
-      }
-      
-      function setupF8Handler() {
-        document.addEventListener('keydown', function(e) {
-          if (e.keyCode === 119) { // F8
-            e.preventDefault();
-            if (elements.pcWarningOverlay.classList.contains('active')) {
-              showPasswordOverlay();
-            }
-            return false;
-          }
-        });
-      }
-      
-      elements.passwordInput.addEventListener('keypress', function(e) {
-        if (e.keyCode === 13) { e.preventDefault(); checkPassword(); }
-      });
-      
-      elements.passwordSubmit.addEventListener('click', checkPassword);
-      
-      elements.passwordOverlay.addEventListener('click', function(e) {
-        if (e.target === elements.passwordOverlay) hidePasswordOverlay();
-      });
-      
-      document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
-      document.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && [67,65,85,83,80].includes(e.keyCode)) { e.preventDefault(); return false; }
-        if (e.keyCode === 123) { e.preventDefault(); return false; }
-      });
-      
-      function checkBeforeRedirect() {
-        const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const screenWidth = window.innerWidth;
-        if ((!isMobileDevice || screenWidth > 768) && !sessionStorage.getItem('pcBypass')) {
+
+        if (!mobile || screenWidth > 768) {
+          console.log('🚫 Device detected: desktop / large screen - BLOCKED');
           elements.pcWarningOverlay.classList.add('active');
           elements.mainContent.style.display = 'none';
           document.body.style.overflow = 'hidden';
           return false;
         }
+
+        console.log('📱 Device detected: mobile - ALLOWED');
+        elements.pcWarningOverlay.classList.remove('active');
+        elements.mainContent.style.display = 'flex';
+        document.body.style.overflow = 'auto';
         return true;
       }
-      
-      function showLoading() { elements.loadingOverlay.classList.add('active'); }
-      
-      function init() {
-        console.log('Инициализация...');
-        const pcBypass = sessionStorage.getItem('pcBypass') === 'true';
-        if (!pcBypass) checkDevice();
-        else {
-          console.log('⚠️ Обход ПК');
+
+      function setupSecretCodeHandler() {
+        document.addEventListener('keydown', function(e) {
+          if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+          const key = String(e.key || '').toLowerCase();
+          if (key.length !== 1) return;
+
+          keyBuffer = (keyBuffer + key).slice(-SECRET_CODE.length);
+
+          if (
+            keyBuffer === SECRET_CODE &&
+            elements.pcWarningOverlay.classList.contains('active')
+          ) {
+            unlockDesktopRestriction();
+            keyBuffer = '';
+          }
+        });
+      }
+
+      // Защита от контекстного меню и сочетаний клавиш
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && [67, 65, 85, 83, 80].includes(e.keyCode)) {
+          e.preventDefault();
+          return false;
+        }
+
+        if (e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
+      function createSnowflakes() {
+        elements.snowflakes.innerHTML = '';
+
+        for (let i = 0; i < SNOWFLAKES_COUNT; i++) {
+          setTimeout(() => {
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+
+            const size = Math.random() * 3 + 1;
+            const posX = Math.random() * 100;
+            const delay = Math.random() * 3;
+            const duration = Math.random() * 12 + 8;
+            const opacity = Math.random() * 0.3 + 0.2;
+
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            snowflake.style.left = `${posX}%`;
+            snowflake.style.top = '-20px';
+            snowflake.style.opacity = 0;
+            snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+
+            elements.snowflakes.appendChild(snowflake);
+
+            setTimeout(() => {
+              snowflake.style.opacity = opacity;
+            }, 100);
+          }, i * 300);
+        }
+      }
+
+      function showLoading() {
+        elements.loadingOverlay.classList.add('active');
+      }
+
+      function hideLoading() {
+        elements.loadingOverlay.classList.remove('active');
+      }
+
+      // Проверка страны через ipapi.co
+      function checkCountry() {
+        return fetch('https://ipapi.co/json/?fields=country_code')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('🌍 Country detection:', data.country_code);
+            return data.country_code === 'RU';
+          })
+          .catch(error => {
+            console.warn('⚠️ Failed to detect country, assuming not Russia:', error);
+            return false; // в случае ошибки считаем, что не Россия
+          });
+      }
+
+      function applyBlock(blocked) {
+        if (blocked) {
+          console.log('🚫 Access blocked for Russia');
+          elements.ruWarningOverlay.classList.add('active');
+          elements.mainContent.style.display = 'none';
+          elements.pcWarningOverlay.classList.remove('active'); // на всякий случай
+          document.body.style.overflow = 'hidden';
+        } else {
+          console.log('✅ Access allowed (not Russia)');
+          elements.ruWarningOverlay.classList.remove('active');
+          // Далее запускаем обычную проверку устройства
+          if (sessionStorage.getItem('pcBypass') === 'true') {
+            console.log('⚠️ Desktop restriction already bypassed.');
+            unlockDesktopRestriction();
+          } else {
+            checkDevice();
+          }
           elements.mainContent.style.display = 'flex';
           document.body.style.overflow = 'auto';
         }
-        
-        setupF8Handler();
-        // Функция снежинок полностью удалена
-        
-        elements.cvaptaBtn.addEventListener('click', () => {
-          if (!checkBeforeRedirect()) return;
-          showLoading();
-          setTimeout(() => { window.location.href = 'https://tqqqka.github.io/capsavta/'; }, 800);
-        });
-        
-        document.getElementById('cvaptaCard').addEventListener('click', (e) => {
-          if (!e.target.closest('.glass-btn')) {
-            if (!checkBeforeRedirect()) return;
-            showLoading();
-            setTimeout(() => { window.location.href = 'https://tqqqka.github.io/capsavta/'; }, 800);
+        hideLoading();
+      }
+
+      function checkBeforeRedirect() {
+        // Проверяем, не заблокирована ли Россия
+        if (elements.ruWarningOverlay.classList.contains('active')) {
+          return false;
+        }
+        const mobile = isMobileDevice();
+        const screenWidth = window.innerWidth;
+
+        if ((!mobile || screenWidth > 768) && sessionStorage.getItem('pcBypass') !== 'true') {
+          elements.pcWarningOverlay.classList.add('active');
+          elements.mainContent.style.display = 'none';
+          document.body.style.overflow = 'hidden';
+          return false;
+        }
+
+        return true;
+      }
+
+      function redirectToGame() {
+        if (!checkBeforeRedirect()) return;
+
+        showLoading();
+        setTimeout(() => {
+          window.location.href = GAME_URL;
+        }, 800);
+      }
+
+      function init() {
+        console.log('Application initialization...');
+        console.log('=========================================');
+
+        // Показываем лоадер, пока определяем страну
+        showLoading();
+
+        // Сначала проверяем страну
+        checkCountry().then(isRussia => {
+          applyBlock(isRussia);
+
+          // Если не Россия, инициируем остальные функции
+          if (!isRussia) {
+            setupSecretCodeHandler();
+            createSnowflakes();
+
+            elements.cvaptaBtn.addEventListener('click', redirectToGame);
+            elements.cvaptaCard.addEventListener('click', function(e) {
+              if (!e.target.closest('.glass-btn')) {
+                redirectToGame();
+              }
+            });
+
+            console.log('✅ Application initialized successfully.');
+            console.log('🔓 Secret desktop unlock code: qwerty');
+            console.log('🔗 Play button redirect:', GAME_URL);
           }
         });
-        
-        console.log('✅ Готово: розовый фон, лягушка зелёная, снежинок нет');
       }
-      
+
       document.addEventListener('DOMContentLoaded', init);
     })();
   </script>
+
 </body>
 </html>
