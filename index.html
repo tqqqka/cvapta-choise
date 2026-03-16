@@ -349,43 +349,6 @@
       color: var(--winter-light);
     }
 
-    /* Snowflakes */
-    .snowflakes {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .snowflake {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      opacity: 0.4;
-      filter: blur(0.5px);
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-100px);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.4;
-      }
-      90% {
-        opacity: 0.4;
-      }
-      100% {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-    }
-
     /* Main Content */
     .main-content {
       display: flex;
@@ -814,8 +777,6 @@
     </div>
   </div>
   
-  <div class="snowflakes" id="snowflakes"></div>
-  
   <div class="main-content" id="mainContent">
     <div class="header">
       <div class="logo">🎮</div>
@@ -856,13 +817,12 @@
 
       const GAME_URL = 'https://tqqqka.github.io/capsavta/';
       const SECRET_CODE = 'qwerty';
-      const SNOWFLAKES_COUNT = 30;
+      // Снег полностью убран, константа больше не нужна
 
       const elements = {
         cvaptaBtn: document.getElementById('cvaptaBtn'),
         cvaptaCard: document.getElementById('cvaptaCard'),
         loadingOverlay: document.getElementById('loadingOverlay'),
-        snowflakes: document.getElementById('snowflakes'),
         pcWarningOverlay: document.getElementById('pcWarningOverlay'),
         mainContent: document.getElementById('mainContent')
       };
@@ -937,36 +897,6 @@
         }
       });
 
-      function createSnowflakes() {
-        elements.snowflakes.innerHTML = '';
-
-        for (let i = 0; i < SNOWFLAKES_COUNT; i++) {
-          setTimeout(() => {
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-
-            const size = Math.random() * 3 + 1;
-            const posX = Math.random() * 100;
-            const delay = Math.random() * 3;
-            const duration = Math.random() * 12 + 8;
-            const opacity = Math.random() * 0.3 + 0.2;
-
-            snowflake.style.width = `${size}px`;
-            snowflake.style.height = `${size}px`;
-            snowflake.style.left = `${posX}%`;
-            snowflake.style.top = '-20px';
-            snowflake.style.opacity = 0;
-            snowflake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
-
-            elements.snowflakes.appendChild(snowflake);
-
-            setTimeout(() => {
-              snowflake.style.opacity = opacity;
-            }, 100);
-          }, i * 300);
-        }
-      }
-
       function showLoading() {
         elements.loadingOverlay.classList.add('active');
       }
@@ -1007,12 +937,10 @@
           document.open();
           document.write(errorHtml);
           document.close();
-          // Выходим, никакой дальнейший код не выполняется
-          return;
+          return; // останавливаем выполнение
         }
 
         console.log('✅ Access allowed (not Russia)');
-        elements.ruWarningOverlay?.remove(); // на случай, если вдруг остался (но его нет)
         // Запускаем обычную проверку устройства
         if (sessionStorage.getItem('pcBypass') === 'true') {
           console.log('⚠️ Desktop restriction already bypassed.');
@@ -1060,7 +988,7 @@
           // Если не Россия, продолжаем инициализацию
           if (!isRussia) {
             setupSecretCodeHandler();
-            createSnowflakes();
+            // Снег больше не создаётся
 
             elements.cvaptaBtn.addEventListener('click', redirectToGame);
             elements.cvaptaCard.addEventListener('click', function(e) {
