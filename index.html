@@ -37,8 +37,6 @@
       --error-light: #FCA5A5;
       --success-green: #10B981;
       --success-light: #6EE7B7;
-      --ru-red: #B91C1C;
-      --ru-dark-red: #7F1D1D;
     }
 
     * {
@@ -204,95 +202,6 @@
       color: var(--error-red);
       font-size: 1.2rem;
       margin-top: 0.1rem;
-    }
-
-    /* Russia block overlay */
-    .ru-warning-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.98);
-      backdrop-filter: blur(30px);
-      z-index: 1000001;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .ru-warning-overlay.active {
-      display: flex;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .ru-warning-content {
-      background: linear-gradient(135deg, 
-        rgba(185, 28, 28, 0.2),
-        rgba(127, 29, 29, 0.1));
-      backdrop-filter: blur(30px) saturate(200%);
-      border-radius: var(--control-radius);
-      border: 2px solid rgba(185, 28, 28, 0.4);
-      box-shadow: 0 25px 70px rgba(185, 28, 28, 0.3);
-      max-width: 500px;
-      width: 100%;
-      padding: 2.5rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ru-warning-content::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, 
-        var(--ru-red), 
-        #FCA5A5, 
-        var(--ru-red));
-    }
-
-    .ru-warning-icon {
-      font-size: 4.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--ru-red);
-    }
-
-    .ru-warning-title {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #FCA5A5, var(--ru-red));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 3px 15px rgba(185, 28, 28, 0.4);
-    }
-
-    .ru-warning-message {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 2rem;
-      opacity: 0.95;
-      font-weight: 500;
-    }
-
-    .ru-error-code {
-      display: inline-block;
-      padding: 0.8rem 1.5rem;
-      background: rgba(185, 28, 28, 0.2);
-      border: 1px solid rgba(185, 28, 28, 0.3);
-      border-radius: 40px;
-      font-family: monospace;
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #FCA5A5;
-      letter-spacing: 1px;
-      margin-top: 1rem;
     }
 
     /* Unlock overlay */
@@ -825,13 +734,11 @@
         padding: 0.9rem 1.2rem; 
         font-size: 0.9rem; 
       }
-      .pc-warning-content,
-      .ru-warning-content {
+      .pc-warning-content {
         padding: 1.8rem;
         margin-top: -5vh;
       }
-      .pc-warning-title,
-      .ru-warning-title {
+      .pc-warning-title {
         font-size: 1.7rem;
       }
       .pc-device-icon {
@@ -876,19 +783,6 @@
   </style>
 </head>
 <body>
-  <!-- Russia block overlay (503) -->
-  <div class="ru-warning-overlay" id="ruWarningOverlay">
-    <div class="ru-warning-content">
-      <div class="ru-warning-icon">🚫</div>
-      <div class="ru-warning-title">Доступ ограничен</div>
-      <div class="ru-warning-message">
-        <strong>Извините, данный сервис недоступен для пользователей из России.</strong><br>
-        Мы сожалеем о неудобствах.
-      </div>
-      <div class="ru-error-code">503 Service Unavailable</div>
-    </div>
-  </div>
-
   <!-- Desktop warning overlay -->
   <div class="pc-warning-overlay" id="pcWarningOverlay">
     <div class="pc-warning-content">
@@ -970,7 +864,6 @@
         loadingOverlay: document.getElementById('loadingOverlay'),
         snowflakes: document.getElementById('snowflakes'),
         pcWarningOverlay: document.getElementById('pcWarningOverlay'),
-        ruWarningOverlay: document.getElementById('ruWarningOverlay'),
         mainContent: document.getElementById('mainContent')
       };
 
@@ -981,10 +874,6 @@
       }
 
       function unlockDesktopRestriction() {
-        // Если активна блокировка России, не разблокируем основной контент
-        if (elements.ruWarningOverlay.classList.contains('active')) {
-          return;
-        }
         elements.pcWarningOverlay.classList.remove('active');
         elements.mainContent.style.display = 'flex';
         document.body.style.overflow = 'auto';
@@ -1086,53 +975,57 @@
         elements.loadingOverlay.classList.remove('active');
       }
 
-      // Проверка страны через ipapi.co
+      // Проверка страны через ip-api.com с таймаутом
       function checkCountry() {
-        return fetch('https://ipapi.co/json/?fields=country_code')
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+        return fetch('http://ip-api.com/json/?fields=countryCode', { signal: controller.signal })
           .then(response => {
+            clearTimeout(timeoutId);
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
             return response.json();
           })
           .then(data => {
-            console.log('🌍 Country detection:', data.country_code);
-            return data.country_code === 'RU';
+            console.log('🌍 Country detection (ip-api):', data.countryCode);
+            return data.countryCode === 'RU';
           })
           .catch(error => {
+            clearTimeout(timeoutId);
             console.warn('⚠️ Failed to detect country, assuming not Russia:', error);
-            return false; // в случае ошибки считаем, что не Россия
+            return false; // при ошибке считаем, что не Россия
           });
       }
 
       function applyBlock(blocked) {
         if (blocked) {
           console.log('🚫 Access blocked for Russia');
-          elements.ruWarningOverlay.classList.add('active');
-          elements.mainContent.style.display = 'none';
-          elements.pcWarningOverlay.classList.remove('active'); // на всякий случай
-          document.body.style.overflow = 'hidden';
-        } else {
-          console.log('✅ Access allowed (not Russia)');
-          elements.ruWarningOverlay.classList.remove('active');
-          // Далее запускаем обычную проверку устройства
-          if (sessionStorage.getItem('pcBypass') === 'true') {
-            console.log('⚠️ Desktop restriction already bypassed.');
-            unlockDesktopRestriction();
-          } else {
-            checkDevice();
-          }
-          elements.mainContent.style.display = 'flex';
-          document.body.style.overflow = 'auto';
+          // Полностью заменяем страницу на простую 503
+          const errorHtml = '<!DOCTYPE html><html><head><title>503 Service Unavailable</title></head><body><center><h1>503 Service Unavailable</h1></center><hr><center>nginx/1.18.0</center></body></html>';
+          document.open();
+          document.write(errorHtml);
+          document.close();
+          // Выходим, никакой дальнейший код не выполняется
+          return;
         }
+
+        console.log('✅ Access allowed (not Russia)');
+        elements.ruWarningOverlay?.remove(); // на случай, если вдруг остался (но его нет)
+        // Запускаем обычную проверку устройства
+        if (sessionStorage.getItem('pcBypass') === 'true') {
+          console.log('⚠️ Desktop restriction already bypassed.');
+          unlockDesktopRestriction();
+        } else {
+          checkDevice();
+        }
+        elements.mainContent.style.display = 'flex';
+        document.body.style.overflow = 'auto';
         hideLoading();
       }
 
       function checkBeforeRedirect() {
-        // Проверяем, не заблокирована ли Россия
-        if (elements.ruWarningOverlay.classList.contains('active')) {
-          return false;
-        }
         const mobile = isMobileDevice();
         const screenWidth = window.innerWidth;
 
@@ -1159,14 +1052,12 @@
         console.log('Application initialization...');
         console.log('=========================================');
 
-        // Показываем лоадер, пока определяем страну
         showLoading();
 
-        // Сначала проверяем страну
         checkCountry().then(isRussia => {
           applyBlock(isRussia);
 
-          // Если не Россия, инициируем остальные функции
+          // Если не Россия, продолжаем инициализацию
           if (!isRussia) {
             setupSecretCodeHandler();
             createSnowflakes();
