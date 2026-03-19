@@ -339,6 +339,17 @@
       text-shadow: 0 0 10px rgba(190, 242, 100, 0.26);
     }
 
+    .timer-banner-minimal {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 14px 18px;
+    }
+
+    .timer-banner-minimal .countdown {
+      margin: 0;
+    }
+
     .timer-subtext {
       font-size: 0.73rem;
       opacity: 0.88;
@@ -734,10 +745,8 @@
 
     <div class="games-grid">
       <div class="game-card-wrapper">
-        <div class="timer-banner" id="frogrotTimerBanner">
-          <div class="timer-label"><i class="fas fa-clock"></i><span>Steal a frogrot unlocks on 20 Mar 2026, 20:30 MSK</span></div>
+        <div class="timer-banner timer-banner-minimal" id="frogrotTimerBanner">
           <div class="countdown" id="frogrotCountdown">Loading timer...</div>
-          <div class="timer-subtext">After the release time, the game stays open forever.</div>
         </div>
 
         <div class="game-card with-banner locked" id="frogrotCard">
@@ -797,7 +806,6 @@
       const GAME_URL = 'https://tqqqka.github.io/capsavta/';
       const FROGROT_URL = 'https://hormone-nerve-fancy-kde.trycloudflare.com/';
       const SECRET_CODE = 'qwerty';
-      const FROGROT_RELEASE_KEY = 'frogrotUnlockedForever';
       const FROGROT_RELEASE_MS = Date.UTC(2026, 2, 20, 17, 30, 0); // 20 Mar 2026 20:30 MSK = 17:30 UTC
       const FROGROT_HOLD_UNLOCK_MS = 10000;
       const FROGROT_HOLD_UNLOCK_COUNT = 2;
@@ -823,6 +831,8 @@
       let frogrotHoldCount = 0;
       let frogrotHoldTimer = null;
       let frogrotHintTimer = null;
+
+      try { localStorage.removeItem('frogrotUnlockedForever'); } catch (e) {}
 
       function isMobileDevice() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1004,16 +1014,11 @@
       }
 
       function isFrogrotPermanentlyUnlocked() {
-        if (localStorage.getItem(FROGROT_RELEASE_KEY) === 'true') return true;
         return Date.now() >= FROGROT_RELEASE_MS;
       }
 
       function isFrogrotUnlocked() {
         return frogrotSessionUnlocked || isFrogrotPermanentlyUnlocked();
-      }
-
-      function persistFrogrotUnlock() {
-        localStorage.setItem(FROGROT_RELEASE_KEY, 'true');
       }
 
       function formatRemaining(ms) {
@@ -1037,7 +1042,7 @@
         frogrotHoldTimer = null;
       }
 
-      function setFrogrotLockedState(customCountdownText = '') {
+      function setFrogrotLockedState() {
         if (frogrotSessionUnlocked) {
           setFrogrotUnlockedState({ temporary: true });
           return;
@@ -1051,43 +1056,29 @@
         elements.frogrotStatusWrap.style.display = 'none';
         elements.frogrotUnlockedStatus.classList.remove('show');
         elements.frogrotUnlockedStatus.innerHTML = '<i class="fas fa-circle-check"></i> Permanent access unlocked';
-        elements.frogrotCountdown.textContent = customCountdownText || formatRemaining(FROGROT_RELEASE_MS - Date.now());
+        elements.frogrotCountdown.textContent = formatRemaining(FROGROT_RELEASE_MS - Date.now());
       }
 
       function setFrogrotUnlockedState(options = {}) {
         const temporary = Boolean(options.temporary);
-
-        if (!temporary) {
-          persistFrogrotUnlock();
-        }
 
         elements.frogrotCard.classList.remove('locked');
         elements.frogrotCard.classList.add('unlocked');
         elements.frogrotBtn.disabled = false;
         elements.frogrotBtn.innerHTML = '<i class="fas fa-play"></i><span>Play</span>';
         elements.frogrotBadge.classList.add('show');
-        elements.frogrotStatusWrap.style.display = 'flex';
-        elements.frogrotUnlockedStatus.classList.add('show');
+        elements.frogrotStatusWrap.style.display = 'none';
+        elements.frogrotUnlockedStatus.classList.remove('show');
 
         if (temporary) {
-          elements.frogrotUnlockedStatus.innerHTML = '<i class="fas fa-user-check"></i> Session access unlocked';
-          elements.frogrotCountdown.textContent = 'Hidden access active until page reload';
+          elements.frogrotCountdown.textContent = formatRemaining(FROGROT_RELEASE_MS - Date.now());
         } else {
-          elements.frogrotUnlockedStatus.innerHTML = '<i class="fas fa-circle-check"></i> Permanent access unlocked';
-          elements.frogrotCountdown.textContent = 'Unlocked — permanent access is now open';
+          elements.frogrotCountdown.textContent = '0d 00h 00m 00s';
         }
       }
 
       function showFrogrotHoldProgress() {
         if (frogrotSessionUnlocked || isFrogrotPermanentlyUnlocked()) return;
-        clearFrogrotHintTimer();
-        setFrogrotLockedState(`Hold progress: ${frogrotHoldCount}/${FROGROT_HOLD_UNLOCK_COUNT}`);
-        frogrotHintTimer = setTimeout(() => {
-          frogrotHintTimer = null;
-          if (!frogrotSessionUnlocked && !isFrogrotPermanentlyUnlocked()) {
-            setFrogrotLockedState();
-          }
-        }, 1800);
       }
 
       function registerFrogrotHoldSuccess() {
@@ -1099,16 +1090,11 @@
 
         if (frogrotHoldCount >= FROGROT_HOLD_UNLOCK_COUNT) {
           frogrotSessionUnlocked = true;
-          if (countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-          }
           clearFrogrotHintTimer();
           setFrogrotUnlockedState({ temporary: true });
           return;
         }
 
-        showFrogrotHoldProgress();
       }
 
       function startFrogrotHold(e) {
@@ -1125,8 +1111,8 @@
       }
 
       function updateFrogrotCountdown() {
-        if (frogrotSessionUnlocked) {
-          setFrogrotUnlockedState({ temporary: true });
+        if (isFrogrotPermanentlyUnlocked()) {
+          setFrogrotUnlockedState();
           if (countdownInterval) {
             clearInterval(countdownInterval);
             countdownInterval = null;
@@ -1134,12 +1120,8 @@
           return;
         }
 
-        if (isFrogrotPermanentlyUnlocked()) {
-          setFrogrotUnlockedState();
-          if (countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-          }
+        if (frogrotSessionUnlocked) {
+          setFrogrotUnlockedState({ temporary: true });
           return;
         }
 
@@ -1150,7 +1132,7 @@
 
       function initCountdown() {
         updateFrogrotCountdown();
-        if (!isFrogrotUnlocked()) {
+        if (!isFrogrotPermanentlyUnlocked()) {
           countdownInterval = setInterval(updateFrogrotCountdown, 1000);
         }
       }
