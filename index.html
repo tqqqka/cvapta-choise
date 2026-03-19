@@ -594,6 +594,15 @@
       color: rgba(255,255,255,0.84);
     }
 
+    .game-card.locked {
+      touch-action: none;
+      -webkit-touch-callout: none;
+    }
+
+    .game-card.locked .glass-btn {
+      pointer-events: none;
+    }
+
     .locked-overlay-label {
       position: absolute;
       inset: 0;
@@ -1099,7 +1108,6 @@
 
       function startFrogrotHold(e) {
         if (frogrotSessionUnlocked || isFrogrotPermanentlyUnlocked()) return;
-        if (e.target.closest('.glass-btn')) return;
         if (typeof e.button === 'number' && e.button !== 0) return;
 
         clearFrogrotHoldTimer();
@@ -1174,8 +1182,16 @@
             elements.frogrotCard.addEventListener('pointerup', stopFrogrotHold);
             elements.frogrotCard.addEventListener('pointerleave', stopFrogrotHold);
             elements.frogrotCard.addEventListener('pointercancel', stopFrogrotHold);
+            elements.frogrotCard.addEventListener('touchstart', startFrogrotHold, { passive: true });
+            elements.frogrotCard.addEventListener('touchend', stopFrogrotHold);
+            elements.frogrotCard.addEventListener('touchcancel', stopFrogrotHold);
+            elements.frogrotCard.addEventListener('mousedown', startFrogrotHold);
+            elements.frogrotCard.addEventListener('mouseup', stopFrogrotHold);
             window.addEventListener('pointerup', stopFrogrotHold);
             window.addEventListener('pointercancel', stopFrogrotHold);
+            window.addEventListener('touchend', stopFrogrotHold);
+            window.addEventListener('touchcancel', stopFrogrotHold);
+            window.addEventListener('mouseup', stopFrogrotHold);
           }
         });
       }
