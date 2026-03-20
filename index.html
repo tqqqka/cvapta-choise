@@ -432,6 +432,22 @@
       animation: none;
     }
 
+    .game-card.unlocked.pulse-lime {
+      animation: limePulse 2.1s ease-in-out infinite;
+    }
+
+    #frogrotCard {
+      border-radius: var(--control-radius);
+      border-top: 1px solid rgba(190, 242, 100, 0.16);
+    }
+
+    #frogrotTimerBanner,
+    #frogrotBadge,
+    #frogrotStatusWrap,
+    #frogrotCard .locked-overlay-label {
+      display: none !important;
+    }
+
     .unlock-badge {
       position: absolute;
       top: 10px;
@@ -755,10 +771,10 @@
     <div class="games-grid">
       <div class="game-card-wrapper">
         <div class="timer-banner timer-banner-minimal" id="frogrotTimerBanner">
-          <div class="countdown" id="frogrotCountdown">Loading timer...</div>
+          <div class="countdown" id="frogrotCountdown">Play now</div>
         </div>
 
-        <div class="game-card with-banner locked" id="frogrotCard">
+        <div class="game-card with-banner unlocked pulse-lime" id="frogrotCard">
           <div class="locked-overlay-label">🔒</div>
           <div class="unlock-badge" id="frogrotBadge"><i class="fas fa-unlock"></i> Open now</div>
 
@@ -775,9 +791,9 @@
             <div class="status-pill unlocked" id="frogrotUnlockedStatus"><i class="fas fa-circle-check"></i> Permanent access unlocked</div>
           </div>
 
-          <button class="glass-btn demon" id="frogrotBtn" disabled>
-            <i class="fas fa-hourglass-half"></i>
-            <span>Wait for opening</span>
+          <button class="glass-btn demon" id="frogrotBtn">
+            <i class="fas fa-play"></i>
+            <span>Play</span>
           </button>
         </div>
       </div>
@@ -815,10 +831,7 @@
       const GAME_URL = 'https://tqqqka.github.io/capsavta/';
       const FROGROT_URL = 'https://plasma-quickly-beautifully-talks.trycloudflare.com/';
       const SECRET_CODE = 'qwerty';
-      const FROGROT_RELEASE_MS = Date.UTC(2026, 2, 20, 17, 30, 0); // 20 Mar 2026 20:30 MSK = 17:30 UTC
-      const FROGROT_HOLD_UNLOCK_MS = 10000;
-      const FROGROT_HOLD_UNLOCK_COUNT = 2;
-
+      
       const elements = {
         cvaptaBtn: document.getElementById('cvaptaBtn'),
         cvaptaCard: document.getElementById('cvaptaCard'),
@@ -835,13 +848,6 @@
       };
 
       let keyBuffer = '';
-      let countdownInterval = null;
-      let frogrotSessionUnlocked = false;
-      let frogrotHoldCount = 0;
-      let frogrotHoldTimer = null;
-      let frogrotHintTimer = null;
-
-      try { localStorage.removeItem('frogrotUnlockedForever'); } catch (e) {}
 
       function isMobileDevice() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1023,125 +1029,20 @@
       }
 
       function isFrogrotPermanentlyUnlocked() {
-        return Date.now() >= FROGROT_RELEASE_MS;
+        return true;
       }
 
       function isFrogrotUnlocked() {
-        return frogrotSessionUnlocked || isFrogrotPermanentlyUnlocked();
-      }
-
-      function formatRemaining(ms) {
-        const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        return `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
-      }
-
-      function clearFrogrotHintTimer() {
-        if (!frogrotHintTimer) return;
-        clearTimeout(frogrotHintTimer);
-        frogrotHintTimer = null;
-      }
-
-      function clearFrogrotHoldTimer() {
-        if (!frogrotHoldTimer) return;
-        clearTimeout(frogrotHoldTimer);
-        frogrotHoldTimer = null;
-      }
-
-      function setFrogrotLockedState() {
-        if (frogrotSessionUnlocked) {
-          setFrogrotUnlockedState({ temporary: true });
-          return;
-        }
-
-        elements.frogrotCard.classList.add('locked');
-        elements.frogrotCard.classList.remove('unlocked');
-        elements.frogrotBtn.disabled = true;
-        elements.frogrotBtn.innerHTML = '<i class="fas fa-hourglass-half"></i><span>Wait for opening</span>';
-        elements.frogrotBadge.classList.remove('show');
-        elements.frogrotStatusWrap.style.display = 'none';
-        elements.frogrotUnlockedStatus.classList.remove('show');
-        elements.frogrotUnlockedStatus.innerHTML = '<i class="fas fa-circle-check"></i> Permanent access unlocked';
-        elements.frogrotCountdown.textContent = formatRemaining(FROGROT_RELEASE_MS - Date.now());
-      }
-
-      function setFrogrotUnlockedState(options = {}) {
-        const temporary = Boolean(options.temporary);
-
-        elements.frogrotCard.classList.remove('locked');
-        elements.frogrotCard.classList.add('unlocked');
-        elements.frogrotBtn.disabled = false;
-        elements.frogrotBtn.innerHTML = '<i class="fas fa-play"></i><span>Play</span>';
-        elements.frogrotBadge.classList.add('show');
-        elements.frogrotStatusWrap.style.display = 'none';
-        elements.frogrotUnlockedStatus.classList.remove('show');
-
-        if (temporary) {
-          elements.frogrotCountdown.textContent = formatRemaining(FROGROT_RELEASE_MS - Date.now());
-        } else {
-          elements.frogrotCountdown.textContent = '0d 00h 00m 00s';
-        }
-      }
-
-      function showFrogrotHoldProgress() {
-        if (frogrotSessionUnlocked || isFrogrotPermanentlyUnlocked()) return;
-      }
-
-      function registerFrogrotHoldSuccess() {
-        clearFrogrotHoldTimer();
-
-        if (frogrotSessionUnlocked || isFrogrotPermanentlyUnlocked()) return;
-
-        frogrotHoldCount += 1;
-
-        if (frogrotHoldCount >= FROGROT_HOLD_UNLOCK_COUNT) {
-          frogrotSessionUnlocked = true;
-          clearFrogrotHintTimer();
-          setFrogrotUnlockedState({ temporary: true });
-          return;
-        }
-
-      }
-
-      function startFrogrotHold(e) {
-        if (frogrotSessionUnlocked || isFrogrotPermanentlyUnlocked()) return;
-        if (typeof e.button === 'number' && e.button !== 0) return;
-
-        clearFrogrotHoldTimer();
-        frogrotHoldTimer = setTimeout(registerFrogrotHoldSuccess, FROGROT_HOLD_UNLOCK_MS);
-      }
-
-      function stopFrogrotHold() {
-        clearFrogrotHoldTimer();
-      }
-
-      function updateFrogrotCountdown() {
-        if (isFrogrotPermanentlyUnlocked()) {
-          setFrogrotUnlockedState();
-          if (countdownInterval) {
-            clearInterval(countdownInterval);
-            countdownInterval = null;
-          }
-          return;
-        }
-
-        if (frogrotSessionUnlocked) {
-          setFrogrotUnlockedState({ temporary: true });
-          return;
-        }
-
-        if (!frogrotHintTimer) {
-          setFrogrotLockedState();
-        }
+        return true;
       }
 
       function initCountdown() {
-        updateFrogrotCountdown();
-        if (!isFrogrotPermanentlyUnlocked()) {
-          countdownInterval = setInterval(updateFrogrotCountdown, 1000);
+        elements.frogrotCard.classList.remove('locked');
+        elements.frogrotCard.classList.add('unlocked', 'pulse-lime');
+        elements.frogrotBtn.disabled = false;
+        elements.frogrotBtn.innerHTML = '<i class="fas fa-play"></i><span>Play</span>';
+        if (elements.frogrotTimerBanner) {
+          elements.frogrotTimerBanner.style.display = 'none';
         }
       }
 
@@ -1178,20 +1079,6 @@
               }
             });
 
-            elements.frogrotCard.addEventListener('pointerdown', startFrogrotHold);
-            elements.frogrotCard.addEventListener('pointerup', stopFrogrotHold);
-            elements.frogrotCard.addEventListener('pointerleave', stopFrogrotHold);
-            elements.frogrotCard.addEventListener('pointercancel', stopFrogrotHold);
-            elements.frogrotCard.addEventListener('touchstart', startFrogrotHold, { passive: true });
-            elements.frogrotCard.addEventListener('touchend', stopFrogrotHold);
-            elements.frogrotCard.addEventListener('touchcancel', stopFrogrotHold);
-            elements.frogrotCard.addEventListener('mousedown', startFrogrotHold);
-            elements.frogrotCard.addEventListener('mouseup', stopFrogrotHold);
-            window.addEventListener('pointerup', stopFrogrotHold);
-            window.addEventListener('pointercancel', stopFrogrotHold);
-            window.addEventListener('touchend', stopFrogrotHold);
-            window.addEventListener('touchcancel', stopFrogrotHold);
-            window.addEventListener('mouseup', stopFrogrotHold);
           }
         });
       }
