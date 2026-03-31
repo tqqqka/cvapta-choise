@@ -4,31 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cvapta Experiences</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #14532D;
-      --secondary: #22C55E;
-      --dark: #04150A;
-      --dark-2: #082312;
-      --dark-3: #0D331C;
-      --light: #F0FFF4;
-      --lime: #BEF264;
-      --lime-soft: #D9F99D;
+      --primary: #1E3A8A;
+      --secondary: #3B82F6;
+      --dark: #0F172A;
+      --light: #F0F9FF;
+      --winter-blue: #60A5FA;
+      --winter-teal: #2DD4BF;
+      --winter-cyan: #22D3EE;
+      --winter-light: #BAE6FD;
       --frog-green: #22C55E;
       --frog-light-green: #86EFAC;
-      --frog-dark-green: #15803D;
-      --deep-green: #052E16;
-      --deep-green-2: #064E3B;
-      --glass-bg: rgba(4, 21, 10, 0.42);
-      --glass-bg-strong: rgba(3, 16, 8, 0.78);
-      --glass-border: rgba(190, 242, 100, 0.16);
-      --glass-blur: 14px;
-      --control-radius: 18px;
-      --glass-shadow: 0 10px 28px rgba(0, 0, 0, 0.42);
+      --frog-dark-green: #16A34A;
+      --light-blue-gradient-start: #BAE6FD;
+      --light-blue-gradient-middle: #7DD3FC;
+      --light-blue-gradient-end: #38BDF8;
+      --glass-bg: rgba(30, 41, 59, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-blur: 12px;
+      --control-radius: 16px;
+      --glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       --error-red: #EF4444;
-      --success-green: #10B981;
+      --error-light: #FCA5A5;
     }
 
     * {
@@ -44,8 +44,7 @@
 
     html, body {
       font-family: 'Montserrat', sans-serif;
-      background: radial-gradient(circle at top, rgba(20, 83, 45, 0.45) 0%, rgba(6, 19, 10, 0.2) 28%, transparent 55%),
-                  linear-gradient(135deg, var(--dark) 0%, var(--dark-2) 48%, var(--dark-3) 100%);
+      background: linear-gradient(135deg, var(--dark) 0%, #1E293B 50%, #334155 100%);
       color: var(--light);
       min-height: 100vh;
       width: 100%;
@@ -59,39 +58,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding-top: 2vh;
+      justify-content: center;
     }
 
-    #particles-js {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .page-glow {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(190, 242, 100, 0.08), transparent 30%),
-        radial-gradient(circle at 80% 10%, rgba(34, 197, 94, 0.08), transparent 26%),
-        radial-gradient(circle at 50% 80%, rgba(134, 239, 172, 0.06), transparent 28%);
-    }
-
+    /* Оверлей для ПК пользователей */
     .pc-warning-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.97);
-      backdrop-filter: blur(25px);
-      z-index: 999999;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 99999;
       display: none;
       justify-content: center;
       align-items: center;
@@ -100,27 +79,22 @@
 
     .pc-warning-overlay.active {
       display: flex;
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
     }
 
     .pc-warning-content {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
-      backdrop-filter: blur(30px) saturate(200%);
+      background: linear-gradient(135deg, 
+        rgba(239, 68, 68, 0.15),
+        rgba(239, 68, 68, 0.05));
+      backdrop-filter: blur(25px) saturate(200%);
       border-radius: var(--control-radius);
-      border: 2px solid rgba(239, 68, 68, 0.4);
-      box-shadow: 0 25px 70px rgba(239, 68, 68, 0.3);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      box-shadow: 0 20px 60px rgba(239, 68, 68, 0.2);
       max-width: 500px;
       width: 100%;
-      padding: 2.5rem;
+      padding: 2rem;
       text-align: center;
       position: relative;
       overflow: hidden;
-      margin-top: -8vh;
     }
 
     .pc-warning-content::before {
@@ -129,162 +103,161 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, #ef4444, #f87171, #ef4444);
+      height: 4px;
+      background: linear-gradient(90deg, 
+        var(--error-red), 
+        var(--error-light), 
+        var(--error-red));
     }
 
     .pc-warning-icon {
-      font-size: 4.5rem;
+      font-size: 4rem;
       margin-bottom: 1.5rem;
       color: var(--error-red);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
 
     .pc-warning-title {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 1.2rem;
-      background: linear-gradient(135deg, #fca5a5, #ef4444);
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--error-light), var(--error-red));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: -0.5px;
+      text-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
     }
 
     .pc-warning-message {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 2rem;
-      opacity: 0.95;
-      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
     }
 
     .pc-device-icon {
       display: flex;
       justify-content: center;
-      gap: 3rem;
-      margin: 2.5rem 0;
+      gap: 2rem;
+      margin: 2rem 0;
     }
 
     .device-icon {
-      font-size: 3rem;
+      font-size: 2.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.8rem;
+      gap: 0.5rem;
     }
 
-    .device-icon.pc { color: var(--error-red); }
-    .device-icon.phone { color: var(--frog-green); }
+    .device-icon.pc {
+      color: var(--error-red);
+      opacity: 0.7;
+    }
+
+    .device-icon.phone {
+      color: var(--frog-green);
+    }
 
     .device-label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      opacity: 0.9;
+      font-size: 0.8rem;
+      opacity: 0.8;
     }
 
     .pc-note {
-      font-size: 0.9rem;
-      background: rgba(239, 68, 68, 0.15);
-      padding: 1.2rem;
-      border-radius: 12px;
-      border-left: 4px solid var(--error-red);
-      margin-top: 2rem;
+      font-size: 0.85rem;
+      background: rgba(239, 68, 68, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      border-left: 3px solid var(--error-red);
+      margin-top: 1.5rem;
       text-align: left;
       display: flex;
       align-items: flex-start;
-      gap: 1rem;
-      border: 1px solid rgba(239, 68, 68, 0.2);
+      gap: 0.8rem;
     }
 
+    .pc-note i {
+      color: var(--error-red);
+      font-size: 1rem;
+      margin-top: 0.1rem;
+    }
+
+    /* Защита от выделения текста */
+    .main-content * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Разрешаем выделение только для кнопок для доступности */
+    .glass-btn {
+      -webkit-user-select: auto;
+      -moz-user-select: auto;
+      -ms-user-select: auto;
+      user-select: auto;
+    }
+
+    /* Main Content - центрирование */
     .main-content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       width: 100%;
-      max-width: 540px;
+      max-width: 500px;
       z-index: 10;
       position: relative;
       margin: auto;
       padding: 20px;
-      margin-top: 2.5vh;
+      min-height: 70vh;
     }
 
     .header {
       text-align: center;
       margin-bottom: 2rem;
       width: 100%;
-      position: relative;
-      z-index: 2;
     }
 
     .logo {
-      width: 88px;
-      height: 88px;
-      margin: 0 auto 1rem;
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, 
+        var(--light-blue-gradient-start), 
+        var(--light-blue-gradient-middle), 
+        var(--light-blue-gradient-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-    }
-
-    .logo-frog {
-      width: 74px;
-      height: 74px;
-      display: block;
-      filter: drop-shadow(0 0 18px rgba(190, 242, 100, 0.22));
-      user-select: none;
-    }
-
-    .logo-frog .frog-fill {
-      fill: var(--lime);
-    }
-
-    .logo-frog .frog-detail {
-      fill: #0B1F12;
-    }
-
-    .logo-frog .frog-highlight {
-      fill: rgba(240, 255, 244, 0.42);
-    }
-
-    .frog-emoji {
-      font-size: 2.05rem;
-      line-height: 1;
-      filter: saturate(1.08) drop-shadow(0 0 4px rgba(0, 0, 0, 0.14));
-      user-select: none;
     }
 
     .fluid {
-      font-size: clamp(1.6rem, 4vw, 2.5rem);
-      font-weight: 800;
-      line-height: 1.08;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.1;
       text-align: center;
-      margin-bottom: 0.8rem;
-      color: #f7ffe8;
-      text-shadow: 0 0 14px rgba(190, 242, 100, 0.14);
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
       position: relative;
     }
 
+    /* Убрана синяя полоска под названием — удален псевдоэлемент ::after */
     .fluid::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      left: 23%;
-      width: 54%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--lime), transparent);
-      border-radius: 1px;
+      display: none;
     }
 
     .subtitle {
-      font-size: 0.92rem;
-      opacity: 0.85;
-      margin-top: 0.35rem;
-      color: #d9ffe3;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 0.5rem;
     }
 
     .games-grid {
@@ -292,187 +265,47 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.4rem;
+      gap: 1.5rem;
       width: 100%;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    .game-card-wrapper {
+    .game-card-container {
       position: relative;
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .timer-banner {
-      position: relative;
-      width: 100%;
-      z-index: 4;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(77, 124, 15, 0.84));
-      backdrop-filter: blur(15px);
-      padding: 0.75rem 1rem;
-      border: 1px solid rgba(190, 242, 100, 0.34);
-      border-bottom: none;
-      box-shadow: 0 6px 22px rgba(34, 197, 94, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.35rem;
-      font-weight: 700;
-      color: white;
-      text-align: center;
-      border-radius: var(--control-radius) var(--control-radius) 0 0;
-    }
-
-    .timer-label {
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-size: 0.95rem;
-      letter-spacing: 0.02em;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
-    }
-
-    .countdown {
-      font-size: 1.15rem;
-      color: #f7ffe0;
-      text-shadow: 0 0 10px rgba(190, 242, 100, 0.26);
-    }
-
-    .timer-banner-minimal {
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 14px 18px;
-    }
-
-    .timer-banner-minimal .countdown {
       margin: 0;
-    }
-
-    .timer-subtext {
-      font-size: 0.73rem;
-      opacity: 0.88;
-      color: #ecfccb;
+      cursor: pointer;
+      border-radius: var(--control-radius);
+      overflow: hidden;
+      width: 100%;
+      max-width: 400px;
     }
 
     .game-card {
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+      border-radius: var(--control-radius);
+      padding: 1.5rem;
       border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       position: relative;
       overflow: hidden;
       width: 100%;
       text-align: center;
-      min-height: 318px;
+      min-height: 320px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      isolation: isolate;
     }
 
     .game-card::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 0%, rgba(190, 242, 100, 0.08) 0%, transparent 48%);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 50%);
       z-index: 0;
-    }
-
-    .game-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38));
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .game-card.with-banner {
-      border-radius: 0 0 var(--control-radius) var(--control-radius);
-      border-top: none;
-      padding: 1.45rem;
-    }
-
-    .game-card.regular {
-      border-radius: var(--control-radius);
-      padding: 1.45rem;
-      background: rgba(7, 28, 15, 0.5);
-      border: 1px solid rgba(190, 242, 100, 0.16);
-    }
-
-    .game-card.regular::after {
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.18));
-    }
-
-    .game-card.locked {
-      background: rgba(5, 22, 10, 0.82);
-      border-color: rgba(190, 242, 100, 0.28);
-      box-shadow: 0 0 0 1px rgba(190, 242, 100, 0.08), 0 14px 30px rgba(0, 0, 0, 0.4);
-      animation: limePulse 2.1s ease-in-out infinite;
-    }
-
-    @keyframes limePulse {
-      0%, 100% {
-        box-shadow: 0 0 0 1px rgba(190, 242, 100, 0.10), 0 0 14px rgba(190, 242, 100, 0.12), 0 14px 30px rgba(0,0,0,0.42);
-      }
-      50% {
-        box-shadow: 0 0 0 1px rgba(190, 242, 100, 0.18), 0 0 24px rgba(190, 242, 100, 0.38), 0 0 42px rgba(132, 204, 22, 0.22), 0 14px 30px rgba(0,0,0,0.42);
-      }
-    }
-
-    .game-card.unlocked {
-      filter: none;
-      opacity: 1;
-      cursor: pointer;
-      pointer-events: auto;
-      background: rgba(8, 42, 20, 0.72);
-      border: 1px solid rgba(134, 239, 172, 0.34);
-      animation: none;
-    }
-
-    .game-card.unlocked.pulse-lime {
-      animation: limePulse 2.1s ease-in-out infinite;
-    }
-
-    #frogrotCard {
-      border-radius: var(--control-radius);
-      border-top: 1px solid rgba(190, 242, 100, 0.16);
-    }
-
-    #frogrotTimerBanner,
-    #frogrotBadge,
-    #frogrotStatusWrap,
-    #frogrotCard .locked-overlay-label {
-      display: none !important;
-    }
-
-    .unlock-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(21, 128, 61, 0.82));
-      border-radius: 8px;
-      padding: 0.34rem 0.62rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: white;
-      z-index: 10;
-      box-shadow: 0 3px 10px rgba(34, 197, 94, 0.25);
-      display: none;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .unlock-badge.show { display: inline-flex; }
-
-    .game-header,
-    .game-description,
-    .card-status,
-    .glass-btn {
-      position: relative;
-      z-index: 2;
     }
 
     .game-header {
@@ -481,97 +314,63 @@
       justify-content: center;
       gap: 1rem;
       margin-bottom: 1rem;
+      position: relative;
+      z-index: 2;
     }
 
     .game-icon {
       font-size: 2rem;
-      width: 62px;
-      height: 62px;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04));
-      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      border-radius: 12px;
       backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border);
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
     .game-icon.frog {
-      background: linear-gradient(135deg, rgba(190, 242, 100, 0.28), rgba(163, 230, 53, 0.16));
-      color: var(--lime);
-      box-shadow: 0 0 18px rgba(190, 242, 100, 0.16);
-    }
-
-    .game-icon.demon {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(132, 204, 22, 0.08));
-      color: var(--lime-soft);
-      filter: drop-shadow(0 0 10px rgba(190, 242, 100, 0.15));
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.1));
+      color: var(--frog-green);
     }
 
     .game-title {
-      font-size: 1.28rem;
-      font-weight: 700;
-      line-height: 1.15;
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.2;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
 
-    .game-title.frog,
-    .game-title.demon {
-      background: linear-gradient(135deg, #f7ffe3, var(--lime), var(--frog-light-green));
+    .game-title.frog {
+      background: linear-gradient(135deg, var(--frog-light-green), var(--frog-green));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
     .game-description {
-      font-size: 0.86rem;
-      line-height: 1.55;
+      font-size: 0.85rem;
+      line-height: 1.5;
       margin-bottom: 1rem;
-      opacity: 0.95;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
       text-align: center;
     }
 
-    .game-description.frog,
-    .game-description.demon {
-      color: rgba(240, 255, 244, 0.92);
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(190, 242, 100, 0.05), rgba(21, 128, 61, 0.10));
-      padding: 0.9rem;
-      border-radius: 10px;
-      border-left: 3px solid var(--lime);
+    .game-description.frog {
+      color: rgba(240, 249, 255, 0.9);
+      background: linear-gradient(135deg, 
+        rgba(34, 197, 94, 0.1), 
+        rgba(134, 239, 172, 0.05), 
+        rgba(22, 163, 74, 0.08));
+      padding: 0.8rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--frog-green);
     }
-
-    .card-status {
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.5rem 0.85rem;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      background: rgba(190, 242, 100, 0.08);
-      border: 1px solid rgba(190, 242, 100, 0.18);
-      color: #ecfccb;
-    }
-
-    .status-pill.unlocked {
-      background: rgba(34, 197, 94, 0.12);
-      border-color: rgba(134, 239, 172, 0.24);
-      color: #dcfce7;
-      display: none;
-    }
-
-    .status-pill.show { display: inline-flex; }
-    .status-pill.hide { display: none !important; }
 
     .glass-btn {
       display: inline-flex;
@@ -583,56 +382,21 @@
       border: 1px solid var(--glass-border);
       background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
       backdrop-filter: blur(15px) saturate(180%);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3), 
+                  inset 0 1px 0 rgba(255,255,255,0.1);
       color: var(--light);
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       width: 100%;
       font-size: 0.95rem;
+      position: relative;
       overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      z-index: 2;
     }
 
-    .glass-btn:active { transform: scale(0.985); }
-
-    .glass-btn.frog,
-    .glass-btn.demon {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.16), rgba(132, 204, 22, 0.06));
-      border: 1px solid rgba(190, 242, 100, 0.26);
-    }
-
-    .glass-btn:disabled {
-      opacity: 0.78;
-      cursor: not-allowed;
-      filter: saturate(0.7);
-      background: linear-gradient(135deg, rgba(120, 120, 120, 0.08), rgba(60, 60, 60, 0.05));
-      border: 1px solid rgba(190, 242, 100, 0.14);
-      color: rgba(255,255,255,0.84);
-    }
-
-    .game-card.locked {
-      touch-action: none;
-      -webkit-touch-callout: none;
-    }
-
-    .game-card.locked .glass-btn {
-      pointer-events: none;
-    }
-
-    .locked-overlay-label {
-      position: absolute;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      font-size: 4rem;
-      opacity: 0.07;
-      pointer-events: none;
-    }
-
-    .game-card.locked .locked-overlay-label {
-      display: flex;
+    .glass-btn.frog {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.05));
+      border: 1px solid rgba(34, 197, 94, 0.3);
     }
 
     .loading-overlay {
@@ -655,23 +419,16 @@
     .loading-overlay.active {
       opacity: 1;
       visibility: visible;
-      animation: fadeIn 0.3s ease;
     }
 
     .spinner {
       width: 50px;
       height: 50px;
       border: 3px solid rgba(255,255,255,0.1);
-      border-top: 3px solid var(--lime);
+      border-top: 3px solid var(--frog-green);
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 1.5rem;
-    }
-
-    .loading-text {
-      color: #f0fff4;
-      font-weight: 600;
-      letter-spacing: 0.02em;
     }
 
     @keyframes spin {
@@ -680,409 +437,236 @@
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 10px;
+      body { 
+        padding: 10px; 
         justify-content: flex-start;
-        padding-top: 4vh;
+        padding-top: 20vh;
       }
       .main-content {
         min-height: auto;
         padding: 10px;
-        margin-top: 0;
       }
-      .game-card { min-height: 292px; }
-      .game-card.regular,
-      .game-card.with-banner { padding: 1.2rem; }
-      .game-icon { width: 52px; height: 52px; font-size: 1.7rem; }
-      .game-title { font-size: 1.09rem; }
-      .glass-btn { padding: 0.9rem 1.2rem; font-size: 0.9rem; }
-      .pc-warning-content { padding: 1.8rem; margin-top: -5vh; }
-      .pc-warning-title { font-size: 1.7rem; }
-      .pc-device-icon { gap: 2rem; }
-      .device-icon { font-size: 2.5rem; }
-      .timer-banner { padding: 0.72rem 0.8rem; }
-      .countdown { font-size: 1rem; }
+      .game-card { 
+        padding: 1.2rem; 
+        min-height: 280px; 
+      }
+      .game-icon { 
+        width: 50px; 
+        height: 50px; 
+        font-size: 1.7rem; 
+      }
+      .game-title { 
+        font-size: 1.1rem; 
+      }
+      .glass-btn { 
+        padding: 0.9rem 1.2rem; 
+        font-size: 0.9rem; 
+      }
+      .pc-warning-content {
+        padding: 1.5rem;
+      }
+      .pc-warning-title {
+        font-size: 1.5rem;
+      }
     }
 
     @media (min-height: 800px) {
-      .main-content { margin-top: 5vh; }
-      body { padding-top: 3vh; }
+      .main-content {
+        min-height: 60vh;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
-  <div class="page-glow"></div>
-
+  <!-- Оверлей для ПК пользователей -->
   <div class="pc-warning-overlay" id="pcWarningOverlay">
     <div class="pc-warning-content">
-      <div class="pc-warning-icon">📱</div>
-      <div class="pc-warning-title">MOBILE DEVICES ONLY</div>
+      <div class="pc-warning-icon">⚠️</div>
+      <div class="pc-warning-title">Mobile Only Experience</div>
+      
       <div class="pc-warning-message">
-        <strong>This game is optimized exclusively for mobile devices.</strong><br>
-        Please use a smartphone or tablet to access the game.
+        This game is designed specifically for mobile devices. 
+        Please open this page on your smartphone or tablet for the best experience.
       </div>
+      
       <div class="pc-device-icon">
         <div class="device-icon pc">
           <i class="fas fa-desktop"></i>
-          <div class="device-label">PC<br>BLOCKED</div>
+          <div class="device-label">Not Supported</div>
         </div>
         <div class="device-icon phone">
           <i class="fas fa-mobile-alt"></i>
-          <div class="device-label">SMARTPHONE<br>REQUIRED</div>
+          <div class="device-label">Supported</div>
         </div>
       </div>
+      
       <div class="pc-note">
-        <i class="fas fa-exclamation-triangle"></i>
+        <i class="fas fa-info-circle"></i>
         <div>
-          <strong>Important:</strong> Desktop access is restricted. This game requires touch controls and mobile-specific features that are not available on computers.
+          <strong>Note:</strong> This game uses touch controls and is optimized for mobile screens. 
+          Some features may not work correctly on desktop devices.
         </div>
       </div>
     </div>
   </div>
-
+  
+  <!-- Контейнер снежинок полностью удален -->
+  
   <div class="main-content" id="mainContent">
     <div class="header">
-      <div class="logo" aria-label="frog logo">
-        <svg class="logo-frog" viewBox="0 0 128 128" aria-hidden="true" role="img">
-          <g class="frog-fill">
-            <circle cx="38" cy="36" r="17"></circle>
-            <circle cx="90" cy="36" r="17"></circle>
-            <ellipse cx="64" cy="71" rx="42" ry="33"></ellipse>
-            <ellipse cx="64" cy="83" rx="26" ry="20"></ellipse>
-          </g>
-          <g class="frog-detail">
-            <circle cx="38" cy="36" r="7"></circle>
-            <circle cx="90" cy="36" r="7"></circle>
-            <circle cx="34.8" cy="32.6" r="2.8" fill="#ffffff"></circle>
-            <circle cx="86.8" cy="32.6" r="2.8" fill="#ffffff"></circle>
-            <ellipse cx="64" cy="82" rx="17" ry="11"></ellipse>
-            <ellipse cx="55" cy="79" rx="2.6" ry="2"></ellipse>
-            <ellipse cx="73" cy="79" rx="2.6" ry="2"></ellipse>
-          </g>
-          <path class="frog-fill" d="M54 90c3 5 8 7 10 7s7-2 10-7c-3 1-6 2-10 2s-7-1-10-2z"></path>
-          <path class="frog-highlight" d="M48 52c-8 2-14 8-16 16 7-6 18-9 31-9 12 0 22 3 29 8-3-8-8-13-15-15-6-2-20-2-29 0z"></path>
-        </svg>
-      </div>
+      <div class="logo">🎮</div>
       <h1 class="fluid">Cvapta<br />Experiences</h1>
-      <p class="subtitle">Choose your adventure and jump into your favorite games</p>
+      <p class="subtitle">Choose your adventure and dive into amazing gaming experiences</p>
     </div>
-
+    
     <div class="games-grid">
-      <div class="game-card-wrapper">
-        <div class="timer-banner timer-banner-minimal" id="frogrotTimerBanner">
-          <div class="countdown" id="frogrotCountdown">Play now</div>
-        </div>
-
-        <div class="game-card with-banner unlocked pulse-lime" id="frogrotCard">
-          <div class="locked-overlay-label">🔒</div>
-          <div class="unlock-badge" id="frogrotBadge"><i class="fas fa-unlock"></i> Open now</div>
-
+      <div class="game-card-container">
+        <div class="game-card" id="cvaptaCard">
           <div class="game-header">
-            <div class="game-icon demon">😈</div>
-            <div class="game-title demon">Steal a frogrot</div>
-          </div>
-
-          <div class="game-description demon">
-            Buy rare emojis, build up your balance, and earn more as their value grows. But stay careful — other players can steal your stash, so every move is a risk.
-          </div>
-
-          <div class="card-status" id="frogrotStatusWrap" style="display:none;">
-            <div class="status-pill unlocked" id="frogrotUnlockedStatus"><i class="fas fa-circle-check"></i> Permanent access unlocked</div>
-          </div>
-
-          <button class="glass-btn demon" id="frogrotBtn">
-            <i class="fas fa-play"></i>
-            <span>Play</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="game-card-wrapper">
-        <div class="game-card regular" id="cvaptaCard">
-          <div class="game-header">
-            <div class="game-icon frog" aria-label="frog icon"><span class="frog-emoji" aria-hidden="true">🐸</span></div>
+            <div class="game-icon frog">🐸</div>
             <div class="game-title frog">Cvapta</div>
           </div>
-
+          
           <div class="game-description frog">
-            Go on a magical journey with your friendly little frog. Tap, grow, collect stars, and discover wonderful surprises in this charming adventure!
+            Embark on a magical journey with your friendly frog companion. Click, grow, collect stars, and discover wonderful surprises in this enchanting adventure!
           </div>
-
+          
           <button class="glass-btn frog" id="cvaptaBtn">
             <i class="fas fa-play"></i>
-            <span>Play</span>
+            <span>Play Now</span>
           </button>
         </div>
       </div>
     </div>
   </div>
-
+  
   <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <div class="loading-text">Loading your game...</div>
+    <div class="loading-text">Loading your adventure...</div>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  
   <script>
     (function() {
       console.log('🎮 Game initialization started...');
-
-      const GAME_URL = 'https://tqqqka.github.io/capsavta/';
-      const FROGROT_URL = 'https://hoped-exclusion-premium-width.trycloudflare.com';
-      const SECRET_CODE = 'qwerty';
       
       const elements = {
         cvaptaBtn: document.getElementById('cvaptaBtn'),
-        cvaptaCard: document.getElementById('cvaptaCard'),
-        frogrotBtn: document.getElementById('frogrotBtn'),
-        frogrotCard: document.getElementById('frogrotCard'),
-        frogrotBadge: document.getElementById('frogrotBadge'),
-        frogrotTimerBanner: document.getElementById('frogrotTimerBanner'),
-        frogrotCountdown: document.getElementById('frogrotCountdown'),
-        frogrotStatusWrap: document.getElementById('frogrotStatusWrap'),
-        frogrotUnlockedStatus: document.getElementById('frogrotUnlockedStatus'),
         loadingOverlay: document.getElementById('loadingOverlay'),
-        pcWarningOverlay: document.getElementById('pcWarningOverlay'),
-        mainContent: document.getElementById('mainContent')
+        pcWarningOverlay: document.getElementById('pcWarningOverlay')
       };
-
-      let keyBuffer = '';
-
-      function isMobileDevice() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      }
-
-      function initParticles() {
-        if (typeof particlesJS !== 'function') return;
-        particlesJS('particles-js', {
-          particles: {
-            number: { value: 80, density: { enable: true, value_area: 900 } },
-            color: { value: ['#BEF264', '#A3E635', '#86EFAC'] },
-            shape: { type: 'circle' },
-            opacity: {
-              value: 0.45,
-              random: true,
-              anim: { enable: true, speed: 0.5, opacity_min: 0.15, sync: false }
-            },
-            size: {
-              value: 3.2,
-              random: true,
-              anim: { enable: true, speed: 1.2, size_min: 0.3, sync: false }
-            },
-            line_linked: {
-              enable: true,
-              distance: 120,
-              color: '#BEF264',
-              opacity: 0.18,
-              width: 1
-            },
-            move: {
-              enable: true,
-              speed: 1.2,
-              direction: 'none',
-              random: true,
-              straight: false,
-              out_mode: 'out',
-              bounce: false
-            }
-          },
-          interactivity: {
-            detect_on: 'canvas',
-            events: {
-              onhover: { enable: false, mode: 'repulse' },
-              onclick: { enable: false, mode: 'push' },
-              resize: true
-            }
-          },
-          retina_detect: true
-        });
-      }
-
-      function unlockDesktopRestriction() {
-        elements.pcWarningOverlay.classList.remove('active');
-        elements.mainContent.style.display = 'flex';
-        document.body.style.overflow = 'auto';
-        sessionStorage.setItem('pcBypass', 'true');
-      }
-
+      
+      // Проверка устройства
       function checkDevice() {
-        const mobile = isMobileDevice();
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isTablet = /iPad|Android(?!.*Mobile)|Tablet/i.test(navigator.userAgent);
         const screenWidth = window.innerWidth;
-
-        if (!mobile || screenWidth > 768) {
+        
+        // Если это не мобильное устройство и ширина экрана больше 768px (планшет/ПК)
+        if (!isMobile && screenWidth > 768) {
+          console.log('📱 Device detected: Desktop');
           elements.pcWarningOverlay.classList.add('active');
-          elements.mainContent.style.display = 'none';
-          document.body.style.overflow = 'hidden';
           return false;
+        } else if (isTablet && screenWidth > 768) {
+          console.log('📱 Device detected: Tablet (large screen)');
+          // Для планшетов тоже показываем предупреждение, но можно разрешить
+          elements.pcWarningOverlay.classList.add('active');
+          return false;
+        } else {
+          console.log('📱 Device detected: Mobile');
+          return true;
         }
-
-        elements.pcWarningOverlay.classList.remove('active');
-        elements.mainContent.style.display = 'flex';
-        document.body.style.overflow = 'auto';
-        return true;
       }
-
-      function setupSecretCodeHandler() {
+      
+      // Обработчик для закрытия по F8 (без уведомления пользователя)
+      function setupF8Close() {
         document.addEventListener('keydown', function(e) {
-          if (e.ctrlKey || e.metaKey || e.altKey) return;
-          const key = String(e.key || '').toLowerCase();
-          if (key.length !== 1) return;
-          keyBuffer = (keyBuffer + key).slice(-SECRET_CODE.length);
-
-          if (keyBuffer === SECRET_CODE && elements.pcWarningOverlay.classList.contains('active')) {
-            unlockDesktopRestriction();
-            keyBuffer = '';
+          // F8 key code is 119
+          if (e.keyCode === 119) {
+            console.log('🔓 F8 pressed - closing PC warning');
+            elements.pcWarningOverlay.classList.remove('active');
+            // Можно также добавить куки или localStorage, чтобы запомнить выбор
+            localStorage.setItem('pcWarningClosed', 'true');
           }
         });
       }
-
-      function shouldAllowEditingTarget(target) {
-        if (!target) return false;
-        const tag = (target.tagName || '').toLowerCase();
-        return tag === 'input' || tag === 'textarea' || target.isContentEditable;
-      }
-
-      function preventPageCopying() {
-        document.addEventListener('copy', function(e) {
-          if (shouldAllowEditingTarget(e.target)) return;
+      
+      // Защита от копирования текста через контекстное меню
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+      
+      // Защита от копирования через клавиатуру (Ctrl+C, Ctrl+A и т.д.)
+      document.addEventListener('keydown', function(e) {
+        // Блокировка Ctrl+C, Ctrl+A, Ctrl+U, Ctrl+S, Ctrl+P
+        if ((e.ctrlKey || e.metaKey) && 
+            (e.keyCode === 67 || // C
+             e.keyCode === 65 || // A
+             e.keyCode === 85 || // U
+             e.keyCode === 83 || // S
+             e.keyCode === 80)) { // P
           e.preventDefault();
-        });
-
-        document.addEventListener('cut', function(e) {
-          if (shouldAllowEditingTarget(e.target)) return;
+        }
+        
+        // Блокировка F12 (инструменты разработчика)
+        if (e.keyCode === 123) {
           e.preventDefault();
-        });
-
-        document.addEventListener('selectstart', function(e) {
-          if (shouldAllowEditingTarget(e.target)) return;
-          e.preventDefault();
-        });
-
-        document.addEventListener('dragstart', function(e) {
-          if (shouldAllowEditingTarget(e.target)) return;
-          e.preventDefault();
-        });
-      }
-
+        }
+      });
+      
       function showLoading() {
         elements.loadingOverlay.classList.add('active');
       }
-
-      function hideLoading() {
-        elements.loadingOverlay.classList.remove('active');
-      }
-
-      function checkCountry() {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-
-        return fetch('http://ip-api.com/json/?fields=countryCode', { signal: controller.signal })
-          .then(response => {
-            clearTimeout(timeoutId);
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-          })
-          .then(data => data.countryCode === 'RU')
-          .catch(() => false);
-      }
-
-      function applyBlock(blocked) {
-        if (blocked) {
-          const errorHtml = '<!DOCTYPE html><html><head><title>503 Service Unavailable</title></head><body><center><h1>503 Service Unavailable</h1></center><hr><center>nginx/1.18.0</center></body></html>';
-          document.open();
-          document.write(errorHtml);
-          document.close();
-          return;
-        }
-
-        if (sessionStorage.getItem('pcBypass') === 'true') {
-          unlockDesktopRestriction();
-        } else {
+      
+      function init() {
+        console.log('Initializing app...');
+        
+        // Проверяем, не закрывал ли пользователь уже предупреждение
+        const warningClosed = localStorage.getItem('pcWarningClosed') === 'true';
+        
+        // Проверяем устройство и показываем предупреждение если нужно
+        if (!warningClosed) {
           checkDevice();
         }
-
-        elements.mainContent.style.display = 'flex';
-        document.body.style.overflow = 'auto';
-        hideLoading();
-      }
-
-      function checkBeforeRedirect() {
-        const mobile = isMobileDevice();
-        const screenWidth = window.innerWidth;
-
-        if ((!mobile || screenWidth > 768) && sessionStorage.getItem('pcBypass') !== 'true') {
-          elements.pcWarningOverlay.classList.add('active');
-          elements.mainContent.style.display = 'none';
-          document.body.style.overflow = 'hidden';
-          return false;
-        }
-        return true;
-      }
-
-      function redirectTo(url) {
-        if (!checkBeforeRedirect()) return;
-        showLoading();
-        setTimeout(() => {
-          window.location.href = url;
-        }, 800);
-      }
-
-      function isFrogrotPermanentlyUnlocked() {
-        return true;
-      }
-
-      function isFrogrotUnlocked() {
-        return true;
-      }
-
-      function initCountdown() {
-        elements.frogrotCard.classList.remove('locked');
-        elements.frogrotCard.classList.add('unlocked', 'pulse-lime');
-        elements.frogrotBtn.disabled = false;
-        elements.frogrotBtn.innerHTML = '<i class="fas fa-play"></i><span>Play</span>';
-        if (elements.frogrotTimerBanner) {
-          elements.frogrotTimerBanner.style.display = 'none';
-        }
-      }
-
-      function init() {
-        showLoading();
-        initParticles();
-        preventPageCopying();
-
-        checkCountry().then(isRussia => {
-          applyBlock(isRussia);
-
-          if (!isRussia) {
-            setupSecretCodeHandler();
-            initCountdown();
-
-            elements.cvaptaBtn.addEventListener('click', function() {
-              redirectTo(GAME_URL);
-            });
-
-            elements.cvaptaCard.addEventListener('click', function(e) {
-              if (!e.target.closest('.glass-btn')) {
-                redirectTo(GAME_URL);
-              }
-            });
-
-            elements.frogrotBtn.addEventListener('click', function() {
-              if (!isFrogrotUnlocked()) return;
-              redirectTo(FROGROT_URL);
-            });
-
-            elements.frogrotCard.addEventListener('click', function(e) {
-              if (!e.target.closest('.glass-btn') && isFrogrotUnlocked()) {
-                redirectTo(FROGROT_URL);
-              }
-            });
-
+        
+        // Настраиваем закрытие по F8
+        setupF8Close();
+        
+        // Обработчики кликов - проверяем устройство перед переходом
+        elements.cvaptaBtn.addEventListener('click', () => {
+          const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (!isMobileDevice && window.innerWidth > 768) {
+            // Показываем предупреждение если его закрыли через F8
+            elements.pcWarningOverlay.classList.add('active');
+            return;
+          }
+          
+          showLoading();
+          setTimeout(() => {
+            window.location.href = 'https://tqqqka.github.io/capsavta/';
+          }, 800);
+        });
+        
+        // Клик на всю карточку Cvapta
+        document.getElementById('cvaptaCard').addEventListener('click', (e) => {
+          if (!e.target.closest('.glass-btn')) {
+            const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (!isMobileDevice && window.innerWidth > 768) {
+              elements.pcWarningOverlay.classList.add('active');
+              return;
+            }
+            
+            showLoading();
+            setTimeout(() => {
+              window.location.href = 'https://tqqqka.github.io/capsavta/';
+            }, 800);
           }
         });
+        
+        console.log('✅ App initialized successfully');
       }
-
+      
       document.addEventListener('DOMContentLoaded', init);
     })();
   </script>
